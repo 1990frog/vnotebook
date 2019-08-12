@@ -8,6 +8,15 @@
     "sub_directories": [
         {
             "name": "Java"
+        },
+        {
+            "name": "Docker"
+        },
+        {
+            "name": "Git"
+        },
+        {
+            "name": "Linux"
         }
     ],
     "tags": [
