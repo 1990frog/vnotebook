@@ -1,7 +1,7 @@
 # Manjaro安装各种坑
 
-##软件源
-###添加archlinuxCN源
+## 软件源
+### 添加archlinuxCN源
 ```
 #编辑文件 sudo vi /etc/pacman.conf   末尾追加
 [archlinuxcn]
@@ -11,7 +11,7 @@ Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
 SigLevel = Never
 Server = https://mirrors.ustc.edu.cn/blackarch/$repo/os/$arch
 ```
-###选择pacman中文镜像
+### 选择pacman中文镜像
 ```
 sudo pacman-mirrors -c China​
 sudo pacman -Syyu
@@ -32,15 +32,15 @@ sudo pacman -Syyu
 
 ```
 
-###解决签名错误，安装软件包报错问题
+### 解决签名错误，安装软件包报错问题
 ```
 #导入GPG Key
 
 sudo pacman -S archlinuxcn-keyring
 
 ```
-##系统配置
-###更新引导分区表
+## 系统配置
+### 更新引导分区表
 
 ```
 更新引导分区表，之后重启可以看到有manjaro和win10的条目
@@ -52,7 +52,7 @@ sudo update-grub
 sudo vi /etc/default/grub
 
 ```
-###切换英文主目录
+### 切换英文主目录
 
 ```
 sudo pacman -S xdg-user-dirs-gtk
@@ -61,8 +61,8 @@ xdg-user-dirs-gtk-update
 export LANG=zh_CN.UTF-8
 ```
 
-###N卡画面撕裂
-####页面滚动屏幕撕裂
+### N卡画面撕裂
+#### 页面滚动屏幕撕裂
 sudo nvidia-xconfig  
 
 ```
@@ -74,11 +74,11 @@ sudo nvidia-xconfig
 sudo nvim /etc/modprobe.d/nvidia-drm-1.conf
 options nvidia_drm modeset=1
 ```
-####屏幕缩放导致konsole出现横线
+#### 屏幕缩放导致konsole出现横线
 设置行间距为1
 
-##软件安装
-###安装搜狗输入法
+## 软件安装
+### 安装搜狗输入法
 ```
 sudo pacman -S fcitx-sogoupinyin
 sudo pacman -S fcitx-im
@@ -92,12 +92,12 @@ export XMODIFIERS="@im=fcitx"
 
 ```
 
-###安装mlocate
+### 安装mlocate
 ```
 sudo pacman -S mlocate
 updatedb
 locate file
 ```
 
-##常用命令
+## 常用命令
 screenfetch  
