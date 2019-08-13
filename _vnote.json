@@ -29,6 +29,9 @@
         },
         {
             "name": "Tool"
+        },
+        {
+            "name": "RegExp"
         }
     ],
     "tags": [
