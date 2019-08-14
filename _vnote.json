@@ -32,6 +32,9 @@
         },
         {
             "name": "RegExp"
+        },
+        {
+            "name": "Pattern"
         }
     ],
     "tags": [
