@@ -5,6 +5,15 @@
     "sub_directories": [
         {
             "name": "Vim"
+        },
+        {
+            "name": "Git"
+        },
+        {
+            "name": "Svn"
+        },
+        {
+            "name": "Shadowsocks"
         }
     ],
     "version": "1"

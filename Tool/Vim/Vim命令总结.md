@@ -1,5 +1,7 @@
 # Vim命令总结
 
+![vim](_v_images/20190816153331073_6254123.png)
+
 ## 模式
 + 命令模式(command-mode)
 + 插入模式(insert-mode)

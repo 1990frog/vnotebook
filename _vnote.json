@@ -13,16 +13,13 @@
             "name": "Docker"
         },
         {
-            "name": "Git"
-        },
-        {
             "name": "Linux"
         },
         {
             "name": "Markdown"
         },
         {
-            "name": "TODO"
+            "name": "Todo"
         },
         {
             "name": "Hadoop"
@@ -35,6 +32,15 @@
         },
         {
             "name": "Pattern"
+        },
+        {
+            "name": "Oracle"
+        },
+        {
+            "name": "Netty"
+        },
+        {
+            "name": "Spring"
         }
     ],
     "tags": [
