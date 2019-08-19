@@ -14,3 +14,9 @@ STORED AS TEXTFILE;
 load data local inpath '/home/cai/Desktop/test.log' overwrite into table people;
 
 CREATE EXTERNAL TABLE test ( text string ) ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe' LOCATION '/test.json';
+
+
+CREATE TABLE test(name STRING,age STRING,level STRING,faction STRING) ROW FORMAT SERDE ‘org.apache.hadoop.hive.contrib.serde2.JsonSerde’ STORED AS TEXTFILE;  
+
+
+CREATE EXTERNAL TABLE test ( name STRING,age STRING,level STRING,faction STRING )  ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe' LOCATION '/user/data';
