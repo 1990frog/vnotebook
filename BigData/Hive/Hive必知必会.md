@@ -383,7 +383,53 @@ hive> select size(perf) from employee
 
 #### 标准函数使用:  
 
-![](_v_images/20190820173923474_1440640399.png)
+<table>
+<tr>
+<td>函数名</td>
+<td>作用描述</td>
+</tr>
+<tr>
+<td>round()、floor()</td>
+<td>可以将double类型转换为bigint类型</td>
+</tr>
+<tr>
+<td>abs()</td>
+<td>返回数值的绝对值</td>
+</tr>
+<tr>
+<td>ucase()</td>
+<td>将只服从转换成全是大写字母</td>
+</tr>
+<tr>
+<td>reverse()</td>
+<td>将字符串进行翻转</td>
+</tr>
+<tr>
+<td>concat()</td>
+<td>将输入的多个字符串当做一个字符串输出concat('a','b')=ab</td>
+</tr>
+</table>
+
+聚合函数使用：  
+
+<table>
+<tr>
+<td>函数名</td>
+<td>作用描述</td>
+</tr>
+<tr>
+<td>sum()</td>
+<td>返回所有输入求和后的值</td>
+</tr>
+<tr>
+<td>avg()</td>
+<td>计算所有输入值的平均值</td>
+</tr>
+<tr>
+<td>min()、max()</td>
+<td>计算输入值的最大和最小值</td>
+</tr>
+</table>
 
 注意:聚合方法通常需要和group by语句组合使用  
 
@@ -391,7 +437,40 @@ hive> select size(perf) from employee
 
 表生成函数接收零个或者多个输入，然后产生多列或多行输出。  
 
-![](_v_images/20190820174034979_774550493.png)
+<table>
+<tr>
+<td>函数名</td>
+<td>作用描述</td>
+</tr>
+<tr>
+<td>array()</td>
+<td>将函数内容转换成一个array<>类型</td>
+</tr>
+<tr>
+<td>split(array,split)</td>
+<td>将array<>类型按照split分隔符进行分割成字符串（转义时使用\进行转义）</td>
+</tr>
+<tr>
+<td>explode()</td>
+<td>array数据类型作为输入，对数组中数据进行迭代，返回多行结果</td>
+</tr>
+<tr>
+<td>collect_set()</td>
+<td>将某字段的值进行去重汇总，产生Array类型字段</td>
+</tr>
+<tr>
+<td>collect_list()</td>
+<td>同collect_set()，但是不会对字段进行去重</td>
+</tr>
+<tr>
+<td>concat_ws(split,struct)</td>
+<td>将struct类型的字段按照split进行分割成字符串（struct仅支持string和array<>类型）</td>
+</tr>
+<tr>
+<td>cast(column as type)</td>
+<td>转换数据类型（column列转换成type类型）</td>
+</tr>
+</table>
 
 注意:当split被包含在""之中的时候需要使用四个\进行转义[比如在hive -e ""中执行split函数]  
 
@@ -427,7 +506,40 @@ OK
 
 在使用hive处理数据过程中，通常我们需要对相关数据进行清洗转换，此时我们可能会使用一些条件判断以及默认值处理函数。  
 
-![](_v_images/20190820174152692_283157668.png)
+<table>
+<tr>
+<td>函数名</td>
+<td>作用描述</td>
+</tr>
+<tr>
+<td>IF(Test Condition,True Value,False Value)</td>
+<td>判断条件，满足即为True值，不满足即为False值</td>
+</tr>
+<tr>
+<td>CASE Statement</td>
+<td>多条件判断</td>
+</tr>
+<tr>
+<td>parse_url()</td>
+<td>通常用于清洗url相关函数，提供了常用的url解析功能</td>
+</tr>
+<tr>
+<td>parse_url_tuple()</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>regexp_replace()</td>
+<td>正则表达式替换</td>
+</tr>
+<tr>
+<td>regexp_extract()</td>
+<td>正则表达式解析</td>
+</tr>
+<tr>
+<td>COALESCE(column,'')</td>
+<td>hive中的空值转换（hive中的空值为NULL，而存储到hdfs中会以\N来存储）</td>
+</tr>
+</table>
 
 示例:  
 
@@ -481,9 +593,36 @@ row_number() over()
 
 ## 四、hive常用的环境变量
 
-![](_v_images/20190820174307837_774742457.png)
-
-
+<table>
+<tr>
+<td>环境变量</td>
+<td>含义</td>
+</tr>
+<tr>
+<td>set hive.cli.print.header=true</td>
+<td>设置查询时显示表头</td>
+</tr>
+<tr>
+<td>set hive.exec.dynamic.partition=true</td>
+<td>开启动态分类</td>
+</tr>
+<tr>
+<td>set hive.exec.dynamic.partition.mode=nonstrict</td>
+<td>设置动态分区模式为非严格</td>
+</tr>
+<tr>
+<td>set hive.exec.max.dynamic.partitions.pernode=1000</td>
+<td>设置每个执行MR的节点上最大分区数</td>
+</tr>
+<tr>
+<td>set hive.exec.max.dynamic.partitions=1000</td>
+<td>设置所有MR节点上最大总分区数</td>
+</tr>
+<tr>
+<td>set serdeproperties('serialization.null.format'='\N')</td>
+<td>设置hive空值存储方式为'\N'（此时存储在HDFS中时'\N'，查询显示NULL）</td>
+</tr>
+</table>
 
 
 
