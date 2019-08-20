@@ -7,40 +7,28 @@
     "recycle_bin_folder": "_v_recycle_bin",
     "sub_directories": [
         {
-            "name": "Java"
-        },
-        {
-            "name": "Docker"
-        },
-        {
-            "name": "Linux"
-        },
-        {
-            "name": "Markdown"
-        },
-        {
             "name": "Todo"
-        },
-        {
-            "name": "Hadoop"
         },
         {
             "name": "Tool"
         },
         {
-            "name": "RegExp"
-        },
-        {
             "name": "Pattern"
         },
         {
-            "name": "Oracle"
+            "name": "English"
         },
         {
-            "name": "Netty"
+            "name": "Language"
         },
         {
-            "name": "Spring"
+            "name": "System"
+        },
+        {
+            "name": "BigData"
+        },
+        {
+            "name": "DB"
         }
     ],
     "tags": [

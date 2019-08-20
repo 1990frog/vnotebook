@@ -21,6 +21,15 @@
         },
         {
             "name": "Genericity"
+        },
+        {
+            "name": "Base"
+        },
+        {
+            "name": "Framework"
+        },
+        {
+            "name": "Book"
         }
     ],
     "version": "1"

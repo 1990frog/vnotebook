@@ -479,7 +479,7 @@ select if(4>5,5000,1000),coalesce(null,1,3,5),coalesce(null,null,null,null), cas
 
 row_number() over()
 
-## 三、hive常用的环境变量
+## 四、hive常用的环境变量
 
 ![](_v_images/20190820174307837_774742457.png)
 
