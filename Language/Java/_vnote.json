@@ -23,7 +23,7 @@
             "name": "Genericity"
         },
         {
-            "name": "Base"
+            "name": "Basis"
         },
         {
             "name": "Framework"
@@ -33,6 +33,9 @@
         },
         {
             "name": "Initialization"
+        },
+        {
+            "name": "DynamicProxy"
         }
     ],
     "version": "1"

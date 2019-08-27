@@ -1,3 +1,4 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/Todo/Study/2019年/8月份.md
 # 8月
 
 ## 月目标
@@ -86,7 +87,12 @@
 + 继续上周未完成计划
 
 ###### 8月26日
-+ Hive 常用DML整理一部分
++ Hive 常用DML整理一部分【学了一点点】
 + 原型模式【感觉没毛卵用】
 + 深拷贝与浅拷贝【学了，下面开始看基本类型、元类型、容器、值传递引用传递】
+
+###### 8月27日
 + Lumbda抽象方法学几个嘛
++ Hive之DML
++ 注解与动态代理
++ 代理模式
