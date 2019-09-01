@@ -36,6 +36,9 @@
         },
         {
             "name": "DynamicProxy"
+        },
+        {
+            "name": "Concurrent"
         }
     ],
     "version": "1"
