@@ -87,3 +87,19 @@ java.nio.channels.Selector的相关方法
 被中断的线程它本身拥有响应中断的权利，因为有些线程的某些代码是非常重要的，我们必须要等待这些线程处理完成之后或者他们准备好之后，再由他们自己去主动终止，或者它们真的不想理会我们的中断这也是完全ok的，我们不应该茹莽的使用stop方法，而是通过使用interrupt方法来发出一个信号，由它们自己处理，这样使我们的线程代码，在实际中更加安全，也完成了清理工作，数据的完整性也得到了保障
 
 ![](_v_images/20190903225518559_2071670296.png)
+
+非受检查异常：
+
+Error:  
+VirtualMachineError
+AWTError
+
+Exception:
+RuntimeException
+
+受检查异常：
+IOException
+
+错误停止方法：
+1.被弃用的stop,suspend和resume方法
+2.用volatile设置boolean标记位
