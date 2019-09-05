@@ -103,3 +103,56 @@ IOException
 错误停止方法：
 1.被弃用的stop,suspend和resume方法
 2.用volatile设置boolean标记位
+
+如何分析native方法
+进入github（也可以进入 openJDK网站 ）
+点“搜索文件”，搜索对应的c代码类Thread.c
+找到native方法对应的方法名
+去src/hotspot/share/prims/jvm.cpp里看cpp代码
+
+![](_v_images/20190905205555461_716593482.png)
+
+停止线程相关重要函数解析
+
+判断是否已被中断相关方法
+static boolean interrupted()
+```
+return isInterrupted(true);
+返回中断状态，并清除中断状态
+```
+作用对象是当前运行它的线程，执行线程，该方法不关心被哪个对象调用，只关心执行它的线程
+
+boolean isInterrupted()
+```
+return isInterrupted(false);
+返回中断状态
+```
+Thread.interrupted()的目的对象
+Thread可看做this
+
+停止线程：
+
+如何停止线程
+1.原理：用interrupt来请求、好处
+2.想停止线程，要请求方、被停止方、子方法被调用方相互配合
+3.最后再说错误的方法：stop/suspend已废弃，volatile的boolean无法处理长时间阻塞的情况
+
+如何处理不可中断的阻塞
+并没有通用的方法，针对特定的情况，使用特定的方法
+使用可以响应中断的方法
+
+线程的一生——6个状态（生命周期）
+有哪6种状态 ？
+每个状态是什么含义？
+状态间的转化图示
+阻塞状态是什么？
+
+6种状态：
+1.New：已创建，但没启动，未执行Run方法
+2.Runnable：调用了start方法，未分配资源也是此状态，Runnable可运行的，也可能是已运行中的
+3.Blocked：进入synchronize修饰的代码块，仅synchronize
+4.Waiting：
+5.Timed Waiting
+6.Terminated
+
+![](_v_images/20190905212431539_634278368.png =522x)
