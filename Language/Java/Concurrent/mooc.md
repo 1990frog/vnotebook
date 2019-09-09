@@ -163,3 +163,10 @@ Thread可看做this
 ![](_v_images/20190907171200301_1137895628.png)
 
 
+---
+
+1.为什么线程通信的方法wait(),notify()和notifyAll()被定义在Object类里？而sleep定义在Thread类里？
+
+2.多种方式实现生产者模式
+
+3.Join和sleep和wait期间线程的状态分别是什么？为什么？ 
