@@ -1,0 +1,448 @@
+{
+    "created_time": "2019-09-12T08:31:19Z",
+    "files": [
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:33:10Z",
+            "modified_time": "2019-09-12T08:33:16Z",
+            "name": "00-Introduction.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:33:56Z",
+            "modified_time": "2019-09-12T08:34:10Z",
+            "name": "00-On-Java-8.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:34:32Z",
+            "modified_time": "2019-09-12T08:34:44Z",
+            "name": "00-Preface.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:34:56Z",
+            "modified_time": "2019-09-12T08:35:06Z",
+            "name": "01-What-is-an-Object.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:35:31Z",
+            "modified_time": "2019-09-12T08:35:41Z",
+            "name": "02-Installing-Java-and-the-Book-Examples.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:04Z",
+            "modified_time": "2019-09-12T08:36:15Z",
+            "name": "03-Objects-Everywhere.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "04-Operators.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "05-Control-Flow.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "06-Housekeeping.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "07-Implementation-Hiding.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "08-Reuse.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "09-Polymorphism.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "10-Interfaces.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "11-Inner-Classes.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "12-Collections.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "13-Functional-Programming.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "14-Streams.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "15-Exceptions.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "16-Validating-Your-Code.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "17-Files.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "18-Strings.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "19-Type-Information.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "20-Generics.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "21-Arrays.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "22-Enumerations.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "23-Annotations.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "24-Concurrent-Programming.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "25-Patterns.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name":"Appendix-Becoming-a-Programmer.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name":"Appendix-Benefits-and-Costs-of-Static-Type-Checking.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "Appendix-Collection-Topics.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "Appendix-Data-Compression.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "Appendix-IO-Streams.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "Appendix-Javadoc.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "Appendix-Low-Level-Concurrency.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "Appendix-New-IO.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "Appendix-Object-Serialization.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "Appendix-Passing-and-Returning-Objects.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "Appendix-Programming-Guidelines.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "Appendix-Standard-IO.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "Appendix-Supplements.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name":"Appendix-The-Positive-Legacy-of-C-plus-plus-and-Java.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name":"Appendix-Understanding-equals-and-hashCode.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-12T08:36:39Z",
+            "modified_time": "2019-09-12T08:36:48Z",
+            "name": "GLOSSARY.md",
+            "tags": [
+            ]
+        }
+    ],
+    "sub_directories": [
+    ],
+    "version": "1"
+}

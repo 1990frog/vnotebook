@@ -5,6 +5,9 @@
     "sub_directories": [
         {
             "name": "ThinkInJava"
+        },
+        {
+            "name": "OnJava8"
         }
     ],
     "version": "1"
