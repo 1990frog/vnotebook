@@ -1709,7 +1709,7 @@ Java 提供了许多保存对象的方法：
 
 浏览一下Java集合的简图（不包含抽象类或遗留组件）会很有帮助。这里仅包括在一般情况下会碰到的接口和类。（译者注：下图为原著PDF中的截图，可能由于未知原因存在问题。这里可参考译者绘制版[^8]）
 
-![simple collection taxonomy](../images/simple-collection-taxonomy.png)
+![simple-collection-taxonomy](_v_images/20190912171557872_1286751438.png)
 
 ### 简单集合分类
 
@@ -1813,9 +1813,8 @@ Serializable]
 [^7]: 这在 Java 5 之前是不可用的，因为该方法被认为与操作系统的耦合度过紧，因此违反“一次编写，处处运行”的原则。现在却提供它，这一事实表明， Java 的设计者们更加务实了。
 
 [^8]: 下面是译者绘制的 Java 集合框架简图，黄色为接口，绿色为抽象类，蓝色为具体类。虚线箭头表示实现关系，实线箭头表示继承关系。
-![collection](../images/collection.png)
-![map](../images/map.png)
-
+![collection](_v_images/20190912171614201_893412324.png)
+![map](_v_images/20190912171652401_725691399.png)
 <!-- 分页 -->
 
 <div style="page-break-after: always;"></div>
