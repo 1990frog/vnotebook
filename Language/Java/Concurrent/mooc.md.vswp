@@ -1,40 +1,63 @@
 vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/Language/Java/Concurrent/mooc.md
-# mooc
+# WUKONG
+
+## 前言
+
+### 并发重要性
 
 并发是众多框架的原理和基础
 
-Spring中对线程池、单例的应用
-数据库中乐观锁思想
-Log4j2对阻塞队列的应用
+### 在日常开发中并发的使用
 
-面试技巧：
+1. Spring中对线程池、单例的应用
+2. 数据库中乐观锁思想
+3. Log4j2对阻塞队列的应用
+
+### 面试技巧
+
 从一个点引申出并发知识架构，展现知识储备和深刻理解，为面试加分
 
-如何从宏观和微观两个方面提高技术，有哪些途径？
-如何了解技术领域的前沿动态？
-如何在业务缠身中得到更多成长？
-如何分析Java中native层的c/cpp代码？
-为何自顶向下学习？
+### 科学有效的学习
 
+1. 如何从宏观和微观两个方面提高技术，有哪些途径？
+2. 如何了解技术领域的前沿动态？
+3. 如何在业务缠身中得到更多成长？
+4. 如何分析Java中native层的c/cpp代码？
+5. 为何自顶向下学习？
 
 ## 启动线程
 
-start方法流程
-1.检查线程状态，只有NEW状态下的线程才能继续，否则会抛出IllegalThreadStateException（在运行中或者已结束的线程，都不能再次启动，代码演示详见CantStartTwice类）
-2.被加入线程组
-3.调用start()方法启动线程
-注意点：
-start方法是被synchronized修饰的方法，可以确保线程安全；
-由JVM创建的main方法线程和system组线程，并不会通过start来启动。
+### start
 
-native方法（由c或cpp编写）
-如果想看源码，去网站看openjdk实际实现
+start流程：
+
+1. 检查线程状态，只有NEW状态下的线程才能继续，否则会抛出IllegalThreadStateException（在运行中或者已结束的线程，都不能再次启动，代码演示详见CantStartTwice类）
+2. 被加入线程组
+3. 调用start()方法启动线程
+
+注意点：
+
+1. start方法是被synchronized修饰的方法，可以确保线程安全；
+2. 由JVM创建的main方法线程和system组线程，并不会通过start来启动。
+
+### native方法
+
+native方法（由c或cpp编写），如果想看源码，去网站看openjdk实际实现
 
 ## 停止线程
 
 ### 原理介绍：
 
-使用interrupt来通知，而不是强制
+使用interrupt来通知，而不是强制停止线程（强制中断的线程，都是过期方法了，官方不推荐使用）
+
+1.原理：用interrupt来请求、好处
+2.想停止线程，要请求方、被停止方、子方法被调用方相互配合
+3.最后再说错误的方法：stop/suspend已废弃，volatile的boolean无法处理长时间阻塞的情况
+
+如何处理不可中断的阻塞
+
+1. 并没有通用的方法，针对特定的情况，使用特定的方法
+2. 使用可以响应中断的方法
 
 ### Java中停止线程的原则是什么？
 
@@ -52,10 +75,10 @@ native方法（由c或cpp编写）
 
 #### 实际开发中的两种最佳实践：
 
-1. 优先选择：传递中断
-2. 不想或无法传递：恢复中断（不应屏蔽中断）
+1. 优先选择：传递中断（万金油）
+2. 不想或无法传递：恢复中断（上一种不能用的情况下使用，不应屏蔽中断）
 
-##### 传递中断：
+#### 传递中断：
 
 添加异常到方法签名，在方法上抛出异常。用throws InterruptedException 标记你的方法，不采用try 语句块捕获异常，以便于该异常可以传递到顶层，让run方法可以捕获这一异常，由于run方法内无法抛出checked Exception（只能用try catch），顶层方法必须处理该异常，避免了漏掉或者被吞掉的情况，增强了代码的健壮性。
 
@@ -66,32 +89,35 @@ void subTask() throws InterruptedException
 }
 ```
 
-##### 恢复中断
+#### 恢复中断
 
-如果不能抛出中断，要怎么做？
-如果不想或无法传递InterruptedException（例如用run方法的时候，就不让该方法throws InterruptedException），那么应该选择在catch 子句中调用Thread.currentThread().interrupt() 来恢复设置中断状态，以便于在后续的执行依然能够检查到刚才发生了中断。
-代码演示详见视频，在这里，线程在sleep期间被中断，并且由catch捕获到该中断，并重新设置了中断状态，以便于可以在下一个循环的时候检测到中断状态，正常退出。
+##### 如果不能抛出中断，要怎么做
 
-响应中断的方法总结列表
-Object.wait()/wait(long)/wait(long,int)
-Thread.sleep(long)/sleep(long,int)
-Thread.join()/join(long)/join(long,int)
+如果不想或无法传递InterruptedException（例如用run方法的时候，就不让该方法throws InterruptedException），那么应该选择在catch 子句中调用Thread.currentThread().interrupt() 来恢复设置中断状态，以便于在后续的执行依然能够检查到刚才发生了中断。  
+代码演示详见视频，在这里，线程在sleep期间被中断，并且由catch捕获到该中断，并重新设置了中断状态，以便于可以在下一个循环的时候检测到中断状态，正常退出。  
 
-java.util.concurrent.BlockingQueue.take()/put(E)
-java.util.concurrent.locks.Lock.lockInterruptibly()
-java.util.concurrent.CountDownLatch.await()
-java.util.concurrent.CyclicBarrier.await()
-java.util.concurrent.Exchanger.exchange(V)
+##### 响应中断的方法总结列表
 
-java.nio.channels.InterruptibleChannel相关方法
-java.nio.channels.Selector的相关方法
+1. Object.wait()/wait(long)/wait(long,int)
+2. Thread.sleep(long)/sleep(long,int)
+3. Thread.join()/join(long)/join(long,int)
+4. java.util.concurrent.BlockingQueue.take()/put(E)
+5. java.util.concurrent.locks.Lock.lockInterruptibly()
+6. java.util.concurrent.CountDownLatch.await()
+7. java.util.concurrent.CyclicBarrier.await()
+8. java.util.concurrent.Exchanger.exchange(V)
+9. java.nio.channels.InterruptibleChannel相关方法
+10. java.nio.channels.Selector的相关方法
 
-为什么要用interrupt来停止线程：
+##### 为什么要用interrupt来停止线程：
+
 被中断的线程它本身拥有响应中断的权利，因为有些线程的某些代码是非常重要的，我们必须要等待这些线程处理完成之后或者他们准备好之后，再由他们自己去主动终止，或者它们真的不想理会我们的中断这也是完全ok的，我们不应该茹莽的使用stop方法，而是通过使用interrupt方法来发出一个信号，由它们自己处理，这样使我们的线程代码，在实际中更加安全，也完成了清理工作，数据的完整性也得到了保障
 
 ![](_v_images/20190903225518559_2071670296.png)
 
-非受检查异常：
+#### 异常
+
+##### 非受检查异常：
 
 Error:  
 VirtualMachineError
@@ -100,14 +126,17 @@ AWTError
 Exception:
 RuntimeException
 
-受检查异常：
+##### 受检查异常：
+
 IOException
 
-错误停止方法：
-1.被弃用的stop,suspend和resume方法
-2.用volatile设置boolean标记位
+##### 错误停止方法：
 
-如何分析native方法
+1. 被弃用的stop,suspend和resume方法
+2. 用volatile设置boolean标记位
+
+##### 如何分析native方法
+
 进入github（也可以进入 openJDK网站 ）
 点“搜索文件”，搜索对应的c代码类Thread.c
 找到native方法对应的方法名
@@ -115,34 +144,30 @@ IOException
 
 ![](_v_images/20190905205555461_716593482.png)
 
-停止线程相关重要函数解析
+#### 停止线程相关重要函数解析
 
-判断是否已被中断相关方法
+判断是否已被中断相关方法  
+
+```java
 static boolean interrupted()
-```
+//返回中断状态，并清除中断状态
 return isInterrupted(true);
-返回中断状态，并清除中断状态
 ```
+
 作用对象是当前运行它的线程，执行线程，该方法不关心被哪个对象调用，只关心执行它的线程
 
+
+```java
 boolean isInterrupted()
-```
+
+//返回中断状态
 return isInterrupted(false);
-返回中断状态
 ```
-Thread.interrupted()的目的对象
-Thread可看做this
 
-停止线程：
+Thread.interrupted()的目的对象  
+Thread可看做this  
 
-如何停止线程
-1.原理：用interrupt来请求、好处
-2.想停止线程，要请求方、被停止方、子方法被调用方相互配合
-3.最后再说错误的方法：stop/suspend已废弃，volatile的boolean无法处理长时间阻塞的情况
-
-如何处理不可中断的阻塞
-并没有通用的方法，针对特定的情况，使用特定的方法
-使用可以响应中断的方法
+## 线程状态
 
 线程的一生——6个状态（生命周期）
 有哪6种状态 ？
@@ -150,18 +175,18 @@ Thread可看做this
 状态间的转化图示
 阻塞状态是什么？
 
-6种状态：
-1.New：已创建，但没启动，未执行Run方法
-2.Runnable：调用了start方法，未分配资源也是此状态，Runnable可运行的，也可能是已运行中的
-3.Blocked：进入synchronize修饰的代码块，仅synchronize
-4.Waiting：
-5.Timed Waiting
-6.Terminated
+### 6种状态
 
-阻塞状态
+1. New：已创建，但没启动，未执行Run方法
+2. Runnable：调用了start方法，未分配资源也是此状态，Runnable可运行的，也可能是已运行中的
+3. Blocked：进入synchronize修饰的代码块，仅synchronize
+4. Waiting：
+5. Timed Waiting
+6. Terminated
 
-一般习惯而言，把Blocked（被阻塞）、Waiting（等待）、Timed_waiting（计时等待）都称为阻塞状态
-不仅仅是Blocked
+### 阻塞状态
+
+一般习惯而言，把Blocked（被阻塞）、Waiting（等待）、Timed_waiting（计时等待）都称为阻塞状态，不仅仅是Blocked
 
 ![](_v_images/20190907171200301_1137895628.png)
 
