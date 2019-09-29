@@ -28,7 +28,9 @@
 
 Java 中断机制是一种协作机制，也就是说通过中断并不能直接终止另一个线程，而需要被中断的线程自己处理中断。这好比是家里的父母叮嘱在外的子女要注意身体，但子女是否注意身体，怎么注意身体则完全取决于自己。
 
-Java 中断模型也是这么简单，每个线程对象里都有一个 boolean 类型的标识（不一定就要是 Thread 类的字段，实际上也的确不是，这几个方法最终都是通过 native 方法来完成的），代表着是否有中断请求（该请求可以来自所有线程，包括被中断的线程本身）。例如，当线程 t1 想中断线程 t2，只需要在线程 t1 中将线程 t2 对象的中断标识置为 true，然后线程 2 可以选择在合适的时候处理该中断请求，甚至可以不理会该请求，就像这个线程没有被中断一样。
+Java 中断模型也是这么简单，每个线程对象里都有一个 boolean 类型的标识（不一定就要是 Thread 类的字段，实际上也的确不是，这几个方法最终都是通过 native 方法来完成的），代表着是否有中断请求（该请求可以来自所有线程，包括被中断的线程本身）。
+
+例如，当线程 t1 想中断线程 t2，只需要在线程 t1 中将线程 t2 对象的中断标识置为 true，然后线程 2 可以选择在合适的时候处理该中断请求，甚至可以不理会该请求，就像这个线程没有被中断一样。
 
 java.lang.Thread 类提供了几个方法来操作这个中断状态，这些方法包括：
 
@@ -71,12 +73,12 @@ java.lang.Thread 类提供了几个方法来操作这个中断状态，这些方
 
 ### 中断状态的管理
 
-一般说来，当可能阻塞的方法声明中有抛出 InterruptedException 则暗示该方法是可中断的，如 BlockingQueue#put、BlockingQueue#take、Object#wait、Thread#sleep 等，如果程序捕获到这些可中断的阻塞方法抛出的 InterruptedException 或检测到中断后，这些中断信息该如何处理？一般有以下两个通用原则：
+**一般说来，当可能阻塞的方法声明中有抛出 InterruptedException 则暗示该方法是可中断的**，如 BlockingQueue#put、BlockingQueue#take、Object#wait、Thread#sleep 等，如果程序捕获到这些可中断的阻塞方法抛出的 InterruptedException 或检测到中断后，这些中断信息该如何处理？一般有以下两个通用原则：
 
-* 如果遇到的是可中断的阻塞方法抛出 InterruptedException，可以继续向方法调用栈的上层抛出该异常，如果是检测到中断，则可清除中断状态并抛出 InterruptedException，使当前方法也成为一个可中断的方法。
-* 若有时候不太方便在方法上抛出 InterruptedException，比如要实现的某个接口中的方法签名上没有 throws InterruptedException，这时就可以捕获可中断方法的 InterruptedException 并通过 Thread.currentThread.interrupt() 来重新设置中断状态。如果是检测并清除了中断状态，亦是如此。
+* <font color='red'>**如果遇到的是可中断的阻塞方法抛出 InterruptedException，可以继续向方法调用栈的上层抛出该异常，如果是检测到中断，则可清除中断状态并抛出 InterruptedException，使当前方法也成为一个可中断的方法。**</font>
+* <font color='red'>**若有时候不太方便在方法上抛出 InterruptedException，比如要实现的某个接口中的方法签名上没有 throws InterruptedException，这时就可以捕获可中断方法的 InterruptedException 并通过 Thread.currentThread.interrupt() 来重新设置中断状态。如果是检测并清除了中断状态，亦是如此。**</font>
 
-一般的代码中，尤其是作为一个基础类库时，绝不应当吞掉中断，即捕获到 InterruptedException 后在 catch 里什么也不做，清除中断状态后又不重设中断状态也不抛出 InterruptedException 等。因为吞掉中断状态会导致方法调用栈的上层得不到这些信息。
+<font color='blue'>一般的代码中，尤其是作为一个基础类库时，绝不应当吞掉中断，即捕获到 InterruptedException 后在 catch 里什么也不做，清除中断状态后又不重设中断状态也不抛出 InterruptedException 等。因为吞掉中断状态会导致方法调用栈的上层得不到这些信息。</font>
 
 当然，凡事总有例外的时候，当你完全清楚自己的方法会被谁调用，而调用者也不会因为中断被吞掉了而遇到麻烦，就可以这么做。
 
@@ -367,15 +369,6 @@ in thread t
 如果线程当前正持有锁，stop 之后则会释放该锁。由于此错误可能出现在很多地方，那么这就让编程人员防不胜防，极易造成对象状态的不一致。例如，对象 obj 中存放着一个范围值：最小值 low，最大值 high，且 low 不得大于 high，这种关系由锁 lock 保护，以避免并发时产生竞态条件而导致该关系失效。假设当前 low 值是 5，high 值是 10，当线程 t 获取 lock 后，将 low 值更新为了 15，此时被 stop 了，真是糟糕，如果没有捕获住 stop 导致的 Error，low 的值就为 15，high 还是 10，这导致它们之间的小于关系得不到保证，也就是对象状态被破坏了！如果在给 low 赋值的时候 catch 住 stop 导致的 Error 则可能使后面 high 变量的赋值继续，但是谁也不知道 Error 会在哪条语句抛出，如果对象状态之间的关系更复杂呢？这种方式几乎是无法维护的，太复杂了！如果是中断操作，它决计不会在执行 low 赋值的时候抛出错误，这样程序对于对象状态一致性就是可控的。
 
 正是因为可能导致对象状态不一致，stop 才被禁用。
-
-# 中断的使用
-通常，中断的使用场景有以下几个：
-
-* 点击某个桌面应用中的取消按钮时；
-* 某个操作超过了一定的执行时间限制需要中止时；
-* 多个线程做相同的事情，只要一个线程成功其它线程都可以取消时；
-* 一组线程中的一个或多个出现错误导致整组都无法继续时；
-* 当一个应用或服务需要停止时。
 
 # 例子
 
@@ -794,19 +787,258 @@ class Example6 extends Thread {
 
 对于inputStream等资源，有些(实现了interruptibleChannel接口)可以通过close()方法将资源关闭，对应的阻塞也会被放开。　
 
-参考资料
-详解 java 中断机制
+# 多线程中的异常处理
 
-如何中断线程
+## 思考下面的问题
 
-处理 InterruptedException
+1. 在java启动的线程里可以抛出异常吗？
+2. 在启动的线程里可以捕捉异常吗？
+3. 如果可以捕捉异常，对于checked exception和unchecked exception，他们分别有什么的处理方式呢？
 
-对Java中interrupt、interrupted和isInterrupted的理解
+## 线程里抛出异常
 
-java—interrupt、interrupted和isInterrupted的区别
+我们可以尝试一下在线程里抛异常。
 
-深度解析Java线程池的异常处理机制
+按照我们的理解，假定我们要在某个方法里抛异常，需要在该定义的方法头也加上声明。那么一个最简单的方式可能如下：
 
-Java thread中对异常的处理策略
+```java
+public class Task implements Runnable {  
+  
+    @Override  
+    public void run() throws Exception {  
+        int number0 = Integer.parseInt("1");  
+        throw new Exception("Just for test");  
+    }  
+}  
+```
+
+可是，如果我们去编译上面这段代码，会发现根本就编译不过去的。系统报的错误是：
+
+```txt
+Task.java:3: error: run() in Task cannot implement run() in Runnable  
+    public void run() throws Exception {  
+                ^  
+  overridden method does not throw Exception  
+1 error  
+```
+
+由此我们发现这种方式行不通。也就是说，在线程里直接抛异常是不行的。
+
+可是，这又会引出一个问题，如果我们在线程代码里头确实是产生了异常，那该怎么办呢？
+
+比如说，我们通过一个线程访问一些文件或者对网络进行IO操作，结果产生了异常。或者说访问某些资源的时候系统崩溃了。这样的场景是确实可能会发生的，我们就需要针对这些情况进行进一步的讨论。
+
+### 异常处理的几种方式
+
+在前面提到的几种在线程访问资源产生了异常的情况。我们可以看，比如说我们访问文件系统的时候，会抛出IOException, FileNotFoundException等异常。我在访问的代码里实际上是需要采用两种方式来处理的。一种是在使用改资源的方法头增加throws IOException, FileNotFoundException等异常的修饰。还有一是直接在这部分的代码块增加try/catch部分。由前面我们的讨论已经发现，在方法声明加throws Exception的方式是行不通的。
+
+那么就只有使用try/catch这么种方式了。
+
+另外，我们也知道，在异常的处理上，一般异常可以分为checked exception和unchecked exception。
+
+作为unchecked exception，他们通常是指一些比较严重系统错误或者系统设计错误，比如Error, OutOfMemoryError或者系统直接就崩溃了。
+
+对于这种异常发生的时候，我们一般是无能为力也没法恢复的。
+
+那么这种情况发生，我们会怎么来处理呢？
+
+#### checked exception
+
+直接使用 try-catch 进行处理即可，后文也会对这个进行详解。
+
+此处暂时不做展开。
+
+#### unchecked exception
+
+对于这种unchecked exception，相对来说就会不一样一点。
+
+setUncaughtExceptionHandler(UncaughtExceptionHandler)
+实际上，在Thread的定义里有一个实例方法：setUncaughtExceptionHandler(UncaughtExceptionHandler). 这个方法可以用来处理一些unchecked exception。那么，这种情况的场景是如何的呢？
+
+setUncaughtExceptionHandler()方法相当于一个事件注册的入口。
+
+在jdk里面，该方法的定义如下：
+
+```java
+public void setUncaughtExceptionHandler(UncaughtExceptionHandler eh) {  
+    checkAccess();  
+    uncaughtExceptionHandler = eh;  
+}  
+```
+
+而UncaughtExceptionHandler则是一个接口，它的声明如下：
+
+```java
+public interface UncaughtExceptionHandler {  
+    /** 
+     * Method invoked when the given thread terminates due to the 
+     * given uncaught exception. 
+     * <p>Any exception thrown by this method will be ignored by the 
+     * Java Virtual Machine. 
+     * @param t the thread 
+     * @param e the exception 
+    */  
+    void uncaughtException(Thread t, Throwable e);  
+}  
+```
+
+在异常发生的时候，我们传入的UncaughtExceptionHandler参数的uncaughtException方法会被调用。
+
+综合前面的讨论，我们这边要实现handle unchecked exception的方法的具体步骤可以总结如下：
+
+1. 定义一个类实现UncaughtExceptionHandler接口。在实现的方法里包含对异常处理的逻辑和步骤。
+2. 定义线程执行结构和逻辑。这一步和普通线程定义一样。
+3. 在创建和执行改子线程的方法里在thread.start()语句前增加一个thread.setUncaughtExceptionHandler语句来实现处理逻辑的注册。
+
+## 例子
+
+下面，我们就按照这里定义的步骤来实现一个示例：
+
+首先是实现UncaughtExceptionHandler接口部分：
+
+```java
+import java.lang.Thread.UncaughtExceptionHandler;  
+  
+public class ExceptionHandler implements UncaughtExceptionHandler {  
+    public void uncaughtException(Thread t, Throwable e) {  
+        System.out.printf("An exception has been captured\n");  
+        System.out.printf("Thread: %s\n", t.getId());  
+        System.out.printf("Exception: %s: %s\n",   
+                e.getClass().getName(), e.getMessage());  
+        System.out.printf("Stack Trace: \n");  
+        e.printStackTrace(System.out);  
+        System.out.printf("Thread status: %s\n", t.getState());  
+    }  
+}  
+```
+
+这里我们添加的异常处理逻辑很简单，只是把线程的信息和异常信息都打印出来。
+
+然后，我们定义线程的内容，这里，我们故意让该线程产生一个unchecked exception:
+
+```java
+public class Task implements Runnable {  
+  
+    @Override  
+    public void run() {  
+        int number0 = Integer.parseInt("TTT");  
+    }  
+}  
+```
+
+从这代码里我们可以看到，Integer.parseInt()里面的参数是错误的，肯定会抛出一个异常来。
+
+现在，我们再把创建线程和注册处理逻辑的部分补上来
+
+```java
+public class Main {  
+    public static void main(String[] args) {  
+        Task task = new Task();  
+        Thread thread = new Thread(task);  
+        thread.setUncaughtExceptionHandler(new ExceptionHandler());  
+        thread.start();  
+    }  
+}  
+```
+
+整体运行结果日志如下：
+
+```txt
+An exception has been captured  
+Thread: 8  
+Exception: java.lang.NumberFormatException: For input string: "TTT"  
+Stack Trace:   
+java.lang.NumberFormatException: For input string: "TTT"  
+    at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)  
+    at java.lang.Integer.parseInt(Integer.java:492)  
+    at java.lang.Integer.parseInt(Integer.java:527)  
+    at Task.run(Task.java:5)  
+    at java.lang.Thread.run(Thread.java:722)  
+Thread status: RUNNABLE  
+```
+
+这部分的输出正好就是我们前面实现UncaughtExceptionHandler接口的定义。
+
+因此，对于unchecked exception，我们也可以采用类似事件注册的机制做一定程度的处理。
+
+# 拓展
+
+## Thread 类中断相关的方法
+
+### Thread.interrupt VS Thread.stop
+
+Thread.stop 方法已经不推荐使用了。而在某些方面 Thread.stop 与中断机制有着相似之处。如当线程在等待内置锁或 IO 时，stop 跟 interrupt 一样，不会中止这些操作；当 catch 住 stop 导致的异常时，程序也可以继续执行，虽然 stop 本意是要停止线程，这么做会让程序行为变得更加混乱。
+
+### 那么它们的区别在哪里？
+
+最重要的就是中断需要程序自己去检测然后做相应的处理，而 Thread.stop 会直接在代码执行过程中抛出 ThreadDeath 错误，这是一个 java.lang.Error 的子类。
+
+```java
+import java.util.Arrays;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+public class TestStop {
+	private static final int[] array = new int[80000];
+	private static final Thread t = new Thread() {
+		public void run() {
+			try {
+				System.out.println(sort(array));
+			} catch (Error err) {
+				err.printStackTrace();
+			}
+			System.out.println("in thread t");
+		}
+	};
+	
+	static {
+		Random random = new Random();
+		for(int i = 0; i < array.length; i++) {
+			array[i] = random.nextInt(i + 1);
+		}
+	}
+	
+	private static int sort(int[] array) {
+		for (int i = 0; i < array.length-1; i++){
+			for(int j = 0 ;j < array.length - i - 1; j++){
+				if(array[j] < array[j + 1]){
+					int temp = array[j];
+					array[j] = array[j + 1];
+					array[j + 1] = temp;
+				}
+			}
+		}
+		return array[0];
+	}
+	
+	public static void main(String[] args) throws Exception {
+		t.start();
+		TimeUnit.SECONDS.sleep(1);
+		System.out.println("go to stop thread t");
+		t.stop();
+		System.out.println("finish main");
+	}
+}
+```
+
+这个例子很简单，线程 t 里面做了一个非常耗时的排序操作，排序方法中，只有简单的加、减、赋值、比较等操作，一个可能的执行结果如下：
+
+```txt
+go to stop thread t
+java.lang.ThreadDeath
+	at java.lang.Thread.stop(Thread.java:758)
+	at com.ticmy.interrupt.TestStop.main(TestStop.java:44)
+finish main
+in thread t
+```
+
+这里 sort 方法是个非常耗时的操作，也就是说主线程休眠一秒钟后调用 stop 的时候，线程 t 还在执行 sort 方法。就是这样一个简单的方法，也会抛出错误！换一句话说，调用 stop 后，大部分 Java 字节码都有可能抛出错误，哪怕是简单的加法！
+
+### stop 为什么被禁用
+
+如果线程当前正持有锁，stop 之后则会释放该锁。由于此错误可能出现在很多地方，那么这就让编程人员防不胜防，极易造成对象状态的不一致。
+
+例如，对象 obj 中存放着一个范围值：最小值 low，最大值 high，且 low 不得大于 high，这种关系由锁 lock 保护，以避免并发时产生竞态条件而导致该关系失效。假设当前 low 值是 5，high 值是 10，当线程 t 获取 lock 后，将 low 值更新为了 15，此时被 stop 了，真是糟糕，如果没有捕获住 stop 导致的 Error，low 的值就为 15，high 还是 10，这导致它们之间的小于关系得不到保证，也就是对象状态被破坏了！如果在给 low 赋值的时候 catch 住 stop 导致的 Error 则可能使后面 high 变量的赋值继续，但是谁也不知道 Error 会在哪条语句抛出，如果对象状态之间的关系更复杂呢？这种方式几乎是无法维护的，太复杂了！如果是中断操作，它决计不会在执行 low 赋值的时候抛出错误，这样程序对于对象状态一致性就是可控的。
+
+正是因为可能导致对象状态不一致，stop 才被禁用。
 
 
