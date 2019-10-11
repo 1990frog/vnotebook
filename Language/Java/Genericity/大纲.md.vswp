@@ -378,7 +378,7 @@ public class Generic<T> {
 
 一般来说，一个生成器只定义一个方法，该方法用于产生新的对象。在这里，就是next()方法。  
 
-```
+```java
 public interface Generator<T> {
     T next();
 }
@@ -388,7 +388,7 @@ public interface Generator<T> {
 
 首先我们需要一些类以供生成  
 
-```
+```java
 // Coffee.java
 public class Coffee {
     private static long counter = 0;
@@ -418,7 +418,7 @@ public class Breve extends Coffee{}
 
 接着我们创建一个生成器  
 
-```
+```java
 public class CoffeeGenerator implements Generator<Coffee>, Iterable<Coffee> {
 
     private Class[] types = {Latte.class, Mocha.class, Cappuccino.class, Americano.class, Breve.class};
@@ -500,7 +500,7 @@ CoffeeGenerator同时还实现了Iterable接口,所以它可以在ForEach循环�
 
 下面的类也实现了Generator<T>接口，它负责生成Fibonacci数列  
 
-```
+```java
 public class Fibonacci implements Generator<Integer> {
 
     private int count = 0;
@@ -531,14 +531,14 @@ public class Fibonacci implements Generator<Integer> {
 
 这里注意到，虽然在Fibonacci里面使用的都是int类型，但是其参数类型确是Integer。  
 这是因为Java泛型的局限性：基本类型无法作为类型参数。  
-但是Java SE5提供了自动包装和拆包的功能，可以很方便地在基本类型和其相应的包装器类型之间进行转换。  
+<font color="red">但是Java SE5提供了自动包装和拆包的功能，可以很方便地在基本类型和其相应的包装器类型之间进行转换。  </font>
 
 #### 编写实现了Iterable的Fibonacci生成器 
 
 如果还想更进一步，编写一个实现了Iterable的Fibonacci生成器。一个选择是重写这个类，令其实现Iterable接口。
 但是我们并不能总是拥有源代码的控制权，并且，除非必须这么做，否则我们也不愿意重写一个类。而且我们还有另一种选择，就是创建一个适配器(adapter)来是实现所需的接口。
 
-```
+```java
 public class IterableFibonacci extends Fibonacci implements Iterable<Integer> {
 
     private int n;
@@ -582,7 +582,7 @@ public class IterableFibonacci extends Fibonacci implements Iterable<Integer> {
 这里通过使用了继承来实现了适配器。
 
 
-```
+```java
 //定义一个泛型接口
 public interface Generator<T> {
     public T next();
@@ -593,7 +593,7 @@ public interface Generator<T> {
 
 #### 另一种泛型接口
 
-```
+```java
 /**
  * 未传入泛型实参时，与泛型类的定义相同，在声明类的时候，需将泛型的声明也一起加到类中
  * 即：class FruitGenerator<T> implements Generator<T>{
@@ -609,7 +609,7 @@ class FruitGenerator<T> implements Generator<T>{
 
 当实现泛型接口的类，传入泛型实参时
 
-```
+```java
 /**
  * 传入泛型实参时：
  * 定义一个生产器实现这个接口,虽然我们只创建了一个泛型接口Generator<T>
@@ -635,7 +635,7 @@ public class FruitGenerator implements Generator<String> {
 
 ？代表任意类型，例如有如下函数：  
 
-```
+```java
 public void m3(List<?>list){
     for (Object o : list) {
         System.out.println(o);
@@ -645,7 +645,7 @@ public void m3(List<?>list){
 
 其参数类型是?，那么我们调用的时候就可以传入任意类型的List，如下  
 
-```
+```java
 str.m3(Arrays.asList(1,2,3));
 str.m3(Arrays.asList("总有刁民","想害","朕"));
 ```
@@ -656,7 +656,7 @@ str.m3(Arrays.asList("总有刁民","想害","朕"));
 
 通配符上界使用<? extends T>的格式，意思是需要一个T类型或者T类型的子类，一般T类型都是一个具体的类型，例如下面的代码。  
 
-```
+```java
 public void printIntValue(List<? extends Number> list) {
     for (Number number : list) {
         System.out.print(number.intValue()+" ");
@@ -670,7 +670,7 @@ public void printIntValue(List<? extends Number> list) {
 
 通配符下界使用<? super T>的格式，意思是需要一个T类型或者T类型的父类，一般T类型都是一个具体的类型，例如下面的代码。
 
-```
+```java
 public void fillNumberList(List<? super Number> list) {
     list.add(new Integer(0));
     list.add(new Float(1.0));
@@ -702,7 +702,7 @@ public void fillNumberList(List<? super Number> list) {
 
 为了弄清楚这个问题，我们使用Generic<T>这个泛型类继续看下面的例子：  
 
-```
+```java
 public void showKeyValue1(Generic<Number> obj){
     Log.d("泛型测试","key value is " + obj.getKey());
 }
@@ -723,7 +723,7 @@ showKeyValue(gNumber);
 
 我们可以将上面的方法改一下：  
 
-```
+```java
 public void showKeyValue1(Generic<?> obj){
     Log.d("泛型测试","key value is " + obj.getKey());
 }
@@ -737,7 +737,7 @@ public void showKeyValue1(Generic<?> obj){
 
 泛型类中的静态方法和静态变量不可以使用泛型类所声明的泛型类型参数，例如下面的代码编译失败
 
-```
+```java
 public class Test<T> {      
     public static T one;   //编译错误      
     public static  T show(T one){ //编译错误      
@@ -746,10 +746,10 @@ public class Test<T> {
 } 
 ```
 
-因为静态方法和静态变量属于类所有，而泛型类中的泛型参数的实例化是在创建泛型类型对象时指定的，所以如果不创建对象，根本无法确定参数类型。
-但是静态泛型方法是可以使用的，我们前面说过，泛型方法里面的那个类型和泛型类那个类型完全是两回事。
+<font color="red">因为静态方法和静态变量属于类所有，而泛型类中的泛型参数的实例化是在创建泛型类型对象时指定的，所以如果不创建对象，根本无法确定参数类型。</font>
+<font color="red">但是静态泛型方法是可以使用的，我们前面说过，泛型方法里面的那个类型和泛型类那个类型完全是两回事。</font>
 
-```
+```java
  public static <T>T show(T one){   
      return null;      
  } 
@@ -769,7 +769,7 @@ public class Test<T> {
 泛型类，是在实例化类的时候指明泛型的具体类型；  
 泛型方法，是在调用方法的时候指明泛型的具体类型 。  
 
-```
+```java
 /**
  * 泛型方法的基本介绍
  * @param tClass 传入的泛型实参
@@ -793,7 +793,7 @@ Object obj = genericMethod(Class.forName("com.test.test"));
 
 光看上面的例子有的同学可能依然会非常迷糊，我们再通过一个例子，把我泛型方法再总结一下。  
 
-```
+```java
 public class GenericTest {
 
     //这个类是个泛型类，在上面已经介绍过
@@ -877,7 +877,7 @@ public class GenericTest {
 
 当然这并不是泛型方法的全部，泛型方法可以出现杂任何地方和任何场景中使用。但是有一种情况是非常特殊的，当泛型方法出现在泛型类中时，我们再通过一个例子看一下   
 
-```
+```java
 public class GenericFruit {
 
     class Fruit{
@@ -966,7 +966,7 @@ public class GenericFruit {
 
 再看一个泛型方法和可变参数的例子：  
 
-```
+```java
 public <T> void printMsg( T... args){
     for(T t : args){
         Log.d("泛型测试","t is " + t);
@@ -981,7 +981,7 @@ printMsg("111",222,"aaaa","2323.4",55.55);
 
 即：如果静态方法要使用泛型的话，必须将静态方法也定义成泛型方法 。  
 
-```
+```java
 public class StaticGenerator<T> {
     ....
     ....
@@ -1009,7 +1009,7 @@ public class StaticGenerator<T> {
 
 为泛型添加上边界，即传入的类型实参必须是指定类型的子类型
 
-```
+```java
 public void showKeyValue1(Generic<? extends Number> obj){
     Log.d("泛型测试","key value is " + obj.getKey());
 }
@@ -1049,7 +1049,7 @@ Generic<String> generic1 = new Generic<String>("11111");
 
 再来一个泛型方法的例子：
 
-```
+```java
 //在泛型方法中添加上下边界限制的时候，必须在权限声明与返回值之间的<T>上添加上下边界，即在泛型声明的时候添加
 //public <T> T showKeyName(Generic<T extends Number> container)，编译器会报错："Unexpected bound"
 public <T extends Number> T showKeyName(Generic<T> container){
@@ -1067,25 +1067,25 @@ public <T extends Number> T showKeyName(Generic<T> container){
 
 也就是说下面的这个例子是不可以的：  
 
-```
+```java
 List<String>[] ls = new ArrayList<String>[10];  
 ```
 
 而使用通配符创建泛型数组是可以的，如下面这个例子：
 
-```
+```java
 List<?>[] ls = new ArrayList<?>[10];  
 ```
 
 这样也是可以的：
 
-```
+```java
 List<String>[] ls = new ArrayList[10];
 ```
 
 下面使用Sun的一篇文档的一个例子来说明这个问题：
 
-```
+```java
 List<String>[] lsa = new List<String>[10]; // Not really allowed.    
 Object o = lsa;    
 Object[] oa = (Object[]) o;    
@@ -1103,7 +1103,7 @@ String s = lsa[1].get(0); // Run-time error: ClassCastException.
 
 下面采用通配符的方式是被允许的:数组的类型不可以是类型变量，除非是采用通配符的方式，因为对于通配符的方式，最后取出数据是要做显式的类型转换的。
 
-```
+```java
 List<?>[] lsa = new List<?>[10]; // OK, array of unbounded wildcard type.    
 Object o = lsa;    
 Object[] oa = (Object[]) o;    
