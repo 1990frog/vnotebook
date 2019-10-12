@@ -112,5 +112,10 @@ updatedb
 locate file
 ```
 
+### 安装QQ
+```
+https://github.com/countstarlight/deepin-wine-tim-arch
+```
+
 ## 常用命令
 screenfetch  
