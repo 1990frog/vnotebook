@@ -10,6 +10,26 @@
             "name": "疑虑.md",
             "tags": [
             ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-10-16T08:42:59Z",
+            "modified_time": "2019-10-16T08:44:55Z",
+            "name": "Builder.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-10-16T08:46:29Z",
+            "modified_time": "2019-10-16T08:47:54Z",
+            "name": "Chain of Responsibility.md",
+            "tags": [
+            ]
         }
     ],
     "sub_directories": [

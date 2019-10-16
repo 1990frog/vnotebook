@@ -33,6 +33,9 @@
         }
     ],
     "sub_directories": [
+        {
+            "name": "我想写本书"
+        }
     ],
     "version": "1"
 }
