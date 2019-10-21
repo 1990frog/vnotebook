@@ -40,7 +40,7 @@
 
 通常最容易的策略是自己抛出 InterruptedException，如清单 1 中 putTask() 和 getTask() 方法中的代码所示。 这样做可以使方法对中断作出响应，并且只需将 InterruptedException 添加到 throws 子句。
 
-清单 1. 不捕捉 InterruptedException，将它传播给调用者
+## 清单 1. 不捕捉 InterruptedException，将它传播给调用者
 
 ```java
 public class TaskQueue {
@@ -61,7 +61,7 @@ public class TaskQueue {
 
 <font color="blue">有时候需要在传播异常之前进行一些清理工作。在这种情况下，可以捕捉 InterruptedException，执行清理，然后抛出异常。清单 2 演示了这种技术，该代码是用于匹配在线游戏服务中的玩家的一种机制。 matchPlayers() 方法等待两个玩家到来，然后开始一个新游戏。如果在一个玩家已到来，但是另一个玩家仍未到来之际该方法被中断，那么它会将那个玩家放回队列中，然后重新抛出 InterruptedException，这样那个玩家对游戏的请求就不至于丢失。</font>
 
-清单 2. 在重新抛出 InterruptedException 之前执行特定于任务的清理工作
+## 清单 2. 在重新抛出 InterruptedException 之前执行特定于任务的清理工作
 
 ```java
 public class PlayerMatcher {
@@ -97,7 +97,7 @@ public class PlayerMatcher {
 
 有时候抛出 InterruptedException 并不合适，例如当由 Runnable 定义的任务调用一个可中断的方法时，就是如此。在这种情况下，不能重新抛出 InterruptedException，但是您也不想什么都不做。当一个阻塞方法检测到中断并抛出 InterruptedException 时，它清除中断状态。如果捕捉到 InterruptedException 但是不能重新抛出它，那么应该保留中断发生的证据，以便调用栈中更高层的代码能知道中断，并对中断作出响应。该任务可以通过调用 interrupt() 以 “重新中断” 当前线程来完成，如清单 3 所示。至少，每当捕捉到 InterruptedException 并且不重新抛出它时，就在返回之前重新中断当前线程。
 
-清单 3. 捕捉 InterruptedException 后恢复中断状态
+## 清单 3. 捕捉 InterruptedException 后恢复中断状态
 
 ```java
 public class TaskRunner implements Runnable {
@@ -124,7 +124,7 @@ public class TaskRunner implements Runnable {
 
 处理 InterruptedException 时采取的最糟糕的做法是生吞它 —— 捕捉它，然后既不重新抛出它，也不重新断言线程的中断状态。对于不知如何处理的异常，最标准的处理方法是捕捉它，然后记录下它，但是这种方法仍然无异于生吞中断，因为调用栈中更高层的代码还是无法获得关于该异常的信息。（仅仅记录 InterruptedException 也不是明智的做法，因为等到人来读取日志的时候，再来对它作出处理就为时已晚了。） 清单 4 展示了一种使用得很广泛的模式，这也是生吞中断的一种模式：
 
-清单 4. 生吞中断 —— 不要这么做
+## 清单 4. 生吞中断 —— 不要这么做
 
 ```java
 // Don't do this 
@@ -159,7 +159,7 @@ public class TaskRunner implements Runnable {
 
 惟一可以生吞中断的时候是您知道线程正要退出。只有当调用可中断方法的类是 Thread 的一部分，而不是 Runnable 或通用库代码的情况下，才会发生这样的场景，清单 5 演示了这种情况。清单 5 创建一个线程，该线程列举素数，直到被中断，这里还允许该线程在被中断时退出。用于搜索素数的循环在两个地方检查是否有中断：一处是在 while 循环的头部轮询 isInterrupted() 方法，另一处是调用阻塞方法 BlockingQueue.put()。
 
-清单 5. 如果知道线程正要退出的话，则可以生吞中断
+## 清单 5. 如果知道线程正要退出的话，则可以生吞中断
 
 ```java
 public class PrimeProducer extends Thread {
@@ -191,7 +191,7 @@ public class PrimeProducer extends Thread {
 
 有些任务拒绝被中断，这使得它们是不可取消的。但是，即使是不可取消的任务也应该尝试保留中断状态，以防在不可取消的任务结束之后，调用栈上更高层的代码需要对中断进行处理。清单 6 展示了一个方法，该方法等待一个阻塞队列，直到队列中出现一个可用项目，而不管它是否被中断。为了方便他人，它在结束后在一个 finally 块中恢复中断状态，以免剥夺中断请求的调用者的权利。（它不能在更早的时候恢复中断状态，因为那将导致无限循环 —— BlockingQueue.take() 将在入口处立即轮询中断状态，并且，如果发现中断状态集，就会抛出 InterruptedException。）
 
-清单 6. 在返回前恢复中断状态的不可取消任务
+## 清单 6. 在返回前恢复中断状态的不可取消任务
 
 ```java
 public Task getNextTask(BlockingQueue<Task> queue) {
