@@ -1,14 +1,45 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/Language/Java/Concurrent/总结/停止线程.md
 [TOC]
 
-# 停止线程
+# 中断线程的业务情景
 
-## 原理介绍：
++ 线程发生阻塞长时间运行
++ 
+
+
+
+
+
+---
+
+# 个人总结
+
+中断阻塞
+中断长时间运行的方法
+wait是否能中断？
+在各种状态下中断？
+响应式中断
+自定义线程如何响应中断
+传递中断状态
+重置中断状态
+常用判断中断、重置中断的方法、触发中断的方法
+Interrupted，为啥仅作用于当前的线程
+isInterrupted、Interrupted对应的native方法
+线程的六种状态
+InterruptedException响应中断之后为啥重置状态？
+强制中断的方法
+不能被中断的方法（oio，synchronized）
+守护线程中断
+
+# 原理介绍：
 
 使用interrupt来通知，而不是强制停止线程（强制中断的线程，都是过期方法了，官方不推荐使用）
 
+<font color="blue">
 1. 原理：用interrupt来请求、好处
 2. 想停止线程，要请求方、被停止方、子方法被调用方相互配合
 3. 最后再说错误的方法：stop/suspend已废弃，volatile的boolean无法处理长时间阻塞的情况
+</font>
 
 如何处理不可中断的阻塞
 
@@ -17,7 +48,7 @@
 1. 并没有通用的方法，针对特定的情况，使用特定的方法
 2. 使用可以响应中断的方法
 
-## Java中停止线程的原则是什么？
+# Java中停止线程的原则是什么？
 
 在Java中，最好的停止线程的方式是使用中断interrupt，但是这仅仅是会通知到被终止的线程“你该停止运行了”，被终止的线程自身拥有决定权（决定是否、以及何时停止），这依赖于请求停止方和被停止方都遵守一种约定好的编码规范。
 
@@ -29,14 +60,14 @@
 
 生命周期结束(End-of-Lifecycle)的问题会使任务、服务以及程序的设计和实现等过程变得复杂,而这个在程序设计中非常重要的要素却经常被忽略。一个在行为良好的软件与勉强运的软件之间的最主要区别就是,行为良好的软件能很完善地处理失败、关闭和取消等过程。
 
-## 中断sleep
+# 中断sleep
 
-### 实际开发中的两种最佳实践：
+## 实际开发中的两种最佳实践：
 
 1. 优先选择：传递中断（万金油）
 2. 不想或无法传递：恢复中断（上一种不能用的情况下使用，不应屏蔽中断）
 
-### 传递中断：
+## 传递中断：
 
 添加异常到方法签名，在方法上抛出异常。用throws InterruptedException 标记你的方法，不采用try 语句块捕获异常，以便于该异常可以传递到顶层，让run方法可以捕获这一异常，由于run方法内无法抛出checked Exception（只能用try catch），顶层方法必须处理该异常，避免了漏掉或者被吞掉的情况，增强了代码的健壮性。
 
@@ -49,14 +80,14 @@ void subTask() throws InterruptedException
 }
 ```
 
-### 恢复中断
+## 恢复中断
 
-#### 如果不能抛出中断，要怎么做
+### 如果不能抛出中断，要怎么做
 
 如果不想或无法传递InterruptedException（例如用run方法的时候，就不让该方法throws InterruptedException），那么应该选择在catch 子句中调用**Thread.currentThread().interrupt()** 来恢复设置中断状态，以便于在后续的执行依然能够检查到刚才发生了中断。  
 代码演示详见视频，在这里，线程在sleep期间被中断，并且由catch捕获到该中断，并重新设置了中断状态，以便于可以在下一个循环的时候检测到中断状态，正常退出。  
 
-#### 响应中断的方法总结列表
+### 响应中断的方法总结列表
 
 1. Object.wait()/wait(long)/wait(long,int)
 2. Thread.sleep(long)/sleep(long,int)
@@ -69,16 +100,16 @@ void subTask() throws InterruptedException
 9. java.nio.channels.InterruptibleChannel相关方法
 10. java.nio.channels.Selector的相关方法
 
-## 为什么要用interrupt来停止线程：
+# 为什么要用interrupt来停止线程：
 
 被中断的线程它本身拥有响应中断的权利，因为有些线程的某些代码是非常重要的，我们必须要等待这些线程处理完成之后或者他们准备好之后，再由他们自己去主动终止，或者它们真的不想理会我们的中断这也是完全ok的，我们不应该茹莽的使用stop方法，而是通过使用interrupt方法来发出一个信号，由它们自己处理，这样使我们的线程代码，在实际中更加安全，也完成了清理工作，数据的完整性也得到了保障
 
-### 错误停止方法：
+## 错误停止方法：
 
 1. 被弃用的stop,suspend和resume方法
 2. 用volatile设置boolean标记位
 
-### 停止线程相关重要函数解析
+## 停止线程相关重要函数解析
 
 判断是否已被中断相关方法  
 
