@@ -6,7 +6,7 @@
             "attachments": [
             ],
             "created_time": "2019-08-31T15:55:38Z",
-            "modified_time": "2019-10-21T15:55:50Z",
+            "modified_time": "2019-10-22T06:43:39Z",
             "name": "慕课悟空并发学习笔记.md",
             "tags": [
             ]
@@ -48,6 +48,9 @@
         },
         {
             "name": "Brian Goetz"
+        },
+        {
+            "name": "慕课悟空"
         }
     ],
     "version": "1"
