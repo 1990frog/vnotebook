@@ -1,94 +1,32 @@
 vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/Language/Java/Concurrent/总结/停止线程.md
 [TOC]
 
-# 中断线程的业务情景
+<font color="red">是否可以这样理解：java的线程中断，基于异常管理？</font>
 
+# 什么情况需要中断线程？
 + 线程发生阻塞长时间运行
-+ 
++ IO发生阻塞，例如磁盘不够
 
+# Java中停止线程的原则
++ <font color="red">在Java中，最好的停止线程的方式是使用中断interrupt，但是这仅仅是会通知到被终止的线程“你该停止运行了”，被终止的线程自身拥有决定权（决定是否、以及何时停止），这依赖于请求停止方和被停止方都遵守一种约定好的编码规范。</font>
++ 任务和线程的启动很容易。在大多数时候,我们都会让它们运行直到结束,或者让它们自行停止。然而,有时候我们希望提前结束任务或线程,或许是因为用户取消了操作,或者服务需要被快速关闭，或者是运行超时或出错了。
++ 要使任务和线程能安全、快速、可靠地停止下来,并不是一件容易的事。Java没有提供任何机制来安全地终止线程。但它提供了中断(Interruption),这是一种协作机制,能够使一个线程终止另一个线程的当前工作。
++ 这种协作式的方法是必要的，我们很少希望某个任务、线程或服务立即停止,因为这种立即停止会使共享的数据结构处于不一致的状态。相反,在编写任务和服务时可以使用一种协作的方式:当需要停止时,它们首先会清除当前正在执行的工作,然后再结束。这提供了更好的灵活性,因为任务本身的代码比发出取消请求的代码更清楚如何执行清除工作。
++ 生命周期结束(End-of-Lifecycle)的问题会使任务、服务以及程序的设计和实现等过程变得复杂,而这个在程序设计中非常重要的要素却经常被忽略。一个在行为良好的软件与勉强运的软件之间的最主要区别就是,行为良好的软件能很完善地处理失败、关闭和取消等过程。
 
+# InterruptedException
+Thrown when a thread is waiting, sleeping, or otherwise occupied, and the thread is interrupted, either before or during the activity. Occasionally a method may wish to test whether the current thread has been interrupted, and if so, to immediately throw this exception. The following code can be used to achieve this effect:
 
-
-
----
-
-# 个人总结
-
-中断阻塞
-中断长时间运行的方法
-wait是否能中断？
-在各种状态下中断？
-响应式中断
-自定义线程如何响应中断
-传递中断状态
-重置中断状态
-常用判断中断、重置中断的方法、触发中断的方法
-Interrupted，为啥仅作用于当前的线程
-isInterrupted、Interrupted对应的native方法
-线程的六种状态
-InterruptedException响应中断之后为啥重置状态？
-强制中断的方法
-不能被中断的方法（oio，synchronized）
-守护线程中断
-
-# 原理介绍：
-
-使用interrupt来通知，而不是强制停止线程（强制中断的线程，都是过期方法了，官方不推荐使用）
-
-<font color="blue">
-1. 原理：用interrupt来请求、好处
-2. 想停止线程，要请求方、被停止方、子方法被调用方相互配合
-3. 最后再说错误的方法：stop/suspend已废弃，volatile的boolean无法处理长时间阻塞的情况
-</font>
-
-如何处理不可中断的阻塞
-
-并不是所有的阻塞都是可中断的, 比如InputStream.read方法. 在检测到输入数据可用, 到达流末尾或者抛出异常前, 该方法一直阻塞. 而且阻塞的时候不会检查中断标记, 所以中断线程无法使read从阻塞状态返回. 但是关闭流可以使得read方法抛出异常, 从而从阻塞状态返回。  
-
-1. 并没有通用的方法，针对特定的情况，使用特定的方法
-2. 使用可以响应中断的方法
-
-# Java中停止线程的原则是什么？
-
-在Java中，最好的停止线程的方式是使用中断interrupt，但是这仅仅是会通知到被终止的线程“你该停止运行了”，被终止的线程自身拥有决定权（决定是否、以及何时停止），这依赖于请求停止方和被停止方都遵守一种约定好的编码规范。
-
-任务和线程的启动很容易。在大多数时候,我们都会让它们运行直到结束,或者让它们自行停止。然而,有时候我们希望提前结束任务或线程,或许是因为用户取消了操作,或者服务需要被快速关闭，或者是运行超时或出错了。
-
-要使任务和线程能安全、快速、可靠地停止下来,并不是一件容易的事。Java没有提供任何机制来安全地终止线程。但它提供了中断(Interruption),这是一种协作机制,能够使一个线程终止另一个线程的当前工作。
-
-这种协作式的方法是必要的，我们很少希望某个任务、线程或服务立即停止,因为这种立即停止会使共享的数据结构处于不一致的状态。相反,在编写任务和服务时可以使用一种协作的方式:当需要停止时,它们首先会清除当前正在执行的工作,然后再结束。这提供了更好的灵活性,因为任务本身的代码比发出取消请求的代码更清楚如何执行清除工作。
-
-生命周期结束(End-of-Lifecycle)的问题会使任务、服务以及程序的设计和实现等过程变得复杂,而这个在程序设计中非常重要的要素却经常被忽略。一个在行为良好的软件与勉强运的软件之间的最主要区别就是,行为良好的软件能很完善地处理失败、关闭和取消等过程。
-
-# 中断sleep
-
-## 实际开发中的两种最佳实践：
-
-1. 优先选择：传递中断（万金油）
-2. 不想或无法传递：恢复中断（上一种不能用的情况下使用，不应屏蔽中断）
-
-## 传递中断：
-
-添加异常到方法签名，在方法上抛出异常。用throws InterruptedException 标记你的方法，不采用try 语句块捕获异常，以便于该异常可以传递到顶层，让run方法可以捕获这一异常，由于run方法内无法抛出checked Exception（只能用try catch），顶层方法必须处理该异常，避免了漏掉或者被吞掉的情况，增强了代码的健壮性。
-
-<font color="red">e.printStackTrace();能传递异常吗？</font>
-
-例如：
 ```java
-void subTask() throws InterruptedException
-    sleep(delay);
-}
+  if (Thread.interrupted())  // Clears interrupted status!
+      throw new InterruptedException();
 ```
 
-## 恢复中断
+如果抛出 InterruptedException 意味着一个方法是阻塞方法，那么调用一个阻塞方法则意味着您的方法也是一个阻塞方法，而且您应该有某种策略来处理 InterruptedException。
 
-### 如果不能抛出中断，要怎么做
+## InterruptedException响应中断之后为啥重置状态？
 
-如果不想或无法传递InterruptedException（例如用run方法的时候，就不让该方法throws InterruptedException），那么应该选择在catch 子句中调用**Thread.currentThread().interrupt()** 来恢复设置中断状态，以便于在后续的执行依然能够检查到刚才发生了中断。  
-代码演示详见视频，在这里，线程在sleep期间被中断，并且由catch捕获到该中断，并重新设置了中断状态，以便于可以在下一个循环的时候检测到中断状态，正常退出。  
-
-### 响应中断的方法总结列表
-
+## 响应中断的方法总结列表
 1. Object.wait()/wait(long)/wait(long,int)
 2. Thread.sleep(long)/sleep(long,int)
 3. Thread.join()/join(long)/join(long,int)
@@ -100,31 +38,389 @@ void subTask() throws InterruptedException
 9. java.nio.channels.InterruptibleChannel相关方法
 10. java.nio.channels.Selector的相关方法
 
-# 为什么要用interrupt来停止线程：
-
+# interrupt
+## 为什么要用interrupt来停止线程：
 被中断的线程它本身拥有响应中断的权利，因为有些线程的某些代码是非常重要的，我们必须要等待这些线程处理完成之后或者他们准备好之后，再由他们自己去主动终止，或者它们真的不想理会我们的中断这也是完全ok的，我们不应该茹莽的使用stop方法，而是通过使用interrupt方法来发出一个信号，由它们自己处理，这样使我们的线程代码，在实际中更加安全，也完成了清理工作，数据的完整性也得到了保障
 
-## 错误停止方法：
-
-1. 被弃用的stop,suspend和resume方法
-2. 用volatile设置boolean标记位
-
-## 停止线程相关重要函数解析
-
-判断是否已被中断相关方法  
-
+# 推荐两种中断机制
+## 传递中断
+添加异常到方法签名，在方法上抛出异常。用throws InterruptedException标记你的方法，不采用try语句块捕获异常，以便于该异常可以传递到顶层，让run方法可以捕获这一异常，由于run方法内无法抛出checked Exception（只能用try catch），顶层方法必须处理该异常，避免了漏掉或者被吞掉的情况，增强了代码的健壮性。  
+<font color="red">e.printStackTrace();能传递异常吗？  </font>
+例如：
 ```java
-static boolean interrupted()
-//返回中断状态，并清除中断状态
-return isInterrupted(true);
+void subTask() throws InterruptedException
+    sleep(delay);
+}
+```
+## 恢复中断状态
+为了应对不能传递中断的情况（某些抽象方法体上未添加方法签名）  
+如果不想或无法传递InterruptedException（例如用run方法的时候，就不让该方法throws InterruptedException），那么应该选择在catch 子句中调用**Thread.currentThread().interrupt()** 来恢复设置中断状态，以便于在后续的执行依然能够检查到刚才发生了中断。
+
+# 可以中断的阻塞
+## 阻塞状态
+![20191022142909224_1873892365](_v_images/20191023091659435_513634069.png)
+
+一般习惯而言，把Blocked（被阻塞）、Waiting（等待）、Timed_waiting（计时等待）都称为阻塞状态，不仅仅是Blocked。
+
+## 中断sleep
+```java
+/**
+ * 描述：
+ * 最佳实践：catch了InterruptedExcetion之后的优先选择在方法签名中抛出异常
+ * 如果这样做，那么在run()就会强制try/catch
+ */
+public class RightWayStopThreadInProd1 implements Runnable {
+
+    /**
+     * run方法不允许抛出异常:
+     * 因为run方法是Override，来自顶层方法的覆盖，而顶层方法没有做出任何异常的抛出
+     */
+    @Override
+    public void run() {
+        while (true && !Thread.currentThread().isInterrupted()) {
+            System.out.println("go");
+            try {
+                /**
+                 * 在被调用的子函数中，添加异常签名，强迫调用方处理异常
+                 * 异常应由顶层的调用处理
+                 */
+                throwInMethod();
+            } catch (InterruptedException e) {
+                //TODO 保存日志、停止程序
+                System.out.println("保存日志");
+                e.printStackTrace();
+//                break;
+            }
+        }
+    }
+
+    /**
+     * 添加异常到方法签名
+     * 方法签名抛出异常，调用该方法的方法就不被强迫抛出异常
+     * @throws InterruptedException
+     */
+    private void throwInMethod() throws InterruptedException {
+            Thread.sleep(2000);
+//            try{
+//                Thread.sleep(2000);
+//            }catch (InterruptedException e){
+//                e.printStackTrace();
+//            }
+    }
+
+    /**
+     * 在顶层函数中处理异常
+     * 异常抛出最好交给顶层的调用处理，因为我们不晓得顶层调用具体的逻辑
+     */
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread = new Thread(new RightWayStopThreadInProd1());
+        thread.start();
+        Thread.sleep(1000);
+        thread.interrupt();
+    }
+}
 ```
 
-作用对象是当前运行它的线程，执行线程，该方法不关心被哪个对象调用，只关心执行它的线程
+## 中断wait
+```java
+public class StopWait implements Runnable{
 
+    Object obj = new Object();
+
+    @Override
+    public void run() {
+        synchronized (obj){
+            try {
+                obj.wait();
+                System.out.println("wait之后的操作！");//执行不到
+            } catch (InterruptedException e) {
+                System.out.println("Interrupt触发了！");
+                e.printStackTrace();
+            }
+            System.out.println("结束阻塞了！");//因为在异常处理外面，可以执行
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread = new Thread(new StopWait());
+        thread.start();
+        thread.interrupt();
+        thread.join();
+        System.out.println("the main thread is stop!");
+    }
+}
+```
+
+## 中断join
+```java
+/**
+ * 描述：
+ * 演示join期间被中断的效果
+ */
+public class JoinInterrupt {
+
+    public static void main(String[] args) {
+
+        //获取主线程
+        Thread mainThread = Thread.currentThread();
+
+        Thread thread1 = new Thread(() -> {
+            try {
+                //中断主线程
+                mainThread.interrupt();
+                Thread.sleep(5000);
+                System.out.println("Thread1 finished.");
+            } catch (InterruptedException e) {
+                System.out.println("子线程中断");
+            }
+        });
+
+        thread1.start();
+        System.out.println("等待子线程运行完毕");
+
+        try {
+            //主线程中断的同时，将中断传递给子线程，主线程与子线程中断
+            thread1.join();
+        } catch (InterruptedException e) {
+            System.out.println(Thread.currentThread().getName()+"主线程中断了");
+            thread1.interrupt();
+        }
+
+        System.out.println("子线程已运行完毕");
+    }
+
+}
+```
+
+# 不可中断的阻塞方法
+并非所有的阻塞方法都抛出 InterruptedException。输入和输出流类会阻塞等待 I/O 完成，但是它们不抛出 InterruptedException，而且在被中断的情况下也不会提前返回。然而，对于套接字 I/O，如果一个线程关闭套接字，则那个套接字上的阻塞 I/O 操作将提前结束，并抛出一个 SocketException。java.nio 中的非阻塞 I/O 类也不支持可中断 I/O，但是同样可以通过关闭通道或者请求 Selector 上的唤醒来取消阻塞操作。类似地，尝试获取一个内部锁的操作（进入一个 synchronized 块）是不能被中断的，但是 ReentrantLock 支持可中断的获取模式。
+
+并不是所有的阻塞都是可中断的, 比如InputStream.read方法. 在检测到输入数据可用, 到达流末尾或者抛出异常前, 该方法一直阻塞. 而且阻塞的时候不会检查中断标记, 所以中断线程无法使read从阻塞状态返回. 但是关闭流可以使得read方法抛出异常, 从而从阻塞状态返回。
+
+# 不可取消的任务
+有些任务拒绝被中断，这使得它们是不可取消的。但是，即使是不可取消的任务也应该尝试保留中断状态，以防在不可取消的任务结束之后，调用栈上更高层的代码需要对中断进行处理。下列代码展示了一个方法，该方法等待一个阻塞队列，直到队列中出现一个可用项目，而不管它是否被中断。为了方便他人，它在结束后在一个 finally 块中恢复中断状态，以免剥夺中断请求的调用者的权利。（它不能在更早的时候恢复中断状态，因为那将导致无限循环 —— BlockingQueue.take() 将在入口处立即轮询中断状态，并且，如果发现中断状态集，就会抛出 InterruptedException。）
 
 ```java
-boolean isInterrupted()
-
-//返回中断状态
-return isInterrupted(false);
+public Task getNextTask(BlockingQueue<Task> queue) {
+    boolean interrupted = false;
+    try {
+        while (true) {
+            try {
+                return queue.take();
+            } catch (InterruptedException e) {
+                interrupted = true;
+                // fall through and retry
+            }
+        }
+    } finally {
+        if (interrupted)
+            Thread.currentThread().interrupt();
+    }
+}
 ```
+
+# 中断非阻塞（包括长时间运行的方法）
+如下代码，可以通过循环
+
+```java
+public void method(){
+    while (!Thread.currentThread().isInterrupted()) {
+    ......
+    }
+}
+```
+
+# interrupted、isInterrupted
+
++ Thread.interrupted()：返回当前线程中断状态后重置中断状态
++ newThreadObj.isInterrupted()：返回调用该方法的线程的中断状态
+
+```java
+/**
+ * 描述：
+ * 注意Thread.interrupted()方法的目标对象是“当前线程”，而不管本方法来自于哪个对象
+ * 可将Thread看成this类似
+ */
+public class RightWayInterrupted {
+
+    /**
+     * output:
+     * isInterrupted: true
+     * isInterrupted: false
+     * isInterrupted: false
+     * isInterrupted: true
+     *
+     * Thread.interrupted()方法调用，只作用于当前线程：
+     * public static boolean interrupted() {
+     *      return currentThread().isInterrupted(true);
+     * }
+     */
+    public static void main(String[] args) throws InterruptedException {
+
+        Thread threadOne = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (; ; ) {
+//                    if(Thread.currentThread().isInterrupted()){
+//                        break;
+//                        Thread.interrupted();
+//                    }
+                }
+            }
+        });
+
+        // 启动线程
+        threadOne.start();
+        //设置中断标志
+        threadOne.interrupt();//threadOne is true
+        //获取中断标志,threadOne被中断：ture
+        System.out.println("isInterrupted: " + threadOne.isInterrupted());//threadOne is true
+        //获取中断标志并重置，main的中断状态被重置：false
+        System.out.println("isInterrupted: " + threadOne.interrupted());//main is false
+        //获取中断标志并重置，main的中断状态被重置：false
+        System.out.println("isInterrupted: " + Thread.interrupted());//main is false
+        //获取中断标志,threadOne的中断状态：ture
+        System.out.println("isInterrupted: " + threadOne.isInterrupted());//threadOne is true
+        threadOne.join();
+        System.out.println("Main thread is over.");
+    }
+}
+```
+
+## interrupted为啥仅作用于当前的线程
+
+interrupted()是静态方法（类方法），并且调用了currentThread()【返回当前线程的实例】
+
+```java
+public class Thread implements Runnable{
+
+    /**
+     * Returns a reference to the currently executing thread object.
+     *
+     * @return  the currently executing thread.
+     */
+    @NotNull @Contract(pure=true) public static native Thread currentThread();
+
+    public static boolean interrupted() {
+        return currentThread().isInterrupted(true);
+    }
+    ......
+    @NotNull @Contract(pure=true) public boolean isInterrupted() {
+        return isInterrupted(false);
+    }
+}
+```
+
+## isInterrupted
+
+```java
+public class Thread implements Runnable{
+    ...
+    @NotNull @Contract(pure=true) public boolean isInterrupted() {
+        return isInterrupted(false);
+    }
+}
+```
+
+# 无法被中断的方法
+
++ <font color="red">Java BIO (blocking I/O)</font>： 同步并阻塞，服务器实现模式为一个连接一个线程，即客户端有连接请求时服务器端就需要启动一个线程进行处理，如果这个连接不做任何事情会造成不必要的线程开销，当然可以通过线程池机制改善。
++ Java NIO (non-blocking I/O)： 同步非阻塞，服务器实现模式为一个请求一个线程，即客户端发送的连接请求都会注册到多路复用器上，多路复用器轮询到连接有I/O请求时才启动一个线程进行处理。
++ Java AIO(NIO.2) (Asynchronous I/O) ： 异步非阻塞，服务器实现模式为一个有效请求一个线程，客户端的I/O请求都是由OS先完成了再通知服务器应用去启动线程进行处理，
+
+BIO、NIO、AIO适用场景分析:
+
++ BIO方式适用于连接数目比较小且固定的架构，这种方式对服务器资源要求比较高，并发局限于应用中，JDK1.4以前的唯一选择，但程序直观简单易理解。
++ NIO方式适用于连接数目多且连接比较短（轻操作）的架构，比如聊天服务器，并发局限于应用中，编程比较复杂，JDK1.4开始支持。
++ AIO方式使用于连接数目多且连接比较长（重操作）的架构，比如相册服务器，充分调用OS参与并发操作，编程比较复杂，JDK7开始支持。
+
+# Thread与Object
+
+使用synchronized时，锁对象一般使用Object。调用obj.wait，obj.notify，obj.notifyAll比较方便
+
+# volatile标记中断状态的局限性
+
+volatile变量标记的状态位发生变化不会立刻获取到中断请求，具体要看业务，如果已经进入到了执行方法内，此时发生中断，任务仍允许执行完毕，那就可以。反之，则中断无效
+
+```java
+/**
+ * 描述：
+ * 演示用volatile的局限：part1 看似可行,实则不行
+ */
+public class WrongWayVolatile implements Runnable {
+
+    private volatile boolean canceled = false;
+
+    @Override
+    public void run() {
+        int num = 0;
+        try {
+            while (num <= 100000 && !canceled) {
+                if (num % 100 == 0) {
+                    System.out.println(num + "是100的倍数。");
+                }
+                num++;
+                Thread.sleep(1);//阻塞时间短，不会发生在阻塞期间更改中断状态
+//                Thread.sleep(100000);//阻塞时间长，此时发生中断状态更改，volatile无效
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        WrongWayVolatile r = new WrongWayVolatile();
+        Thread thread = new Thread(r);
+        thread.start();
+        Thread.sleep(5000);
+        r.canceled = true;
+        System.out.println("发起中断");
+    }
+}
+```
+
+# 互斥锁不可被中断
+## synchronized
+
+```java
+public class CantInterruptSynchronized {
+
+    static Object obj = new Object();
+
+    public static void main(String[] args) {
+
+        Runnable runnable = ()->{//lumbda创建对象依赖并受限于抽象函数接口
+            synchronized (obj){
+                System.out.println(Thread.currentThread().getName()+":拿到锁");
+                for(;;){
+                    System.out.println(Thread.currentThread().isInterrupted());
+                }
+            }
+        };
+
+        Thread thread1 = new Thread(runnable);
+        thread1.setName("thread1");
+        thread1.start();
+
+        thread1.interrupt();
+
+        Thread thread2 = new Thread(runnable);
+        thread2.setName("thread2");
+        thread2.start();
+
+    }
+}
+```
+
+## lock
+
+lock也不行
+
+# try/catch，loop为何会影响中断
+
+java线程中断就是基于try/catch的。interrupt只会更改线程的状态。具体的中断业务代码需要自己写
+
+try/catch在loop中，每次都是单独的一次运行，但是将loop放在try/catch中就不一样了
+
+# run为啥不抛出InterruptedException呢
+难道是因为Runnable是最顶层
