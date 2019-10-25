@@ -8,6 +8,9 @@
         },
         {
             "name": "OnJava8"
+        },
+        {
+            "name": "Brian Goetz"
         }
     ],
     "version": "1"
