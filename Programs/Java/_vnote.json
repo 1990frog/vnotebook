@@ -42,6 +42,9 @@
         },
         {
             "name": "Exception"
+        },
+        {
+            "name": "GoogleGuava"
         }
     ],
     "version": "1"

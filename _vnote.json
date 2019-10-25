@@ -10,25 +10,10 @@
             "name": "Todo"
         },
         {
-            "name": "Tool"
-        },
-        {
-            "name": "Pattern"
+            "name": "Programs"
         },
         {
             "name": "English"
-        },
-        {
-            "name": "Language"
-        },
-        {
-            "name": "System"
-        },
-        {
-            "name": "BigData"
-        },
-        {
-            "name": "DB"
         }
     ],
     "tags": [
