@@ -170,6 +170,16 @@
             "name": "JMM应用实例：单例模式8种写法、单里和并发的关系.md",
             "tags": [
             ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-10-26T06:42:15Z",
+            "modified_time": "2019-10-27T13:11:23Z",
+            "name": "synchronized.md",
+            "tags": [
+            ]
         }
     ],
     "sub_directories": [

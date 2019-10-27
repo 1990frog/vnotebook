@@ -1,4 +1,1 @@
-# word
-
-
-tiny,small,decimal,stamp,interval,binary,terminated
+tiny,small,decimal,stamp,interval,binary,terminated,phrase,noun,sentence,core,symboilize,revolution,piece,temporary,consuming,painful,problem,remain,instant,attitude,lead,disappoint,even,failure,fall,supplies
