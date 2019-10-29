@@ -33,9 +33,6 @@
             "name": "Python"
         },
         {
-            "name": "System"
-        },
-        {
             "name": "Pattern"
         },
         {
@@ -46,6 +43,9 @@
         },
         {
             "name": "Tool"
+        },
+        {
+            "name": "Linux"
         }
     ],
     "version": "1"
