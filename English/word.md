@@ -1,1 +1,1 @@
-tiny,small,decimal,stamp,interval,binary,terminated,phrase,noun,sentence,core,symboilize,revolution,piece,temporary,consuming,painful,problem,remain,instant,attitude,lead,disappoint,even,failure,fall,supplies,serveral,advance,technique,necessary,diet,maintenance,amount,rely,mutable,share,multiple,activity,proceed,concurrent,failure,reproduce,produce,avoid,inherent,requirement,obtain
+ubiquitous,advice,well-documented,ensure,solely,exclusion,means,prevent,inconsistent,observe,optionally,transition,

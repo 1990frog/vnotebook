@@ -1,0 +1,480 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/Programs/Linux/命令收集.md
+[TOC]
+
+# who
+查看当前登录用户
+
+```
+who
+who am i
+```
+# date
+显示当前时间
+
+```
+date
+date "+%Y-%m-%d %H:%M:%S"
+```
+
+# cal
+显示日历
+
+```
+cal -y
+cal 2019
+cal 11 2019
+```
+
+# clear
+清屏
+
+# export
+设置环境变量
+
+# wc
+统计字数、行数
+
+```
+wc -l a.txt 统计行数
+wc -c a.txt 统计字数
+```
+
+# cat
+连接(一个或多个)文件并输出结果
+
+```
+cat a.txt -n 显示行号
+cat b.txt
+cat a.txt b.txt
+```
+
+# |
+管道：前一个命令的输出作为后一个命令的输入
+
+```
+ls –l |wc -l
+```
+
+# >
+输出重定向：默认输出为屏幕，可以制定输出为文件
+
+1. >   是定向输出到文件，如果文件不存在，就创建文件；如果文件存在，就将其清空。一般我们备份清理日志文件的时候，就是这种方法：先备份日志，再用`>`，将日志文件清空（文件大小变成0字节）。
+2. >>这个是将输出内容追加到目标文件中。如果文件不存在，就创建文件。
+3. >: 会重写文件，如果文件里面有内容会覆盖。
+4. >>：追加文件，也就是如果文件里面有内容会把新内容追加到文件尾。
+
+```
+cat data.txt employee.txt > employees.txt
+```
+
+# ifconfig 
+显示设备ip
+
+```
+ifconfig en0
+```
+
+# cd
+切换目录
+
+1. cd – 返回上次目录
+2. cd / 切换到系统根目录
+3. cd 切换到当前用户主目录
+4. cd .. 切换到父目录
+
+```
+cd
+cd /
+cd ..
+cd -
+```
+
+# pwd
+查看”当前工作目录“的完整路径
+
+```
+pwd
+```
+
+# file
+辨识该文件的类型
+
+```
+file employee.txt
+file test
+```
+
+# chmod
+修改文件权限
+
+```
+r=4，w=2，x=1
+chmod ug+w,o-x employee.txt
+chmod 751 employee.txt
+```
+
+# df -h
+磁盘空间占用情况
+
+# mkdir
+新建目录
+
+```
+mkdir –p test1/test2
+-p：一次可以建立多个目录
+```
+
+# rm
+删除文件或文件夹
+
+[不小心执行了rm -f，除了跑路，如何恢复？](https://zhuanlan.zhihu.com/p/66914248)
+
+```
+-r 表示递归删除文件夹
+rm readme
+rm –rf test1
+
+-f, --force          强制删除。忽略不存在的文件，不提示确认
+-i                    每次删除前提示确认
+-I                    prompt once before removing more than three files, or
+                      when removing recursively; less intrusive than -i,
+                      while still giving protection against most mistakes
+  --interactive[=WHEN]  prompt according to WHEN: never, once (-I), or
+                      always (-i); without WHEN, prompt always
+  --one-file-system         递归删除一个层级时，跳过所有不符合命令行参
+                            数的文件系统上的文件
+  --no-preserve-root  do not treat '/' specially
+  --preserve-root[=all]  do not remove '/' (default);
+                          with 'all', reject any command line argument
+                          on a separate device from its parent
+-r, -R, --recursive   remove directories and their contents recursively
+-d, --dir             remove empty directories
+-v, --verbose         explain what is being done
+  --help            显示此帮助信息并退出
+  --version         显示版本信息并退出
+默认时，rm 不会删除目录。使用--recursive(-r 或-R)选项可删除每个给定
+的目录，以及其下所有的内容。
+
+To remove a file whose name starts with a '-', for example '-foo',
+use one of these commands:
+  rm -- -foo
+
+  rm ./-foo
+
+请注意，如果使用rm 来删除文件，通常仍可以将该文件恢复原状。如果想保证
+该文件的内容无法还原，请考虑使用shred。
+```
+
+# rmdir
+不能直接删除非空目录，只能删除空目录
+
+# mv
+移动文件或者重命名文件
+mv 源 目标
+可以移动多个文件
+
+```
+mv test.log test1.txt
+mv test.log test1.txt
+mv log1.txt log2.txt log3.txt test3
+```
+
+# cp
+复制文件或文件夹
+cp 源 目标
+
+```
+cp log1.txt log2.txt log3.txt test3
+```
+
+# tree
+显示文档结构树
+
+# touch
+新建文件，可以新建若干个
+
+```
+touch text1 text2 text3
+```
+
+# nl
+显示文件的行号
+
+```
+-n行号的表示方法
+-w行号栏位的占用的位数
+ nl -n rz -w 3 employee.txt
+```
+
+# history
+显示历史命令行
+
+```
+history | tail –n 5
+显示最后5条终端命令
+```
+
+# more
+内容太多，我们应该学会用more来分页显示
+
+```
+more a.txt 加载了整个文件
+more +num a.txt 从该行开始显示
+more +/min a.txt 从第一次出现字符串min处开始显示
+
+空格键翻屏
+q 退出more
+= 显示当前的进度
+
+more +3 employee.txt
+more +/min employee.txt
+history | more
+```
+
+# less
+less 在查看之前不会加载整个文件
+
+```
+b向前翻页
+history | less
+```
+
+# head
+显示文档的开头
+
+```
+-n 显示文件的前n行
+head -n 5 employee.txt
+```
+
+# tail
+```
+tail -n 5 employee.txt -n显示文件最后n行内容
+tail -n +5 employee.txt +n 从第n行开始显示文件
+```
+
+# which
+查看可执行文件的位置
+```
+which 命令
+which  mysql
+which date
+```
+
+# where
+
+# locate
+
+# find
+搜索文件
+
+```
+find 文件路径 参数
+find ./ -name data.txt(文件全名)
+```
+
+# grep
+显示匹配的行
+
+```
+grep [option] pattern file
+-n 显示行号
+an$ 以an结尾
+grep an$ employee.txt
+ps aux | grep tomcat
+```
+
+# sort
+对文件中的记录，按行排序
+
+```
+sort employee.txt
+```
+
+# uniq
+删除重复的行
+
+```
+-c统计出现次数
+cat employee.txt | sort | uniq -c
+```
+
+# cut
+获取指定的字段
+
+```
+默认分隔符是制表符
+cut –d”,” –f2,4 data.txt
+```
+
+# open
+命令行模拟鼠标双击操作
+Finder和Terminal终端之间的集成是相互的，当你把Finder中的一个文件拖入到Terminal终端窗口时，它的绝对路径就会被粘贴在命令行中。
+
+```
+open /Applications/Google\ Chrome.app
+open . 打开当前目录
+```
+
+# ping
+测试与目标主机的连通性
+
+```
+-c 指定次数
+-I 指定间隔
+ping –c 3 www.baidu.com
+```
+
+# ssh
+远程登录linux主机
+
+```
+ssh -p10086 user@192.168.0.252
+```
+
+# scp
+scp是 secure copy的缩写, scp是linux系统下基于ssh进行安全登陆的远程文件拷贝命令。
+
+```
+scp [参数] [原路径] [目标路径]
+
+下载到桌面，-r表示递归复制整个目录
+scp –r user@ip:/home/twer/guanyuan Desktop
+
+上传到服务器
+scp /Users/yguan/Download/text1 twer@10.17.7.22:/home/twer/guanyuan
+```
+
+# ps
+
+# jps
+
+# kill
+杀死进程
+
+```
+kill 进程号
+kill 3268
+```
+
+# top
+各个进程的资源占用状况
+
+# free
+各个进程的资源占用状况
+
+# ./
+执行程序
+
+```
+./startup.sh
+```
+
+# su
+切换用户
+
+```
+su root
+切换了root身份，但Shell环境仍然是普通用户的Shell
+su – root
+连用户和Shell环境一起切换成root身份了
+```
+
+# hostname
+显示主机名
+
+```
+hostname –i 显示ip地址
+```
+
+# pbcopy/pbpaste
+在命令行下操作剪贴板
+
+```
+ls -l | pbcopy
+pbcopy < employee.txt
+pbpaste > text.txt
+```
+
+# mfind
+Spotlight功能的终端界面
+
+```
+mdfind -name 文件名字
+mdfind –onlyin
+搜索特定文件夹
+mdfind -name "data.txt"
+mdfind "lihongjing"
+寻找所有包含lihongjing文字的文件
+mdfind -onlyin ./ -name "data.txt"
+```
+
+# ss
+
+# mount
+
+# rar
+
+# gzip
+
+# tar
+
+# zip
+
+# unzip
+
+# sed
+
+# echo
+
+# comm
+
+# mkfs
+
+# dump
+
+# ifdown
+
+# dhclient
+
+# route
+
+# netstat
+
+# tcpdump
+
+# host
+
+# lspci
+
+# lsusb
+
+# clock
+
+# arch
+
+# uname
+
+# dmidecode
+
+# hdparm
+
+# poweroff
+
+# reboot
+
+# shutdown
+
+# logout
+
+# init
+
+# telinit
+
+# ln
+
+# &
+
+# awk
+
+# tmux
