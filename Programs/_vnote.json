@@ -46,6 +46,9 @@
         },
         {
             "name": "Linux"
+        },
+        {
+            "name": "Webservice"
         }
     ],
     "version": "1"
