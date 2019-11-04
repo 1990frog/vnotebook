@@ -49,6 +49,9 @@
         },
         {
             "name": "Webservice"
+        },
+        {
+            "name": "DataStructure"
         }
     ],
     "version": "1"
