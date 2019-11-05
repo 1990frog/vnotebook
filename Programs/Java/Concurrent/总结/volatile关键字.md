@@ -52,3 +52,49 @@ synchronized不仅让被保护的代码安全，还近朱者赤
 5.volatile关键字
 6.能保证可见性的措施
 7.升华：对synchronized可见性的正确理解
+
+# volatile局限性
+volatile最大的问题就是无法应用于拥塞方法。假设在循环中调用了拥塞方法，任务可能因拥塞而永远不会去检查取消标志位，甚至会造成永远不能停止。
+
+```java
+public class PrimeGenerator implements Runnable {
+    private static ExecutorService exec = Executors.newCachedThreadPool();
+
+    private final List<BigInteger> primes
+            = new ArrayList<BigInteger>();
+    //取消标志位
+    private volatile boolean cancelled;
+
+    public void run() {
+        BigInteger p = BigInteger.ONE;
+        //每次在生成下一个素数时坚持是否取消
+        //如果取消，则退出
+        while (!cancelled) {
+            p = p.nextProbablePrime();
+            synchronized (this) {
+                primes.add(p);
+            }
+        }
+    }
+
+    public void cancel() {
+        cancelled = true;
+    }
+
+    public synchronized List<BigInteger> get() {
+        return new ArrayList<BigInteger>(primes);
+    }
+
+    static List<BigInteger> aSecondOfPrimes() throws InterruptedException {
+        PrimeGenerator generator = new PrimeGenerator();
+        exec.execute(generator);
+        try {
+            SECONDS.sleep(1);
+        } finally {
+            generator.cancel();
+        }
+        return generator.get();
+    }
+}
+
+```
