@@ -42,9 +42,6 @@
         },
         {
             "name": "GoogleGuava"
-        },
-        {
-            "name": "IO"
         }
     ],
     "version": "1"

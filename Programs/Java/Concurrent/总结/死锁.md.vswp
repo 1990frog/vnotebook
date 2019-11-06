@@ -3,9 +3,11 @@ vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/Progra
 
 # 死锁的4个必要条件（缺一不可）
 + 互斥条件
-+ 请求与保持条件
-+ 不剥夺条件
-+ 循环等待条件
++ 请求与保持条件：第一个线程请求第二把锁但是持有第一把锁
++ 不剥夺条件：不能有外界干扰、外界剥夺
++ 循环等待条件：构成环路
+
+破解其中一个条件，就不会发生死锁
 
 # 什么是死锁
 互不想让：当两个（或更多）线程（或进程）互相持有对方所需要的资源，又不主动释放，导致所有人都无法相继前进，导致程序陷入无尽的阻塞，这就是死锁。
@@ -32,9 +34,45 @@ JVM中：无法自动处理（但可以检测）
 
 注意看退出信号：Process finished with exit code 130(interrupted by signal 2:SIGINT)，是不正常退出的信号，对比正常结束的程序的结束信号是0。
 
+# 转账
+需要两把锁
+获取两把锁成功，且余额大于0，则扣除转出人，增加收款人的余额，是原子操作
+顺序相反导致死锁（互相转钱）
+
+# 分布式锁与单机锁
+![](_v_images/20191106215601478_699441862.png)
+
 # 如何定位死锁
 + jstack
 + ThreadMXBean
+
+jps
+jstack <pid>
+```
+Found one Java-level deadlock:
+=============================
+"Thread-19":
+  waiting to lock monitor 0x00007f04a40057e8 (object 0x000000076d431918, a src.main.java.base.concurrency.moocwukong.deadlock.TransferMoney$Account),
+  which is held by "Thread-11"
+"Thread-11":
+  waiting to lock monitor 0x00007f04a4005738 (object 0x000000076d4323e8, a src.main.java.base.concurrency.moocwukong.deadlock.TransferMoney$Account),
+  which is held by "Thread-19"
+
+Java stack information for the threads listed above:
+===================================================
+"Thread-19":
+	at src.main.java.base.concurrency.moocwukong.deadlock.TransferMoney.transferMoneyDeadLock(TransferMoney.java:48)
+	- waiting to lock <0x000000076d431918> (a src.main.java.base.concurrency.moocwukong.deadlock.TransferMoney$Account)
+	- locked <0x000000076d4323e8> (a src.main.java.base.concurrency.moocwukong.deadlock.TransferMoney$Account)
+	at src.main.java.base.concurrency.moocwukong.deadlock.MultiTransferMoney$1TransferThread.run(MultiTransferMoney.java:32)
+"Thread-11":
+	at src.main.java.base.concurrency.moocwukong.deadlock.TransferMoney.transferMoneyDeadLock(TransferMoney.java:48)
+	- waiting to lock <0x000000076d4323e8> (a src.main.java.base.concurrency.moocwukong.deadlock.TransferMoney$Account)
+	- locked <0x000000076d431918> (a src.main.java.base.concurrency.moocwukong.deadlock.TransferMoney$Account)
+	at src.main.java.base.concurrency.moocwukong.deadlock.MultiTransferMoney$1TransferThread.run(MultiTransferMoney.java:32)
+
+Found 1 deadlock.
+```
 
 # 修复死锁的策略
 
