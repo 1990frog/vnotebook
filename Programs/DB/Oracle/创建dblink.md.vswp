@@ -1,0 +1,6 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/Programs/DB/Oracle/创建dblink.md
+```sql
+create public database link dbtest
+    connect to "his_pengz_bak190909" identified by "123456"
+    using '(DESCRIPTION =(ADDRESS_LIST =(ADDRESS =(PROTOCOL = TCP)(HOST = 192.168.0.251)(PORT = 1521)))(CONNECT_DATA =(SERVICE_NAME = orcl)))';
+```
