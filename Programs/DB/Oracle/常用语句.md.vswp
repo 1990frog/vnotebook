@@ -1,3 +1,4 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/Programs/DB/Oracle/常用语句.md
 # 常用语句
 
 exp his_cmis/123456@192.168.0.251:1521/orcl owner=his_cmis file=/home/cai/cmis2019.dmp tables=(CMIS_PUB_SELECT,PUB_TCM95)
