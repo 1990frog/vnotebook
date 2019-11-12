@@ -3,22 +3,18 @@
 # JAVA 异常类型结构
 ## Throwable
 Throwable 是所有异常类型的基类，Throwable 下一层分为两个分支，Error 和 Exception.
-
 ![](_v_images/20191024145151801_520758280.png)
-
-## Error 和 Exeption
-### Error
+## Error
 Error 描述了 JAVA 程序运行时系统的内部错误，通常比较严重，除了通知用户和尽力使应用程序安全地终止之外，无能为力，应用程序不应该尝试去捕获这种异常。通常为一些虚拟机异常，如 StackOverflowError 等。
-
-### Exception
+## Exception
 Exception 类型下面又分为两个分支，一个分支派生自 RuntimeException，这种异常通常为程序错误导致的异常；另一个分支为非派生自 RuntimeException 的异常，这种异常通常是程序本身没有问题，由于像 I/O 错误等问题导致的异常，每个异常类用逗号隔开。
-
 # 受查异常和非受查异常
 ## 受查异常
 受查异常会在编译时被检测。如果一个方法中的代码会抛出受查异常，则该方法必须包含异常处理，即 try-catch 代码块，或在方法签名中用 throws 关键字声明该方法可能会抛出的受查异常，否则编译无法通过。如果一个方法可能抛出多个受查异常类型，就必须在方法的签名处列出所有的异常类。
 
-通过 throws 关键字声明可能抛出的异常
+<font color="red">强制抛出或处理的异常都是受检查异常</font>
 
+通过 throws 关键字声明可能抛出的异常
 ```java
 private static void readFile(String filePath) throws IOException {
     File file = new File(filePath);
@@ -30,9 +26,7 @@ private static void readFile(String filePath) throws IOException {
     reader.close();
 }
 ```
-
 try-catch 处理异常
-
 ```java
 private static void readFile(String filePath) {
     File file = new File(filePath);
@@ -49,14 +43,11 @@ private static void readFile(String filePath) {
     }
 }
 ```
-
 ## 非受查异常
 非受查异常不会在编译时被检测。JAVA 中 Error 和 RuntimeException 类的子类属于非受查异常，除此之外继承自 Exception 的类型为受查异常。
-
 # 异常的抛出与捕获
 ## 直接抛出异常
 通常，应该捕获那些知道如何处理的异常，将不知道如何处理的异常继续传递下去。传递异常可以在方法签名处使用 throws 关键字声明可能会抛出的异常。
-
 ```java
 private static void readFile(String filePath) throws IOException {
     File file = new File(filePath);
