@@ -1,0 +1,24 @@
+# 常用方法
+
+yield方法
+作用：释放cpu时间段，如果释放了还是Runnable状态
+
+好多方法都用到yield
+
+yield和sleep区别：是否随时可能再次被调度
+sleep阻塞
+yield保持竞争状态
+
+主线程执行run：
+```java
+new CurrentThread().run()
+```
+
+wait
+sleep
+join
+notify
+notifyAll
+stop
+interupet
+yield
