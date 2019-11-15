@@ -1,1 +1,1 @@
-detect
+detect,term,terms

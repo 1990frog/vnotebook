@@ -1,18 +1,18 @@
-# Vim命令总结
+[TOC]
 
 ![vim](_v_images/20190816153331073_6254123.png)
 
-## 模式
+# 模式
 + 命令模式(command-mode)
 + 插入模式(insert-mode)
 + 可视模式(visual-mode)
 + 正常模式(normal-mode) 
 
 
-## Normal模式：
+# Normal模式：
 
-### 移动
-#### 屏幕滚动
+## 移动
+### 屏幕滚动
 ctrl+f/b：向前翻一页/向后翻一页  
 ctrl+d/u：向后翻半页/向前翻半页  
 ctrl+e/y：向后一行/向前一行  
