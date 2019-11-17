@@ -1,1 +1,1 @@
-detect,term,terms
+detect,term,terms,expire,persist

@@ -49,9 +49,6 @@
             "name": "BigData"
         },
         {
-            "name": "DB"
-        },
-        {
             "name": "Linux"
         },
         {
@@ -86,6 +83,12 @@
         },
         {
             "name": "Docker"
+        },
+        {
+            "name": "MongoDB"
+        },
+        {
+            "name": "Oracle"
         }
     ],
     "version": "1"
