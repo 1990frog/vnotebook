@@ -1,0 +1,38 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/Programs/Linux/shell脚本.md
+[TOC]
+
+# 示例
+```shell
+#!/bin/sh
+cd ~
+mkdir shell_tut
+cd shell_tut
+for ((i=0; i<10; i++)); do
+    touch test_$i.txt
+done
+```
+第1行：指定脚本解释器，这里是用/bin/sh做解释器的
+第2行：切换到当前用户的home目录
+第3行：创建一个目录shell_tut
+第4行：切换到shell_tut目录
+第5行：循环条件，一共循环10次
+第6行：创建一个test_0…9.txt文件
+第7行：循环体结束
+
+/bin/sh是/bin/bash --posix的软连接，也就是说两者相同
+
+# 作为可执行程序
+将上面的代码保存为 test.sh，并 cd 到相应目录：
+```
+chmod +x ./test.sh  #使脚本具有执行权限
+./test.sh  #执行脚本
+```
+
+# 变量
+```
+dir=`ls|grep 'Desktop'`
+echo $dir
+id=`jps|grep 'eureka.jar' |grep -P '^\d*\s'`
+echo $id
+unset id
+```

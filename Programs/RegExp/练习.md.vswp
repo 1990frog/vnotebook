@@ -1,0 +1,13 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/Programs/RegExp/练习.md
+```
+10593 eureka.jar
+14338 RemoteJdbcServer
+1428 Launcher
+10421 RemoteJdbcServer
+14117 Main
+10746 his-zuul.jar
+618 Main
+15276 Jps
+1052 RemoteMavenServer36
+```
+jps | grep eureka.jar | grep -P '^\d*\s'
