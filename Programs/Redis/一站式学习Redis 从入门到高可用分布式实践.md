@@ -130,3 +130,107 @@ none
 1. 一次只运行一条命令
 2. 拒绝长（慢）命令：keys,flushall,flushdb,slow lua script,mutil/exec,operate big value(collection)
 3. 其实不是单线程:fysnc file descriptor,close file descriptor
+
+
+# 字符串
+get
+set
+del
+
+```
+set hello world
+get hello
+del hello
+```
+
+incr
+decr
+incrby
+decrby
+
+```
+incr key key自增1，如果key不存在，自增后get(key)=1
+decr key key自减1，如果key不存在，自减后get(key)=-1
+incrby key k key自增k，如果key不存在，自增后get(key)=k
+decrby key k key自减k，如果key不存在，自减后get(key)=-k
+```
+
+实例
+incr userid:pageview （单线程：无竞争）页面访问量
+
+实战
+![](_v_images/20191119202757878_822633743.png)
+
+分布式id生成器：
+![](_v_images/20191119202942805_1438353735.png)
+
+
+set setnx setxx
+set key value #不管key是否存在，都设置
+setnx key value #key不存在，才设置
+set key value xx #key存在，才设置
+
+mget mset
+mget key1 key2 key3... #批量获取key,原子操作
+mset key1 value1 key2 value2 key3 value3 #批量设置key-value
+![](_v_images/20191119203817445_1778125873.png)
+
+![](_v_images/20191119203840148_1356885424.png)
+
+getset key newvalue #set key newvalue并返回value
+append key value #将value追加到旧的value
+strlen key #返回字符串的长度（注意中文）
+
+incrbyfloat #incrbyfloat key 3.5增加key对应的值3.5
+getrange key start end #获取字符串指定下标所有的值
+setrange key index value #设置指定下标所有对应的值
+
+# hash 哈希
+哈希键值结构
+key->[field,value]
+
+![](_v_images/20191119204812787_1133568145.png)
+
+特点
+map的map
+small的redis
+field不能相同，value可以相同
+
+重要api
+
+hget #het key field 获取hash key对应的的field的value
+hset #hset key field value
+hdel #hdel key field
+hexists #
+hlen #hlen key 获取hash key field的数量 O(1)
+hmget #hmget key field1 field2...fieldN
+hmset #hmset key field1 value1...fieldN valueN
+hincrby key field count
+hgetall key #返回hash key对应所有的field**和**value O(n)
+hvals key #返回hash key对应所有field**的**value O(n)
+hkeys key #返回hash key对应所有field O(n)
+hsetnx
+hincrby
+hincrbyfloat
+
+注意：
+小心使用hgetall，其复杂度为O(n)，redis为单线程，如果数据量大会造成阻塞
+
+实战
+记录网站每个用户个人主页的访问量？
+hincrby user:1:info pageview count
+缓存视频的基本信息（数据源在mysql中）伪代码
+![](_v_images/20191119205822828_355188170.png)
+
+String VS Hash
+api相似
+
+![](_v_images/20191119211205157_468415331.png)
+![](_v_images/20191119211238861_224924866.png)
+![](_v_images/20191119211302260_143474719.png)
+
+![](_v_images/20191119211448074_1933251249.png)
+
+hash分为两种：hashtable、ziplist，如果量达到一定就会使用ziplist压缩节省内存
+
+hash缺点：不能对key设置过期时间
