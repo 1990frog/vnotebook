@@ -1,1 +1,1 @@
-detect,term,terms,expire,persist
+detect,term,terms,expire,persist,occupy,during,activity,occasionally,current,reset,receive,during,mention,applicable,fewer,queue,cause,temporarilym,cease,ownership
