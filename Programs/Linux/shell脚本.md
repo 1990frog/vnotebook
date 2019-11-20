@@ -35,3 +35,7 @@ id=`jps|grep 'eureka.jar' |grep -P '^\d*\s'`
 echo $id
 unset id
 ```
+
+
+cat redis.conf|grep -v "#"|grep -v "^$"
+ps -ef | grep redis-server | grep 6382

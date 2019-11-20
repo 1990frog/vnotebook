@@ -1,5 +1,7 @@
 # volatile关键字
 
+保证可见性、防止重排序、具有传递性
+
 volatile是什么？
 volatile是一种同步机制，比synchronized或者Lock相关类更轻量，因为使用volatile并不会发生上下文切换等开销很大的行为。
 如果一个变量被修饰成volatile，那么JVM就知道了这个变量可能会被并发修改（避免重排序）。
