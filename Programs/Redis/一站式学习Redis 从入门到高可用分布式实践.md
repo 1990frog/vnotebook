@@ -53,7 +53,7 @@ daemonize是否是守护线程no|yes
 port对外端口（默认6379）
 logfile系统日志
 dir工作目录
-# redis commond
+# redis command
 + redis-server
 + redis-cli -h host -p port -a password
 + redis-benchmark
@@ -65,7 +65,7 @@ dir工作目录
 + dbsize #计算key的总数，不会遍历全部key，是读取redis内置计数器【时间复杂度O(1)】
 # key
 ## 概览
-## commond
+## command
 |  命令   |        语法        |         简介          | 复杂度 |                                                                                    备注                                                                                    |
 | ------- | ------------------ | --------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | keys    | keys [pattern]     | 验证key是否存在       | O(n)   | keys命令一般不在生产环境使用<br>一般生产环境key比较多，keys是一个比较重的命令，速度慢<br>redis是单线程，所以可能会阻塞其他命令<br>用scan命令代替较好，或者在热备从节点执行 |
@@ -77,7 +77,7 @@ dir工作目录
 | type    | type key           | 返回key的类型         | O(1)   | string、hash、list、set、zset、none                                                                                                                                        |
 # string
 ## 概览
-## commond
+## command
 |    命令     |                   语法                   |                    简介                    | 复杂度 |                               备注                                |
 | ----------- | ---------------------------------------- | ------------------------------------------ | ------ | ----------------------------------------------------------------- |
 | get         | get key                                  | 通过key获取值                              | O(1)   |                                                                   |
@@ -106,7 +106,7 @@ small的redis
 field不能相同，value可以相同
 hash分为两种：hashtable、ziplist，如果量达到一定就会使用ziplist压缩节省内存
 hash缺点：不能对key设置过期时间
-## commond
+## command
 |     命令     |                  语法                   |                  简介                  | 复杂度 |                                  备注                                  |
 | ------------ | --------------------------------------- | -------------------------------------- | ------ | ---------------------------------------------------------------------- |
 | hget         | hget key field                          | 获取hash key对应的的field的value       | O(n)   | 小心使用hgetall，其复杂度为O(n)，redis为单线程，如果数据量大会造成阻塞 |
@@ -125,18 +125,71 @@ hash缺点：不能对key设置过期时间
 | hincrbyfloat |                                         |                                        | O(1)   |                                                                        |
 
 
+# List
+## command
+|  命令   |                  语法                   |                                                                                                       简介                                                                                                       | 复杂度 |              备注              |
+| ------- | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------ |
+| lpush   | lpush key value1 value2...valueN        | 从列表左端插入值（1-N个）                                                                                                                                                                                        |        |                                |
+| rpush   | rpush key value1 value2...valueN        | 从列表右端插入值（1-N个）                                                                                                                                                                                        | O(1-n) |                                |
+| linsert | linsert key before\after value newValue | 在list指定的值前\后插入newValue                                                                                                                                                                                  | O(n)   |                                |
+| lpop    | lpop key                                | 从列表左侧弹出一个item                                                                                                                                                                                           | O(1)   |                                |
+| rpop    | rpop key                                | 从列表右侧弹出一个item                                                                                                                                                                                           | O(1)   |                                |
+| lrem    | lrem key count value                    | 根据count的值，从列表中删除所有value相等的项</br>（1）count>0，从左到右，删除最多count个value相等的项</br>（2）count<0，从右到左，删除最多Math.abs(count)个value相等的项</br>（3）count=0，删除所有value相等的项 | O(n)   |                                |
+| ltrim   | ltrim key start end                     | 按照索引范围修剪列表                                                                                                                                                                                             | O(n)   | 大范围删除元素时，效率比rpop高 |
+| lrange  | lrange key start end（包含end）         | 获取列表指定索引范围所有item                                                                                                                                                                                     | O(n)   | -1为最后一个元素               |
+| llen    | llen key                                | 获取列表长度                                                                                                                                                                                                     | O(1)   |                                |
+| lset    | lset key index newValue                 | 设置列表指定索引值为newValue                                                                                                                                                                                     | O(1)   |                                |
+| blpop   | blpop key timeout                       | lpop阻塞版本，timeout是阻塞超时时间，timeout=0为永远不阻塞                                                                                                                                                       |        | 生产者消费者，消息队列         |
+| brpop   | brlpop key timeout                      |                                                                                                                                                                                                                  |        |                                |
+
+## TIPS
+RPUSH+RPOP=Stack
+LPUSH+RPOP=Queue
+LPUSH+LTRIM=Capped Collection
+LPUSH+BRPOP=Message Queue
+LPUSH+BRPOP=MQ
+
+# key
+## command
+|    命令     |               语法               |                         简介                          | 复杂度 |                        备注                        |
+| ----------- | -------------------------------- | ----------------------------------------------------- | ------ | -------------------------------------------------- |
+| sadd        | sadd key element                 | 向集合key添加element（如果element已经存在，添加失败） | O(1)   |                                                    |
+| srem        | srem key element                 | 将集合key中的element移除掉                            | O(1)   |                                                    |
+| scard       | scard key                        | 计算集合大小                                          |        |                                                    |
+| sismember   | sismember key element            | 判断it是否在集合中                                    |        |                                                    |
+| srandmember | srandmember key count            | 从集合中随机挑count个元素                             |        | srandmember不会破坏集合数据                        |
+| smembers    | smembers key                     | 获取集合所有元素                                      |        | 返回结果无序，返回全部元素（元素非常多，小心阻塞） |
+| spop        | spop key                         | 从集合中随机弹出一个元素                              |        | 会破坏集合数据（弹出）                             |
+| scan        |                                  |                                                       |        |                                                    |
+| sdiff       | sdiff set1 set2                  | 差集                                                  |        |                                                    |
+| sinter      | sinter set1 set2                 | 交集                                                  |        |                                                    |
+| sunion      | sunion set1 set2                 | 并集                                                  |        |                                                    |
+| store       | sdiff\sinter\suion+store destkey | 将差集、交集、并集结果保存在destkey中                 |        |                                                    |
+## TIPS
+SADD =Tagging
+SPOP/SRANDMEMBER=Random item
+SADD+SINTER=Social Graph
 
 
-
+特点：
+无序、无重复、集合间操作（交集、并集、差集）
 
 注意：
-
+集合实战：
+给用户添加标签
+```
+sadd user:1:tags tag1 tag2 tag3
+```
+给用户添加标签
+```
+sadd tag1:users user1 user2
+```
 
 实战
 记录网站每个用户个人主页的访问量？
 hincrby user:1:info pageview count
 缓存视频的基本信息（数据源在mysql中）伪代码
-![](_v_images/20191119205822828_355188170.png)
+![](_v_images/20191119205822828_355188170.png)ount>0，从左到
 
 String VS Hash
 api相似
