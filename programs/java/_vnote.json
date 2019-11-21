@@ -14,34 +14,28 @@
     ],
     "sub_directories": [
         {
-            "name": "Stream"
+            "name": "stream"
         },
         {
-            "name": "Genericity"
+            "name": "genericity"
         },
         {
-            "name": "Basis"
+            "name": "basis"
         },
         {
-            "name": "Framework"
+            "name": "book"
         },
         {
-            "name": "Book"
+            "name": "initialization"
         },
         {
-            "name": "Initialization"
+            "name": "dynamicProxy"
         },
         {
-            "name": "DynamicProxy"
+            "name": "concurrent"
         },
         {
-            "name": "Concurrent"
-        },
-        {
-            "name": "Exception"
-        },
-        {
-            "name": "GoogleGuava"
+            "name": "exception"
         }
     ],
     "version": "1"

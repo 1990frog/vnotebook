@@ -44,64 +44,73 @@
     ],
     "sub_directories": [
         {
-            "name": "Java"
+            "name": "java"
         },
         {
-            "name": "RegExp"
+            "name": "regexp"
         },
         {
-            "name": "Python"
+            "name": "python"
         },
         {
-            "name": "Pattern"
+            "name": "pattern"
         },
         {
-            "name": "BigData"
+            "name": "bigdata"
         },
         {
-            "name": "Linux"
+            "name": "linux"
         },
         {
-            "name": "Webservice"
+            "name": "webservice"
         },
         {
-            "name": "DataStructure"
+            "name": "datastructure"
         },
         {
-            "name": "IO"
+            "name": "io"
         },
         {
-            "name": "Redis"
+            "name": "redis"
         },
         {
-            "name": "Vim"
+            "name": "vim"
         },
         {
-            "name": "Git"
+            "name": "git"
         },
         {
-            "name": "Svn"
+            "name": "svn"
         },
         {
-            "name": "Shadowsocks"
+            "name": "shadowsocks"
         },
         {
-            "name": "MQ"
+            "name": "mq"
         },
         {
-            "name": "Markdown"
+            "name": "markdown"
         },
         {
-            "name": "Docker"
+            "name": "docker"
         },
         {
-            "name": "MongoDB"
+            "name": "mongodb"
         },
         {
-            "name": "Oracle"
+            "name": "oracle"
         },
         {
-            "name": "Guava"
+            "name": "netty"
+        },
+        {
+            "name": "spring"
+        },
+        {
+            "name": "guava"
+        },
+        {
+            "name": "maven"
         }
     ],
     "version": "1"

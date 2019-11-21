@@ -4,16 +4,16 @@
     ],
     "sub_directories": [
         {
-            "name": "Hadoop"
+            "name": "hadoop"
         },
         {
-            "name": "Hive"
+            "name": "hive"
         },
         {
             "name": "HDFS"
         },
         {
-            "name": "MapReduce"
+            "name": "mapreduce"
         }
     ],
     "version": "1"
