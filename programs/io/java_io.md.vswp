@@ -1,6 +1,9 @@
 vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/programs/io/java_io.md
 ![io](_v_images/20191121102922535_1790976369.jpg)
 
+
+![](_v_images/20191125151706406_2110116319.png)
+
 以Reader这块来讲解装饰器模式在IO中的应用
 
 + 抽象类
