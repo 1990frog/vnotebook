@@ -46,11 +46,6 @@ port：Redis节点的端口
 connectTimeout：客户端连接超时
 soTimeout：客户端读写超时
 
-![](_v_images/20191121192729500_156220791.png)
-
-![](_v_images/20191121192747548_1008718357.png)
-
-![](_v_images/20191121192810167_1593776303.png)
 
 
 ![](_v_images/20191121192854895_950703713.png)
@@ -81,20 +76,9 @@ soTimeout：客户端读写超时
 
 jedis new线程不安全
 
-![](_v_images/20191121193636477_1559450485.png)
 
-
-![](_v_images/20191121193752668_1533879290.png)
 
 # redis配置优化
-
-
-
-
-
-
-
-
 
 
 
@@ -104,7 +88,8 @@ jedis new线程不安全
 记录网站每个用户个人主页的访问量？
 hincrby user:1:info pageview count
 缓存视频的基本信息（数据源在mysql中）伪代码
-![](_v_images/20191119205822828_355188170.png)ount>0，从左到
+
+count>0，从左到
 
 String VS Hash
 api相似

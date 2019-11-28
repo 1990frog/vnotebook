@@ -11,11 +11,9 @@ struct redisObject
     虚拟内存（vm）;
     其他信息;
 };
+```
 
-# 数据结构
-
-
-# HASH
+# hash
 哈希键值结构：key->[field,value]
 特点
 map的map
@@ -24,15 +22,14 @@ field不能相同，value可以相同
 hash分为两种：hashtable、ziplist，如果量达到一定就会使用ziplist压缩节省内存
 hash缺点：不能对key设置过期时间
 
-## LIST
+# list
 RPUSH+RPOP=Stack
 LPUSH+RPOP=Queue
 LPUSH+LTRIM=Capped Collection
 LPUSH+BRPOP=Message Queue
 LPUSH+BRPOP=MQ
 
-# SET
-## TIPS
+# set
 SADD =Tagging
 SPOP/SRANDMEMBER=Random item
 SADD+SINTER=Social Graph
@@ -50,7 +47,7 @@ sadd user:1:tags tag1 tag2 tag3
 sadd tag1:users user1 user2
 ```
 
-# ZSET
+# zset
 集合vs有序集合
 集合：无重复元素、无序、element
 有序集合：无重复元素、有序、element+score
