@@ -7,6 +7,7 @@
 ## expire
 ## expireat
 ## keys
+返回全部的key，O(n)
 ## migrate
 ## move
 ## object
