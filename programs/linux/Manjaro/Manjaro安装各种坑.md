@@ -1,4 +1,6 @@
-# Manjaro安装各种坑
+Manjaro安装各种坑
+
+[TOC]
 
 ## 软件源
 ### 添加archlinuxCN源
@@ -30,6 +32,20 @@ sudo pacman -Syyu
 显示包大量信息 pacman -Si 
 本地安装包 pacman -Qi 
 清理包缓存 pacman -Sc
+
+pacman -S package_name #安装软件包
+pacman -R package_name #删除软件包
+
+pacman -Rs package_name #顺便删除软件包相关依赖
+pacman -Syu #升级系统中的所有包
+pacman -Ss package #查询软件包
+pacman -Qs package #查询已安装的包
+pacman -Qi package #显示查找的包的信息
+pacman -Ql package #显示你要找的包的文件都安装的位置
+pacman -Sw package #下载但不安装包
+pacman -U /path/package.pkg.tar.gz #安装本地包
+pacman -Scc #清理包缓存，下载的包会在/var/cache 这个目录
+pacman -Sf pacman #重新安装包
 
 ```
 
