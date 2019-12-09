@@ -1,54 +1,5 @@
 [TOC]
 
-![](_v_images/20191208145141249_1358742951.png)
-
-所有image共用Linux Kernel(bootfs)
-base image 也可以共享
-baseimage 只包含rootfs，所以image很小
-
-![](_v_images/20191208162606530_684336331.png)
-docker有一种文件dockerfile，通过dockerfile可以定义image
-
-```
-FORM ubuntu:14 #baseimage
-LEBEL maintainer="1990frog@gmail.com" #作者
-RUN apt-get update #运行之后执行命令
-EXPOSE 6379 #暴露端口
-ENTRYPOINT ["/usr/bin/redis-server"] #入口
-```
-
-# Docker hub
-
-# 非sudo执行docker
-```
-sudo groupadd docker    #创建docker用户组
-sudo gpasswd -a {user} docker    #添加用户到docker组
-重启docker,shell生效
-```
-# DIY Base Image
-```
-docker pull hello-world
-docker run hello-world
-```
-![](_v_images/20191208175908881_169575069.png)
-创建一个c的执行文件
-
-创建dockerfile
-vim Dockerfile
-```
-FROM scratch
-ADD hello /
-CMD ["/hello"]
-```
-docker build -t dockerid/filename .    #在当前目录查找dockerfile
-![](_v_images/20191208180235734_212369416.png)
-
-查看docker分层：
-docker history id
-![](_v_images/20191208180353685_521618765.png)
-
-# Container
-![](_v_images/20191208180621437_2144346125.png)
 
 `docker container ls`当前本地正在运行的容器
 `docker container ls -a`当前所有的容器，包括运行的与退出的

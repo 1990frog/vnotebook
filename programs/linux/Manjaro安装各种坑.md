@@ -2,9 +2,7 @@ Manjaro安装各种坑
 
 [TOC]
 
-## 软件源
-### 添加archlinuxCN源
-
+# 添加archlinuxCN源
 ```
 #编辑文件 sudo vi /etc/pacman.conf   末尾追加
 [archlinuxcn]
@@ -14,15 +12,14 @@ Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
 SigLevel = Never
 Server = https://mirrors.ustc.edu.cn/blackarch/$repo/os/$arch
 ```
-### 选择pacman中文镜像
+# 选择pacman中文镜像
 ```
 sudo pacman-mirrors -c China​
 sudo pacman -Syyu
 ```
-常用命令  
-
+# pacman命令
 ```
-安装 pacman -S 
+安装 pacman -S
 删除 pacman -R 
 移除已安装不需要软件包 pacman -Rs 
 删除一个包,所有依赖 pacman -Rsc 
@@ -48,17 +45,14 @@ pacman -Scc #清理包缓存，下载的包会在/var/cache 这个目录
 pacman -Sf pacman #重新安装包
 
 ```
-
-### 解决签名错误，安装软件包报错问题
+# 解决签名错误，安装软件包报错问题
 ```
 #导入GPG Key
-
 sudo pacman -S archlinuxcn-keyring
-
 ```
-## 系统配置
-### 更新引导分区表
 
+# 系统配置
+## 更新引导分区表
 ```
 更新引导分区表，之后重启可以看到有manjaro和win10的条目
 sudo update-grub
@@ -69,19 +63,16 @@ sudo update-grub
 sudo vi /etc/default/grub
 
 ```
-### 切换英文主目录
-
+## 切换英文主目录
 ```
 sudo pacman -S xdg-user-dirs-gtk
 export LANG=en_US
 xdg-user-dirs-gtk-update
 export LANG=zh_CN.UTF-8
 ```
-
-### N卡画面撕裂
-#### 页面滚动屏幕撕裂
-sudo nvidia-xconfig  
-
+# N卡画面撕裂
+## 页面滚动屏幕撕裂
+sudo nvidia-xconfig
 ```
 保存配置文件至
 /etc/X11/xorg.conf
@@ -91,11 +82,11 @@ sudo nvidia-xconfig
 sudo nvim /etc/modprobe.d/nvidia-drm-1.conf
 options nvidia_drm modeset=1
 ```
-#### 屏幕缩放导致konsole出现横线
+## 屏幕缩放导致konsole出现横线
 设置行间距为1
 
-## 软件安装
-### 安装搜狗输入法
+# 软件安装
+## 安装搜狗输入法
 ```
 sudo pacman -S fcitx-sogoupinyin
 sudo pacman -S fcitx-im
@@ -106,33 +97,29 @@ sudo pacman -S fcitx-configtool # 图形化的配置工具
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS="@im=fcitx"
-
 ```
-
-我用的是Manjaro系统，突然有一天搜狗就不能用了，总是提示上述语句。删除了相关文件并且重启还是没有用。后来在终端中输入  
-
+我用的是Manjaro系统，突然有一天搜狗就不能用了，总是提示上述语句。删除了相关文件并且重启还是没有用。后来在终端中输入 
 ```
 sogou-qimpanel
 ```
-
 提示找不到libfcitx-qt.so，于是找到原因，安装fcitx-qt4就可以成功解决上述问题。
-
 ```
 yaourt -S fcitx-qt4
 ```
-
-
-### 安装mlocate
+## 安装mlocate
 ```
 sudo pacman -S mlocate
 updatedb
 locate file
 ```
-
-### 安装QQ
+## 安装QQ
 ```
 https://github.com/countstarlight/deepin-wine-tim-arch
 ```
+## 安装windows虚拟机
+```
+sudo pacman -S virtio-win
+```
+## vargent谁用谁香
 
-## 常用命令
-screenfetch  
+# 常用命令screenfetch

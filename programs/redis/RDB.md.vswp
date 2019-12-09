@@ -1,11 +1,10 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/programs/redis/RDB.md
 [TOC]
 
-其他类型数据库
-
+# 数据库常见备份策略
 快照：
 1. MySQL Dump
 2. Redis RDB
-
 写日志：
 1. MySQL Binlog
 2. Hbase HLog
