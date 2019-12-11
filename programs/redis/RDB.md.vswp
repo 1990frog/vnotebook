@@ -9,16 +9,13 @@ vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/progra
 1. MySQL Binlog
 2. Hbase HLog
 3. Redis AOF
-
-# RDB
-# 什么是RDB？
+# 什么是RDB
 将redis内存中的数据存储到RDB文件（二进制）到硬盘
 redis再次启动加载RDB文件（二进制）
 # 触发机制——主要三种方式
-1. save（同步）
-2. bgsave（异步）
-3. 自动
-
+1. save命令触发（同步）
+2. bgsave命令触发（异步）
+3. 自动触发
 # save命令
 ```
 redis>save
