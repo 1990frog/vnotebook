@@ -33,9 +33,9 @@ AOF文件==>redis
 
 
 # AOF的三种策略
-always
-everysec
-no
++ always
++ everysec
++ no
 
 # always
 ![](_v_images/20191207141640160_641517644.png)
