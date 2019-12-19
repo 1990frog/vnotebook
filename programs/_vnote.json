@@ -56,7 +56,7 @@
             "name": "pattern"
         },
         {
-            "name": "bigdata"
+            "name": "hadoop"
         },
         {
             "name": "linux"

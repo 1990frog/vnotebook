@@ -15,7 +15,7 @@
 # 触发机制——主要三种方式
 1. save命令触发（同步）
 2. bgsave命令触发（异步）
-3. 自动触发
+3. 自动触发（全量复制、debug reload、shutdown）
 # save命令
 ```
 redis>save

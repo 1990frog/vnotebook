@@ -4,9 +4,6 @@
     ],
     "sub_directories": [
         {
-            "name": "hadoop"
-        },
-        {
             "name": "hive"
         },
         {
@@ -14,6 +11,9 @@
         },
         {
             "name": "mapreduce"
+        },
+        {
+            "name": "yarn"
         }
     ],
     "version": "1"
