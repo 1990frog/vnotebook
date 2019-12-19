@@ -122,4 +122,10 @@ sudo pacman -S virtio-win
 ```
 ## vargent谁用谁香
 
+## 缺失ifconfig
+```
+sudo pacman -S net-tools
+```
+
 # 常用命令screenfetch
+
