@@ -1,6 +1,6 @@
-# 常用方法
+[TOC]
 
-yield方法
+# yield
 作用：释放cpu时间段，如果释放了还是Runnable状态
 
 好多方法都用到yield
