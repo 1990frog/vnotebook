@@ -1,7 +1,5 @@
-vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/programs/redis/常用api.md
 [TOC]
 
- 
 # string
 ## get 获取
 `GET key`
@@ -300,83 +298,3 @@ redis>BITCOUNT name
 (integer) 30
 ```
 ## setbit
-
-# hash
-## hdel
-## hexists
-## hget
-## hgetall
-## hincrby
-## hincrbyfloat
-## hkeys
-## hlen
-## hmget
-## hmset
-## hscan
-## hset
-## hsetnx
-## hstrlen
-## hvals
-
-# list
-## blpop
-## brpop
-## brpoplpush
-## lindex
-## linsert
-## llen
-## lpop
-## lpush
-## lpushx
-## lrange
-## lrem
-## lset
-## ltrim
-## rpop
-## rpoplpush
-## rpush
-## rpushx
-
-# set
-## sadd
-## scard
-## sdiff
-## sdiffstore
-## sinter
-## sinterstore
-## sismember
-## smembers
-## smove
-## spop
-## srandmember
-## srem
-## sscan
-## sunion
-## sunionstore
-
-# zset
-## bzpopmax
-## bzpopmin
-## zadd
-## zcard
-## zcount
-## zincrby
-## zinterstore
-## zlexcount
-## zpopmax
-## zpopmin
-## zrange
-## zrangebylex
-## zrangebyscore
-## zrank
-## zrem
-## zremrangebylex
-## zremrangebyrank
-## zremrangebyscore
-## zrevrange
-## zrevrangebylex
-## zrevrangebyscore
-## zrevrank
-## zscan
-## zscore
-## zunionstore

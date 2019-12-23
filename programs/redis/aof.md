@@ -94,5 +94,29 @@ Writing the AOF buffer without waiting for fsync to complete,this may slow down 
 
 `info persistence`查看持久化信息,aof次数
 
+# Redis 持久化 之 AOF 和 RDB 同时开启，Redis听谁的
+听AOF的，RDB与AOF同时开启 默认无脑加载AOF的配置文件
+相同数据集，AOF文件要远大于RDB文件，恢复速度慢于RDB
+AOF运行效率慢于RDB,但是同步策略效率好，不同步效率和RDB相同
 
+1、Rewrite 重写
+AOF采用文件追加方式，文件会越来越大为避免出现此种情况，新增了重写机制,当AOF文件的大小超过所设定的阈值时，Redis就会启动AOF文件的内容压缩，只保留可以恢复数据的最小指令集.可以使用命令bgrewriteaof
+
+2、Redis如何实现重写？
+AOF文件持续增长而过大时，会fork出一条新进程来将文件重写(也是先写临时文件最后再rename)，遍历新进程的内存中数据，每条记录有一条的Set语句。重写aof文件的操作，并没有读取旧的aof文件，而是将整个内存中的数据库内容用命令的方式重写了一个新的aof文件，这点和快照有点类似。
+
+3、何时重写
+重写虽然可以节约大量磁盘空间，减少恢复时间。但是每次重写还是有一定的负担的，因此设定Redis要满足一定条件才会进行重写。
+
+系统载入时或者上次重写完毕时，Redis会记录此时AOF大小，设为base_size,如果Redis的AOF当前大小>= base_size +base_size*100% (默认)且当前大小>=64mb(默认)的情况下，Redis会对AOF进行重写。
+
+4、AOF的优点
+备份机制更稳健，丢失数据概率更低。
+可读的日志文本，通过操作AOF稳健，可以处理误操作。
+
+5、AOF的缺点
+比起RDB占用更多的磁盘空间。
+恢复备份速度要慢。
+每次读写都同步的话，有一定的性能压力。
+存在个别Bug，造成不能恢复
 
