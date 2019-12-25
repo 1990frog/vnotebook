@@ -75,6 +75,9 @@
     "sub_directories": [
         {
             "name": "总结"
+        },
+        {
+            "name": "JUC"
         }
     ],
     "version": "1"

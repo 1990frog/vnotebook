@@ -111,6 +111,9 @@
         },
         {
             "name": "maven"
+        },
+        {
+            "name": "mysql"
         }
     ],
     "version": "1"
