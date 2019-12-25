@@ -564,9 +564,6 @@ which date
 find 文件路径 参数
 find ./ -name data.txt(文件全名)
 ```
-# JAVA
-## jps jdk命令，查看当前运行的java进程
-## jstack 查看线程死锁
 # 压缩
 ## rar
 ## gzip
