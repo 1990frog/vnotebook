@@ -1,3 +1,4 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/programs/linux/命令收集.md
 [TOC]
 
 # 启停
@@ -57,6 +58,8 @@ source test.sh
 ```
 ./startup.sh
 ```
+## nohup 关闭shell仍然运行
+## &    后台运行
 ## echo 输出变量
 ```
 echo "It is a test"
