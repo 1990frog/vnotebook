@@ -1,5 +1,7 @@
 [TOC]
 
+![1624440-20190315140705090-578968243](_v_images/20191226153653743_1010974833.png)
+
 # 简介
 在docker中创建镜像最常用的方式，就是使用dockerfile。dockerfile是一个docker镜像的描述文件，我们可以理解成火箭发射的A、B、C、D…的步骤。Dockerfile其内部包含了一条条的指令，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。
 ```Docker
@@ -326,55 +328,6 @@ Complete!
 `docker history id`
 ![](_v_images/20191209140049800_1475492609.png)
 
-
-## Shell和Exec格式
-Shell格式
-```
-RUN apt-get install -y vim
-CMD echo "hello docker"
-ENTRYPOINT echo "hello docker"
-```
-Exec格式
-```
-RUN ["apt-get","install","-y","vim"]
-CMD ["/bin/echo","hello docker"]
-ENTRYPOINT ["/bin/echo","hello docker"]
-```
-
-![](_v_images/20191218220819952_840435617.png)
-
-
-```
-ENTRYPOINT ["/bin/echo","hello $name"]    #shell能识别$变量，而exec无法识别
-ENTRYPOINT ["/bin/bash","-c","echo hello $name"]
-```
-
-CMD
-容器启动时默认执行的命令
-如果docker run指定了其他命令，CMD命令被忽略
-如果定义了多个CMD，只有最后一个会执行
-
-ENTRYPOINT
-让容器以应用程序或者服务的形式运行
-不会被忽略，一定会执行
-最佳实践：写一个shell脚本作为entrypoint
-```
-COPY docker-entrypoint.sh /usr/loacl/bin/
-ENTRYPOINT ["docker-entrypoint.sh"]
-
-EXPOSE 27017
-CMD ["mongod"]
-```
-
-docker run -it dockerid /bin/bash
-bash会将cmd命令覆盖，不在命令行打印
-bash无法覆盖entrypoint
-
-# 练习
-在官方dockerhub上查看dockerfile
-
-dockerfile reference
-
 ---
 
 docker run -d imageid
@@ -424,21 +377,8 @@ CMD python app.py
 ```
 
 ---
+
 stress工具
-docker run -it ubuntu
-apt-get update && apt-get install -y stress
-
-stress --help
-stress --vm 1 创建一个进程
-stress --vm --verbose
-
-```docker
-FROM ubuntu
-RUN apt-get update && apt-get install -y stress
-ENTRYPOINT ["/usr/bin/stress"]
-CMD []    #接受外面传递的参数
-```
-ENTRYPOINT+CMD
 
 docker run -it ???
 
