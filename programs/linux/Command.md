@@ -1,7 +1,7 @@
 [TOC]
 
 # 启停
-## logout
+## logout 登出
 ## reboot 重启
 ## shutdown 关机
 ## poweroff 关机
@@ -16,7 +16,8 @@
 | init 3 | 表示多用户命令行模式（推荐使用这个模式）               |
 | init 4 | 表示预留的未使用                                       |
 | init 5 | 表示图形界面模式（安装有图形界面的系统的默认启动级别） |
-## telinit
+## telinit 其为init的一个软连接
+当系统起来后，init进程会占用PID 1，init程序会在入口处判断PID，如果不是1,就退出init处理程序，转而调用telinit.
 # 系统信息
 ## uname 显示系统信息
 ```
@@ -60,7 +61,7 @@ source test.sh
 ./startup.sh
 ```
 ## nohup 关闭shell仍然运行
-## &    后台运行
+## & 后台运行
 ## echo 输出变量
 ```
 echo "It is a test"
