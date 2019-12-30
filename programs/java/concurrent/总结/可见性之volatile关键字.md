@@ -2,14 +2,14 @@
 
 # 特性
 + 保证可见性
-+ 防止重排序
-+ 具有传递性
++ 防止重排序（有序性，重排序可能会导致无序）
++ 具有传递性（happens-before）
 # volatile是什么
 + volatile是一种同步机制，比synchronized或者Lock相关类更轻量，因为使用volatile并不会发生上下文切换等开销很大的行为。
 + 如果一个变量被修饰成volatile，那么JVM就知道了这个变量可能会被并发修改（避免重排序）。
-+ 但是开销小，相应的能力也小，虽然说volatile是用来同步的保证线程安全的，但是volatile做不到synchronized那样的原子保护，volatile仅在很有限的场景下才能发挥作用。（i++异常）
++ 但是开销小，相应的能力也小，虽然说volatile是用来同步的保证线程安全的，但是volatile做不到synchronized那样的原子保护，volatile仅在很有限的场景下才能发挥作用。（i++异常，不具备原子性）
 # volatile适用场景
-1. boolean flag，如果一个共享变量至始至终只被各个线程赋值，而没有其他的操作，那么就可以用volatile来代替synchronized或者代替原子变量，因为赋值自身是有原子性的，而volatile又保证了可见性，所以就足以保证线程安全。
+1. boolean flag，如果一个共享变量至始至终只被各个线程赋值，而没有其他的操作，那么就可以用volatile来代替synchronized或者代替原子变量，因为赋值自身是有原子性的，而volatile又保证了可见性，所以就足以保证线程安全。（大部分类型赋值本身就是原子操作，volatile又提供了可见性）
 2. 作为刷新之前变量的触发器
 3. 避免重排序，volatile之前的所有操作赋值都会被看到
 # volatile的作用：可见性、禁止重排序
@@ -21,12 +21,12 @@
 3. volatile只能作用于属性，我们用volatile修饰属性，这样compilers就不会对这个属性做命令重排序。
 4. volatile提供了可见性，任何一个线程对其的修改将立马对其他线程可见。volatile属性不会被线程缓存，始终从主存中读取。
 5. volatile提供了happens-before保证，对volatile变量v的写入happens-before所有其他线程后续对v的读操作。
-6. volatile可以使得long和double的赋值是原子的。
+6. **volatile可以使得long和double的赋值是原子的**。
 # 能保证可见性的其他方式
 除了volatile可以让变量保证可见性外，synchronized、Lock、并发集合、Thread.join()和Thread.start()等都可以保证可见性
 具体看happens-before原则的规定
 # volatile局限性
-volatile最大的问题就是无法应用于拥塞方法。假设在循环中调用了拥塞方法，任务可能因拥塞而永远不会去检查取消标志位，甚至会造成永远不能停止。
+<font color="red">volatile最大的问题就是无法应用于阻塞方法</font>。假设在循环中调用了拥塞方法，任务可能因拥塞而永远不会去检查取消标志位，甚至会造成永远不能停止。
 ```java
 public class PrimeGenerator implements Runnable {
     private static ExecutorService exec = Executors.newCachedThreadPool();
@@ -67,5 +67,4 @@ public class PrimeGenerator implements Runnable {
         return generator.get();
     }
 }
-
 ```

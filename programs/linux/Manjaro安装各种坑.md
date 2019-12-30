@@ -1,7 +1,10 @@
 Manjaro安装各种坑
 
 [TOC]
-
+# 切换tty
+按ctrl+alt+F2(F1-F6都可以一试，有的F1可能是图形界面)，等一会就可以进入tty，用户名密码登录后用top查看高负载的进程，kill PID即可
+# sysctl.conf
+manjaro和ubuntu系还是很多不一样的，比如没有了sysctl.conf，直接在sysctl.d中创建即可。等等吧，可以从archlinux中找答案
 # 添加archlinuxCN源
 ```
 #编辑文件 sudo vi /etc/pacman.conf   末尾追加
@@ -15,6 +18,7 @@ Server = https://mirrors.ustc.edu.cn/blackarch/$repo/os/$arch
 # 选择pacman中文镜像
 ```
 sudo pacman-mirrors -c China​
+sudo pacman-mirrors -i -c China -m rank
 sudo pacman -Syyu
 ```
 # pacman命令

@@ -1,26 +1,5 @@
 [TOC]
-
-# docker全命令
 ```config
-Flag shorthand -h has been deprecated, please use --help
-
-Usage:  docker [OPTIONS] COMMAND
-
-A self-sufficient runtime for containers
-
-Options:
-      --config string      Location of client config files (default "/home/cai/.docker")
-  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default context set with "docker context use")
-  -D, --debug              Enable debug mode
-  -H, --host list          Daemon socket(s) to connect to
-  -l, --log-level string   Set the logging level ("debug"|"info"|"warn"|"error"|"fatal") (default "info")
-      --tls                Use TLS; implied by --tlsverify
-      --tlscacert string   Trust certs signed only by this CA (default "/home/cai/.docker/ca.pem")
-      --tlscert string     Path to TLS certificate file (default "/home/cai/.docker/cert.pem")
-      --tlskey string      Path to TLS key file (default "/home/cai/.docker/key.pem")
-      --tlsverify          Use TLS and verify the remote
-  -v, --version            Print version information and quit
-
 Management Commands:
   builder     Manage builds
   config      Manage Docker configs
@@ -40,62 +19,134 @@ Management Commands:
   volume      Manage volumes
 ```
 
-# attach
+# attach：将本地标准输入，输出和错误流附加到正在运行的容器
 Attach local standard input, output, and error streams to a running container
-
-# build
+```docker
+# Docker提供了attach命令来进入Docker容器。
+sudo docker attach [container_id]
+```
+# build：通过dockerfile构建一个image
 Build an image from a Dockerfile
-# commit
+```config
+Usage:  docker build [OPTIONS] PATH | URL | -
+
+Build an image from a Dockerfile
+
+Options:
+      --add-host list           Add a custom host-to-IP mapping (host:ip)
+      --build-arg list          Set build-time variables
+      --cache-from strings      Images to consider as cache sources
+      --cgroup-parent string    Optional parent cgroup for the container
+      --compress                Compress the build context using gzip
+      --cpu-period int          Limit the CPU CFS (Completely Fair Scheduler) period
+      --cpu-quota int           Limit the CPU CFS (Completely Fair Scheduler) quota
+  -c, --cpu-shares int          CPU shares (relative weight)
+      --cpuset-cpus string      CPUs in which to allow execution (0-3, 0,1)
+      --cpuset-mems string      MEMs in which to allow execution (0-3, 0,1)
+      --disable-content-trust   Skip image verification (default true)
+  -f, --file string             Name of the Dockerfile (Default is 'PATH/Dockerfile')
+      --force-rm                Always remove intermediate containers
+      --iidfile string          Write the image ID to the file
+      --isolation string        Container isolation technology
+      --label list              Set metadata for an image
+  -m, --memory bytes            Memory limit
+      --memory-swap bytes       Swap limit equal to memory plus swap: '-1' to enable unlimited swap
+      --network string          Set the networking mode for the RUN instructions during build (default "default")
+      --no-cache                Do not use cache when building the image
+      --pull                    Always attempt to pull a newer version of the image
+  -q, --quiet                   Suppress the build output and print image ID on success
+      --rm                      Remove intermediate containers after a successful build (default true)
+      --security-opt strings    Security options
+      --shm-size bytes          Size of /dev/shm
+  -t, --tag list                Name and optionally a tag in the 'name:tag' format
+      --target string           Set the target build stage to build.
+      --ulimit ulimit           Ulimit options (default [])
+```
+# commit：通过变化后的container创建一个新的image
 Create a new image from a container's changes
-# cp
+```docker
+Usage:  docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+
+Create a new image from a container's changes
+
+Options:
+  -a, --author string    Author (e.g., "John Hannibal Smith <hannibal@a-team.com>")
+  -c, --change list      Apply Dockerfile instruction to the created image
+  -m, --message string   Commit message
+  -p, --pause            Pause container during commit (default true)
+```
+# cp：在container与host之间拷贝文件
 Copy files/folders between a container and the local filesystem
-# create
+# create：创建一个新的container
 Create a new container
 # diff
 Inspect changes to files or directories on a container's filesystem
 # events
 Get real time events from the server
-# exec
+# exec：在一个运行中的container中执行一个命令行
 Run a command in a running container
+```config
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+Run a command in a running container
+
+Options:
+  -d, --detach               Detached mode: run command in the background
+      --detach-keys string   Override the key sequence for detaching a container
+  -e, --env list             Set environment variables
+  -i, --interactive          Keep STDIN open even if not attached
+      --privileged           Give extended privileges to the command
+  -t, --tty                  Allocate a pseudo-TTY
+  -u, --user string          Username or UID (format: <name|uid>[:<group|gid>])
+  -w, --workdir string       Working directory inside the container
+```
 # export
 Export a container's filesystem as a tar archive
 # history
 Show the history of an image
-# images
+# images：获取全部镜像
 List images
 # import
 Import the contents from a tarball to create a filesystem image
 # info
 Display system-wide information
-# inspect
+# inspect：返回有关Docker对象的底层信息
 Return low-level information on Docker objects
-# kill
+```docker
+docker inspect [container_id/container_name]
+```
+# kill：干掉一个或多个运行中的container
 Kill one or more running containers
 # load
 Load an image from a tar archive or STDIN
-# login
+# login：登录例如（dockerhub这种）
 Log in to a Docker registry
-# logout
+# logout：登出
 Log out from a Docker registry
 # logs
 Fetch the logs of a container
 # pause
 Pause all processes within one or more containers
-# port
+# port：获取container端口
 List port mappings or a specific mapping for the container
-# ps
+```docker
+docker port [container_id/container_name]
+1521/tcp -> 0.0.0.0:49161
+22/tcp -> 0.0.0.0:49160
+```
+# ps：container列表
 List containers
-# pull
+# pull：从repository（例如dockerhub）中拉取一个image
 Pull an image or a repository from a registry
 # push
 Push an image or a repository to a registry
-# rename
+# rename：更改container名字
 Rename a container
-# restart
+# restart：重启container
 Restart one or more containers
-# rm
+# rm：删除container
 Remove one or more containers
-# rmi
+# rmi：删除镜像
 Remove one or more images
 # run
 -d 后台执行

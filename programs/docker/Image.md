@@ -10,10 +10,19 @@
 + base image 也可以共享
 + base image 只包含rootfs，所以image很小
 
-
-
-# diy Base Image
-```
+# dockerhub获取image
+```docker
 docker pull hello-world
 docker run hello-world
 ```
+
+# 通过container生成image
+```docker
+docker commit container_id
+```
+
+# 通过dockerfile构建image
+```docker
+docker build -t dockerid/dockername .
+```
+[dockerfile](./dockerfile.md)

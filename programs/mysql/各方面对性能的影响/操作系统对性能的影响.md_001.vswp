@@ -1,0 +1,11 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/programs/mysql/各方面对性能的影响/操作系统对性能的影响.md
+[TOC]
+# 操作系统对性能的影响
++ windows xp默认的tcp最大连接数为10个
++ 64位cpu上使用32位的操作系统（不能使用大量的内存，单个进程不能超过4gb内存）
+# MySQL适合的操作系统
+Windows
+FreeBSD
+Solaris
+Linux
+# 结论选择linux就对了

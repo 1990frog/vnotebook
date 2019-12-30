@@ -1,13 +1,5 @@
 [TOC]
 
-# 容器 & Docker & 虚拟机
-Container(容器)是一种轻量级的虚拟化技术，它不需要模拟硬件创建虚拟机。在Linux系统里面，使用到Linux kernel的cgroups，namespace(ipc，network， user，pid，mount），capability等用于隔离运行环境和资源限制的技术，我们称之为容器。容器技术早就出现。例如Solaris Zones 和 BSD jails 就是非 Linux 操作系统上的容器，而用于 Linux 的容器技术也有很多如 Linux-Vserver、OpenVZ 和 FreeVPS。虽然这些技术都已经成熟，但是这些解决方案还没有将它们的容器支持集成到主流 Linux 内核。总的来说，容器不等同于Docker，容器更不是虚拟机。
-
-LXC项目由一个 Linux 内核补丁和一些 userspace 工具组成，它提供一套简化的工具来维护容器，用于虚拟环境的环境隔离、资源限制以及权限控制。LXC有点类似chroot，但是它比chroot提供了更多的隔离性。
-
-Docker最初目标是做一个特殊的LXC的开源系统，最后慢慢演变为它自己的一套容器运行时环境。Docker基于Linux kernel的CGroups，Namespace，UnionFileSystem等技术封装成一种自定义的容器格式，用于提供一整套虚拟运行环境。毫无疑问，近些年来Docker已经成为了容器技术的代名词，如其官网介绍的Docker is world's leading software containerization platform。本文会先简单介绍Docker基础概念，然后会分析下Docker背后用到的技术。Debian上安装Docker方法参见docker-ce-installation-in-debian。
-![286774-aa1d8029930f907a](_v_images/20191226094118676_1627555934.png)
-
 # Docker Engine
 Docker提供了一个打包和运行应用的隔离环境，称之为容器，Docker的隔离和安全特性允许你在一个主机同时运行多个容器，而且它并不像虚拟机那样重量级，容器都是基于宿主机的内核运行的，它是轻量的，不管你运行的是ubuntu, debian还是其他Linux系统，用的内核都是宿主机内核。Docker提供了工具和平台来管理容器，而Docker Engine则是一个提供了大部分功能组件的CS架构的应用，如架构图所示，Docker Engine负责管理镜像，容器，网络以及数据卷等。
 ![286774-94d16c2961af7b28](_v_images/20191226094219113_82052506.png)
@@ -35,7 +27,7 @@ docker run -i -t debian /bin/bash
 5. Docker启动容器并执行 /bin/bash。因为启动时指定了-i -t参数，容器是以交互模式运行且attach到本地终端，我们可以在终端上输入命令并看到输出。
 6. 运行exit可以退出容器，但是此时容器并没有被删除，我们可以再次运行它或者删除它。
 可以发现，容器的内核版本是跟宿主机一样的，不同的是容器的主机名是独立的，它默认用容器ID做主机名。我们运行ps -ef可以发现容器进程是隔离的，容器里面看不到宿主机的进程，而且它自己有PID为1的进程。此外，网络也是隔离的，它有独立于宿主机的IP。文件系统也是隔离的，容器有自己的系统和软件目录，修改容器内的文件并不影响宿主机对应目录的文件。
-```Cmd
+```cmd
 root@stretch:/home/vagrant# uname -r
 4.9.0-6-amd64
 root@stretch:/home/vagrant# docker run -it --name demo alpine /bin/ash
@@ -46,7 +38,7 @@ root@stretch:/home/vagrant# docker run -it --name demo alpine /bin/ash
 PID   USER     TIME   COMMAND
     1 root       0:00 /bin/ash
     7 root       0:00 ps -ef
-    
+
 / # ip a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
@@ -63,8 +55,7 @@ PID   USER     TIME   COMMAND
 + Union File Systems：UnionFS把多个目录结合成一个目录，对外使用，最上层目录为读写层(通常只有1个)，下面可以有一个或多个只读层，见容器和镜像分层图。Docker支持OverlayFS，AUFS、DeviceMapper、btrfs等联合文件系统。
 + Container Format: Docker Engine组合Namespaces，CGroups以及UnionFS包装为一个容器格式，默认格式为libcontainer，后续可能会加入BSD Jails 或 Solaris Zones容器格式的支持。
 
-# Docker底层技术
-# Namespaces
+## Namespaces
 Namespaces用于环境隔离，Linux kernel支持的Namespace包括UTS, IPC, PID, NET, NS, USER以及新加入的CGROUP等，UTS用于隔离主机名和域名，使用标识CLONE_NEWUTS，IPC用于隔离进程间通信资源如消息队列等，使用标识CLONE_NEWIPC，PID隔离进程，NET用于隔离网络，NS用于隔离挂载点，USER用于隔离用户组。默认情况下，通过clone系统调用创建子进程的namespace与父进程是一致的，而你可以在clone系统调用中通过flag参数设置隔离的名字空间来隔离，当然也可以更加方便的直接用unshare命令来创建新的namespace。查看一个进程的各Namespace命令如下：
 ```
 root@stretch:/home/vagrant# ls -ls /proc/self/ns/
@@ -76,7 +67,7 @@ root@stretch:/home/vagrant# ls -ls /proc/self/ns/
 0 lrwxrwxrwx 1 root root 0 May 17 22:04 user -> user:[4026531837]
 0 lrwxrwxrwx 1 root root 0 May 17 22:04 uts -> uts:[4026531838]
 ```
-# PID Namespace
+## PID
 在容器中，有自己的Pid namespace，因此我们看到的只有PID为1的初始进程以及它的子进程，而宿主机的其他进程容器内是看不到的。通常来说，Linux启动后它会先启动一个PID为1的进程，这是系统进程树的根进程，根进程会接着创建子进程来初始化系统服务。PID namespace允许在新的namespace创建一棵新的进程树，它可以有自己的PID为1的进程。在PID namespace的隔离下，子进程名字空间无法知道父进程名字空间的进程，如在Docker容器中无法看到宿主机的进程，而父进程名字空间可以看到子进程名字空间的所有进程。如图所示：
 ![286774-a736076226eb26ab](_v_images/20191226094748321_1340523554.png)
 Linux内核加入PID Namespace后，对pid结构进行了修改，新增的upid结构用于跟踪namespace和pid。
@@ -116,7 +107,7 @@ root@stretch:/home/vagrant# ls -ls /proc/self/ns/
 0 lrwxrwxrwx 1 root root 0 May 19 15:24 user -> user:[4026531837]
 0 lrwxrwxrwx 1 root root 0 May 19 15:24 uts -> uts:[4026531838]
 ```
-# NS Namespace
+## NS
 NS Namespace用于隔离挂载点，不同NS Namespace的挂载点互不影响。创建一个新的Mount Namespace效果有点类似chroot，不过它隔离的比chroot更加完全。这是历史上的第一个Linux Namespace，由此得到了 NS 这个名字而不是用的 Mount。
 
 在最初的NS Namespace版本中，挂载点是完全隔离的。初始状态下，子进程看到的挂载点与父进程是一样的。在新的Namespace中，子进程可以随意mount/umount任何目录，而不会影响到父Namespace。使用NS Namespace完全隔离挂载点初衷很好，但是也带来了某些情况下不方便，比如我们新加了一块磁盘，如果完全隔离则需要在所有的Namespace中都挂载一遍。为此，Linux在2.6.15版本中加入了一个shared subtree特性，通过指定Propagation来确定挂载事件如何传播。比如通过指定MS_SHARED来允许在一个peer group(子namespace 和父namespace就属于同一个组)共享挂载点，mount/umount事件会传播到peer group成员中。使用MS_PRIVATE不共享挂载点和传播挂载事件。其他还有MS_SLAVE和NS_UNBINDABLE等选项。可以通过查看cat /proc/self/mountinfo来看挂载点信息，若没有传播参数则为MS_PRIVATE的选项。
@@ -136,7 +127,7 @@ root         2     1  0 15:36 pts/1    00:00:00 ps -ef
 
 可以看到，隔离了NS namespace并重新挂载了proc后，ps命令只能看到2个进程了，跟我们在Docker容器中看到的一致。
 
-# NET Namespace
+## NET
 Docker容器中另一个重要特性是网络独立(之所以不用隔离一词是因为容器的网络还是要借助宿主机的网络来通信的)，使用到Linux 的 NET Namespace以及vet。veth主要的目的是为了跨NET namespace之间提供一种类似于Linux进程间通信的技术，所以veth总是成对出现，如下面的veth0和veth1。它们位于不同的NET namespace中，在veth设备任意一端接收到的数据，都会从另一端发送出去。veth实现了不同namespace的网络数据传输。
 ![286774-c12bf7651af1a8c3](_v_images/20191226095144424_1269853902.png)
 
@@ -144,7 +135,7 @@ Docker容器中另一个重要特性是网络独立(之所以不用隔离一词�
 
 Docker里面网络模式分为bridge，host，overlay等几种模式，默认是采用bridge模式网络如图所示。如果使用host模式，则不隔离直接使用宿主机网络。overlay网络则是更加高级的模式，可以实现跨主机的容器通信，后面会单独总结下Docker网络这个专题。
 
-# USER Namespace
+## USER
 user namespace用于隔离用户和组信息，在不同的namespace中用户可以有相同的 UID 和 GID，它们之间互相不影响。父子namespace之间可以进行用户映射，如父namespace(宿主机)的普通用户映射到子namespace(容器)的root用户，以减少子namespace的root用户操作父namespace的风险。user namespace功能虽然在很早就出现了，但是直到Linux kernel 3.8之后这个功能才趋于完善。
 
 创建新的user namespace之后第一步就是设置好user和group的映射关系。这个映射通过设置/proc/PID/uid_map(gid_map)实现，格式如下，ID-inside-ns是容器内的uid/gid，而ID-outside-ns则是容器外映射的真实uid/gid。比如0 1000 1表示将真实的uid=1000映射为容器内的uid=0，length为映射的范围。
@@ -184,7 +175,7 @@ root@stretch:/home/vagrant# CPID=`ps -ef|grep '\/bin\/ash'|awk '{printf $2}'`
 root@stretch:/home/vagrant# cat /proc/$CPID/uid_map
          0     165536      65536
 ```
-# 其他Namespace
+## UTS
 UTS namespace用于隔离主机名等。可以看到在新的uts namespace修改主机名并不影响原namespace的主机名。
 
 ```
@@ -218,7 +209,7 @@ key        msqid      owner      perms      used-bytes   messages
 ```
 CGROUP Namespace是Linux4.6以后才支持的新namespace。容器技术使用namespace和cgroup实现环境隔离和资源限制，但是对于cgroup本身并没有隔离。没有cgroup namespace前，容器中一旦挂载cgroup文件系统，便可以修改整全局的cgroup配置。有了cgroup namespace后，每个namespace中的进程都有自己的cgroup文件系统视图，增强了安全性，同时也让容器迁移更加方便。在我测试的Docker18.03.1-ce版本中容器暂时没有用到cgroup namespace，这里就不再展开。
 
-# CGroups
+## CGroups
 Linux CGroups用于资源限制，包括限制CPU、内存、blkio以及网络等。通过工具cgroup-bin (sudo apt-get install cgroup-bin)可以创建CGroup并进入该CGroup执行命令。
 ```
 root@stretch:/home/vagrant# cgcreate -a vagrant -g cpu:cg1

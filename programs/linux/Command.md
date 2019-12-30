@@ -1,5 +1,8 @@
 [TOC]
 
+man sysctl
+man sysctl.conf
+
 # 启停
 ## logout 登出
 ## reboot 重启
@@ -19,6 +22,7 @@
 ## telinit 其为init的一个软连接
 当系统起来后，init进程会占用PID 1，init程序会在入口处判断PID，如果不是1,就退出init处理程序，转而调用telinit.
 # 系统信息
+## ll
 ## uname 显示系统信息
 ```
 uname -a
@@ -276,7 +280,9 @@ r=4，w=2，x=1
 chmod ug+w,o-x employee.txt
 chmod 751 employee.txt
 ```
+
 # 网络信息
+## ip
 ## ifconfig 显示设备ip
 ```
 ifconfig en0
