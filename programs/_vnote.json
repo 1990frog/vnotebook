@@ -95,12 +95,6 @@
             "name": "docker"
         },
         {
-            "name": "mongodb"
-        },
-        {
-            "name": "oracle"
-        },
-        {
             "name": "netty"
         },
         {
@@ -113,7 +107,7 @@
             "name": "maven"
         },
         {
-            "name": "mysql"
+            "name": "db"
         }
     ],
     "version": "1"
