@@ -1,0 +1,19 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/java/concurrent/JUC/ThreadLocal.md
+[TOC]
+
+# 两大使用场景
++ 经典场景1：每个线程需要一个独享的对象（通常是工具类【非线程安全的】，典型需要使用的类有SimpleDateFormat和Random）
++ 经典常见2：每个线程内需要保存全局变量（例如在拦截器中获取用户信息），可以让不同方法直接使用，避免参数传递的麻烦
+
+两个出发点：
+1.线程不安全的类
+2.避免参数传递的麻烦
+
+# 场景1：每个线程需要一个独享的对象
+每个Thread内有<font color="red">自己</font>的实例副本，<font color="red">不共享</font>
+比喻：<font color="red">教材</font>只有一本，一起做笔记有线程安全问题。<font color="red">复印</font>后没问题
+
+SImpleDateFormat的进化之路：
+代码
+![](_v_images/20200102231559095_1471458608.png)
+![](_v_images/20200102231951773_1025428214.png)
