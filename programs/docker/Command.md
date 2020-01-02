@@ -1,154 +1,44 @@
 [TOC]
-```config
-Management Commands:
-  builder     Manage builds
-  config      Manage Docker configs
-  container   Manage containers
-  context     Manage contexts
-  engine      Manage the docker engine
-  image       Manage images
-  network     Manage networks
-  node        Manage Swarm nodes
-  plugin      Manage plugins
-  secret      Manage Docker secrets
-  service     Manage services
-  stack       Manage Docker stacks
-  swarm       Manage Swarm
-  system      Manage Docker
-  trust       Manage trust on Docker images
-  volume      Manage volumes
-```
-
-# attach：将本地标准输入，输出和错误流附加到正在运行的容器
+# docker
+## attach：将本地标准输入，输出和错误流附加到正在运行的容器
 Attach local standard input, output, and error streams to a running container
 ```docker
 # Docker提供了attach命令来进入Docker容器。
 sudo docker attach [container_id]
 ```
-# build：通过dockerfile构建一个image
-Build an image from a Dockerfile
-```config
-Usage:  docker build [OPTIONS] PATH | URL | -
-
-Build an image from a Dockerfile
-
-Options:
-      --add-host list           Add a custom host-to-IP mapping (host:ip)
-      --build-arg list          Set build-time variables
-      --cache-from strings      Images to consider as cache sources
-      --cgroup-parent string    Optional parent cgroup for the container
-      --compress                Compress the build context using gzip
-      --cpu-period int          Limit the CPU CFS (Completely Fair Scheduler) period
-      --cpu-quota int           Limit the CPU CFS (Completely Fair Scheduler) quota
-  -c, --cpu-shares int          CPU shares (relative weight)
-      --cpuset-cpus string      CPUs in which to allow execution (0-3, 0,1)
-      --cpuset-mems string      MEMs in which to allow execution (0-3, 0,1)
-      --disable-content-trust   Skip image verification (default true)
-  -f, --file string             Name of the Dockerfile (Default is 'PATH/Dockerfile')
-      --force-rm                Always remove intermediate containers
-      --iidfile string          Write the image ID to the file
-      --isolation string        Container isolation technology
-      --label list              Set metadata for an image
-  -m, --memory bytes            Memory limit
-      --memory-swap bytes       Swap limit equal to memory plus swap: '-1' to enable unlimited swap
-      --network string          Set the networking mode for the RUN instructions during build (default "default")
-      --no-cache                Do not use cache when building the image
-      --pull                    Always attempt to pull a newer version of the image
-  -q, --quiet                   Suppress the build output and print image ID on success
-      --rm                      Remove intermediate containers after a successful build (default true)
-      --security-opt strings    Security options
-      --shm-size bytes          Size of /dev/shm
-  -t, --tag list                Name and optionally a tag in the 'name:tag' format
-      --target string           Set the target build stage to build.
-      --ulimit ulimit           Ulimit options (default [])
-```
-# commit：通过变化后的container创建一个新的image
-Create a new image from a container's changes
-```docker
-Usage:  docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
-
-Create a new image from a container's changes
-
-Options:
-  -a, --author string    Author (e.g., "John Hannibal Smith <hannibal@a-team.com>")
-  -c, --change list      Apply Dockerfile instruction to the created image
-  -m, --message string   Commit message
-  -p, --pause            Pause container during commit (default true)
-```
-# cp：在container与host之间拷贝文件
-Copy files/folders between a container and the local filesystem
-# create：创建一个新的container
-Create a new container
-# diff
-Inspect changes to files or directories on a container's filesystem
-# events
+## events
 Get real time events from the server
-# exec：在一个运行中的container中执行一个命令行
-Run a command in a running container
-```config
-Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
-
-Run a command in a running container
-
-Options:
-  -d, --detach               Detached mode: run command in the background
-      --detach-keys string   Override the key sequence for detaching a container
-  -e, --env list             Set environment variables
-  -i, --interactive          Keep STDIN open even if not attached
-      --privileged           Give extended privileges to the command
-  -t, --tty                  Allocate a pseudo-TTY
-  -u, --user string          Username or UID (format: <name|uid>[:<group|gid>])
-  -w, --workdir string       Working directory inside the container
-```
-# export
-Export a container's filesystem as a tar archive
-# history
+## history
 Show the history of an image
-# images：获取全部镜像
+## images：获取全部镜像
 List images
-# import
+## import
 Import the contents from a tarball to create a filesystem image
-# info
+## info
 Display system-wide information
-# inspect：返回有关Docker对象的底层信息
+## inspect：返回有关Docker对象的底层信息
 Return low-level information on Docker objects
 ```docker
 docker inspect [container_id/container_name]
 ```
-# kill：干掉一个或多个运行中的container
-Kill one or more running containers
-# load
+
+## load
 Load an image from a tar archive or STDIN
-# login：登录例如（dockerhub这种）
+## login：登录例如（dockerhub这种）
 Log in to a Docker registry
-# logout：登出
+## logout：登出
 Log out from a Docker registry
-# logs
-Fetch the logs of a container
-# pause
-Pause all processes within one or more containers
-# port：获取container端口
-List port mappings or a specific mapping for the container
-```docker
-docker port [container_id/container_name]
-1521/tcp -> 0.0.0.0:49161
-22/tcp -> 0.0.0.0:49160
-```
-# ps：container列表
+## ps：container列表
 List containers
-# pull：从repository（例如dockerhub）中拉取一个image
+## pull：从repository（例如dockerhub）中拉取一个image
 Pull an image or a repository from a registry
-# push
+## push
 Push an image or a repository to a registry
-# rename：更改container名字
-Rename a container
-# restart：重启container
-Restart one or more containers
-# rm：删除container
-Remove one or more containers
-# rmi：删除镜像
+
+## rmi：删除镜像
 Remove one or more images
-# run
+
+## run
 -d 后台执行
 Run a command in a new container
 ```config
@@ -271,25 +161,240 @@ Options:
       --volumes-from list              Mount volumes from the specified container(s)
   -w, --workdir string                 Working directory inside the container
 ```
-# save
+## save
 Save one or more images to a tar archive (streamed to STDOUT by default)
-# search
+## search：DockerHub查询镜像
 Search the Docker Hub for images
-# start
-Start one or more stopped containers
-# stats
-Display a live stream of container(s) resource usage statistics
-# stop
-Stop one or more running containers
-# tag
+## tag
 Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
-# top
-Display the running processes of a container
-# unpause
-Unpause all processes within one or more containers
-# update
 Update configuration of one or more containers
-# version
+## version
 Show the Docker version information
-# wait
+# builder
+## build：通过dockerfile构建一个image
+Build an image from a Dockerfile
+```config
+Usage:  docker build [OPTIONS] PATH | URL | -
+
+Build an image from a Dockerfile
+
+Options:
+      --add-host list           Add a custom host-to-IP mapping (host:ip)
+      --build-arg list          Set build-time variables
+      --cache-from strings      Images to consider as cache sources
+      --cgroup-parent string    Optional parent cgroup for the container
+      --compress                Compress the build context using gzip
+      --cpu-period int          Limit the CPU CFS (Completely Fair Scheduler) period
+      --cpu-quota int           Limit the CPU CFS (Completely Fair Scheduler) quota
+  -c, --cpu-shares int          CPU shares (relative weight)
+      --cpuset-cpus string      CPUs in which to allow execution (0-3, 0,1)
+      --cpuset-mems string      MEMs in which to allow execution (0-3, 0,1)
+      --disable-content-trust   Skip image verification (default true)
+  -f, --file string             Name of the Dockerfile (Default is 'PATH/Dockerfile')
+      --force-rm                Always remove intermediate containers
+      --iidfile string          Write the image ID to the file
+      --isolation string        Container isolation technology
+      --label list              Set metadata for an image
+  -m, --memory bytes            Memory limit
+      --memory-swap bytes       Swap limit equal to memory plus swap: '-1' to enable unlimited swap
+      --network string          Set the networking mode for the RUN instructions during build (default "default")
+      --no-cache                Do not use cache when building the image
+      --pull                    Always attempt to pull a newer version of the image
+  -q, --quiet                   Suppress the build output and print image ID on success
+      --rm                      Remove intermediate containers after a successful build (default true)
+      --security-opt strings    Security options
+      --shm-size bytes          Size of /dev/shm
+  -t, --tag list                Name and optionally a tag in the 'name:tag' format
+      --target string           Set the target build stage to build.
+      --ulimit ulimit           Ulimit options (default [])
+```
+## prune：删除构建缓存
+```docker
+# 删除 所有未被 tag 标记和未被容器使用的镜像：
+docker image prune
+# 删除 所有未被容器使用的镜像：
+docker image prune -a
+# 删除 所有停止运行的容器：
+docker container prune
+# 删除 所有未被挂载的卷：
+docker volume prune
+# 删除 所有网络：
+docker network prune
+# 删除 docker 所有资源：
+docker system prune
+```
+# config
+## create：Create a config from a file or STDIN
+## inspect：Display detailed information on one or more configs
+## ls：List configs
+## rm：Remove one or more configs
+# container
+## commit：通过变化后的container创建一个新的image
+Create a new image from a container's changes
+```docker
+Usage:  docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+
+Create a new image from a container's changes
+
+Options:
+  -a, --author string    Author (e.g., "John Hannibal Smith <hannibal@a-team.com>")
+  -c, --change list      Apply Dockerfile instruction to the created image
+  -m, --message string   Commit message
+  -p, --pause            Pause container during commit (default true)
+```
+## cp：在container与host之间拷贝文件
+Copy files/folders between a container and the local filesystem
+## create：创建一个新的container
+Create a new container
+## diff：Inspect changes to files or directories on a container's filesystem
+Inspect changes to files or directories on a container's filesystem# context
+## exec：在一个运行中的container中执行一个命令行
+Run a command in a running container
+```config
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+Run a command in a running container
+
+Options:
+  -d, --detach               Detached mode: run command in the background
+      --detach-keys string   Override the key sequence for detaching a container
+  -e, --env list             Set environment variables
+  -i, --interactive          Keep STDIN open even if not attached
+      --privileged           Give extended privileges to the command
+  -t, --tty                  Allocate a pseudo-TTY
+  -u, --user string          Username or UID (format: <name|uid>[:<group|gid>])
+  -w, --workdir string       Working directory inside the container
+```
+## export：Export a container's filesystem as a tar archive
+Export a container's filesystem as a tar archive
+## inspect：Display detailed information on one or more containers
+## kill：干掉一个或多个运行中的container
+Kill one or more running containers
+## logs：获取container的日志
+Fetch the logs of a container
+## ls：List containers
+## pause：Pause all processes within one or more containers
+## port：获取container端口
+List port mappings or a specific mapping for the container
+```docker
+docker port [container_id/container_name]
+1521/tcp -> 0.0.0.0:49161
+22/tcp -> 0.0.0.0:49160
+```
+## prune：Remove all stopped containers
+## rename：更改container名字
+Rename a container
+## restart：重启container
+Restart one or more containers
+## rm：删除container
+Remove one or more containers
+## run：Run a command in a new container
+## start：启动一个或多个container
+Start one or more stopped containers
+## stats：Display a live stream of container(s) resource usage statistics
+Display a live stream of container(s) resource usage statistics
+## stop：停止一个或多个container
+Stop one or more running containers
+## top：Display the running processes of a container
+Display the running processes of a container
+## unpause：Unpause all processes within one or more containers
+Unpause all processes within one or more containers
+## update：Update configuration of one or more containers
+## wait
 Block until one or more containers stop, then print their exit codes
+# engine
+## activate：Activate Enterprise Edition
+## check：Check for available engine updates
+## update：Update a local engine
+# image
+## build       Build an image from a Dockerfile
+## history     Show the history of an image
+## import      Import the contents from a tarball to create a filesystem image
+## inspect     Display detailed information on one or more images
+## load        Load an image from a tar archive or STDIN
+## ls          List images
+## prune       Remove unused images
+## pull        Pull an image or a repository from a registry
+## push        Push an image or a repository to a registry
+## rm          Remove one or more images
+## save        Save one or more images to a tar archive (streamed to STDOUT by default)
+## tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+# network
+## connect     Connect a container to a network
+## create      Create a network
+## disconnect  Disconnect a container from a network
+## inspect     Display detailed information on one or more networks
+## ls          List networks
+## prune       Remove all unused networks
+## rm          Remove one or more networks
+# node
+## demote      Demote one or more nodes from manager in the swarm
+## inspect     Display detailed information on one or more nodes
+## ls          List nodes in the swarm
+## promote     Promote one or more nodes to manager in the swarm
+## ps          List tasks running on one or more nodes, defaults to current node
+## rm          Remove one or more nodes from the swarm
+## update      Update a node
+# plugin
+## create      Create a plugin from a rootfs and configuration. Plugin data directory must contain config.json and rootfs directory.
+## disable     Disable a plugin
+## enable      Enable a plugin
+## inspect     Display detailed information on one or more plugins
+## install     Install a plugin
+## ls          List plugins
+## push        Push a plugin to a registry
+## rm          Remove one or more plugins
+## set         Change settings for a plugin
+## upgrade     Upgrade an existing plugin
+# secret
+## create      Create a secret from a file or STDIN as content
+## inspect     Display detailed information on one or more secrets
+## ls          List secrets
+## rm          Remove one or more secrets
+# service
+## create      Create a new service
+## inspect     Display detailed information on one or more services
+## logs        Fetch the logs of a service or task
+## ls          List services
+## ps          List the tasks of one or more services
+## rm          Remove one or more services
+## rollback    Revert changes to a service's configuration
+## scale       Scale one or multiple replicated services
+## update      Update a service
+# stack
+## deploy      Deploy a new stack or update an existing stack
+## ls          List stacks
+## ps          List the tasks in the stack
+## rm          Remove one or more stacks
+## services    List the services in the stack
+# swarm
+## ca          Display and rotate the root CA
+## init        Initialize a swarm
+## join        Join a swarm as a node and/or manager
+## join-token  Manage join tokens
+## leave       Leave the swarm
+## unlock      Unlock swarm
+## unlock-key  Manage the unlock key
+## update      Update the swarm
+# system
+## df          Show docker disk usage
+## events      Get real time events from the server
+## info        Display system-wide information
+## prune       Remove unused data
+# trust
+```
+Management Commands:
+  key         Manage keys for signing Docker images
+  signer      Manage entities who can sign Docker images
+
+Commands:
+  inspect     Return low-level information about keys and signatures
+  revoke      Remove trust for an image
+  sign        Sign an image
+```
+# volume
+## create      Create a volume
+## inspect     Display detailed information on one or more volumes
+## ls          List volumes
+## prune       Remove all unused local volumes
+## rm          Remove one or more volumes

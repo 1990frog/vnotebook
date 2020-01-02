@@ -1,5 +1,9 @@
 [TOC]
 
+# 常用最小镜像
++ busybox
++ scratch
+
 # 什么是Image
 1. 文件和meta data的集合（root filesystem）
 2. 分层的，并且每一层都可以添加改变删除文件，成为一个新的image
