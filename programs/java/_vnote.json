@@ -75,6 +75,9 @@
         },
         {
             "name": "enum"
+        },
+        {
+            "name": "io"
         }
     ],
     "version": "1"
