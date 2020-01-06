@@ -54,70 +54,25 @@
     ],
     "sub_directories": [
         {
-            "name": "java"
-        },
-        {
-            "name": "regexp"
-        },
-        {
-            "name": "python"
-        },
-        {
-            "name": "pattern"
-        },
-        {
-            "name": "hadoop"
+            "name": "base"
         },
         {
             "name": "linux"
         },
         {
-            "name": "webservice"
+            "name": "language"
         },
         {
-            "name": "datastructure"
+            "name": "middleware"
         },
         {
-            "name": "redis"
+            "name": "database"
         },
         {
-            "name": "vim"
+            "name": "tool"
         },
         {
-            "name": "git"
-        },
-        {
-            "name": "svn"
-        },
-        {
-            "name": "shadowsocks"
-        },
-        {
-            "name": "mq"
-        },
-        {
-            "name": "markdown"
-        },
-        {
-            "name": "docker"
-        },
-        {
-            "name": "netty"
-        },
-        {
-            "name": "spring"
-        },
-        {
-            "name": "guava"
-        },
-        {
-            "name": "maven"
-        },
-        {
-            "name": "db"
-        },
-        {
-            "name": "network"
+            "name": "bigdata"
         }
     ],
     "version": "1"

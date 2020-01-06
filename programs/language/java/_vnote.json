@@ -44,40 +44,13 @@
     ],
     "sub_directories": [
         {
-            "name": "datatypes"
-        },
-        {
-            "name": "stream"
-        },
-        {
-            "name": "genericity"
-        },
-        {
-            "name": "basis"
+            "name": "core"
         },
         {
             "name": "book"
         },
         {
-            "name": "initialization"
-        },
-        {
-            "name": "dynamicProxy"
-        },
-        {
-            "name": "concurrent"
-        },
-        {
-            "name": "exception"
-        },
-        {
-            "name": "rt.jar学习"
-        },
-        {
-            "name": "enum"
-        },
-        {
-            "name": "io"
+            "name": "framework"
         }
     ],
     "version": "1"
