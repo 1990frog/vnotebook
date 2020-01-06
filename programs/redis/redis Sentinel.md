@@ -1,4 +1,3 @@
-vnote_backup_file_826537664 /home/cai/Documents/vnote_notebooks/vnotebook/programs/redis/Redis Sentinel.md
 [TOC]
 
 ![redis sentinel故障转移](_v_images/20200106141507641_1706868549.png)
