@@ -30,6 +30,16 @@
             "name": "Lambda表达式的意义.md",
             "tags": [
             ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2020-01-07T03:02:51Z",
+            "modified_time": "2020-01-07T03:06:20Z",
+            "name": "函数式接口.md",
+            "tags": [
+            ]
         }
     ],
     "sub_directories": [
