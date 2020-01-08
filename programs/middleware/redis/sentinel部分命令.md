@@ -8,7 +8,7 @@ logfile "${port}.log"
 # 主节点名字，ip，端口，几个sentinel发现master有问题发生故障转移
 sentinel monitor mymaster 127.0.0.1 7000 2
 # 30000ms ping不通确认有问题
-sentienl down-after-milliseconds mymaster 30000
+sentinel down-after-milliseconds mymaster 30000
 # 一次复制一个
 sentinel parallel-syncs mymaster 1
 #
@@ -73,3 +73,6 @@ sentinel current-epoch 0
 sed "s/26379/26380/g" redis-sentinel-26379.conf > redis-sentinel-26380.conf
 sed "s/26379/26381/g" redis-sentinel-26379.conf > redis-sentinel-26381.conf
 ```
+
+# 启动
+redis-sentinel *.conf

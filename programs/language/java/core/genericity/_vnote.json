@@ -110,6 +110,16 @@
             "name": "问题收录.md",
             "tags": [
             ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2020-01-08T01:15:18Z",
+            "modified_time": "2020-01-08T01:29:41Z",
+            "name": "Java继承泛型类和实现泛型接口.md",
+            "tags": [
+            ]
         }
     ],
     "sub_directories": [

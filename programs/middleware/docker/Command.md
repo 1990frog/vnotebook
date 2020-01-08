@@ -1,27 +1,70 @@
 [TOC]
+
 # docker
 ## attach：将本地标准输入，输出和错误流附加到正在运行的容器
 Attach local standard input, output, and error streams to a running container
 ```docker
 # Docker提供了attach命令来进入Docker容器。
-sudo docker attach [container_id]
+docker attach [container_id]
 ```
-## events
+## events：获取docker实时操作信息
 Get real time events from the server
-## history
-Show the history of an image
-## images：获取全部镜像
-List images
-## import
-Import the contents from a tarball to create a filesystem image
-## info
+```docker
+docker events
+```
+
+## info：显示系统信息
 Display system-wide information
+```docker
+docker info
+Server:
+ Containers: 1
+  Running: 1
+  Paused: 0
+  Stopped: 0
+ Images: 5
+ Server Version: 19.03.5-ce
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Native Overlay Diff: false
+ Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog
+ Swarm: inactive
+ Runtimes: runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: d50db0a42053864a270f648048f9a8b4f24eced3.m
+ runc version: d736ef14f0288d6993a1845745d6756cfc9ddd5a
+ init version: fec3683
+ Security Options:
+  seccomp
+   Profile: default
+ Kernel Version: 5.4.6-2-MANJARO
+ Operating System: Manjaro Linux
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 4
+ Total Memory: 15.52GiB
+ Name: root
+ ID: NC3A:DP67:LVHZ:YRM2:ZIPC:Q7FG:LSKH:WDKV:D5HD:G5ZE:WZST:P5W3
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Registry: https://index.docker.io/v1/
+ Labels:
+ Experimental: false
+ Insecure Registries:127.0.0.0/8
+ Live Restore Enabled: false
+```
 ## inspect：返回有关Docker对象的底层信息
 Return low-level information on Docker objects
 ```docker
 docker inspect [container_id/container_name]
 ```
-
 ## load
 Load an image from a tar archive or STDIN
 ## login：登录例如（dockerhub这种）
@@ -30,146 +73,49 @@ Log in to a Docker registry
 Log out from a Docker registry
 ## ps：container列表
 List containers
-## pull：从repository（例如dockerhub）中拉取一个image
-Pull an image or a repository from a registry
-## push
-Push an image or a repository to a registry
-
-## rmi：删除镜像
-Remove one or more images
-
-## run
--d 后台执行
-Run a command in a new container
-```config
-Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
-
-Run a command in a new container
-
-Options:
-      --add-host list                  Add a custom host-to-IP mapping (host:ip)
-  -a, --attach list                    Attach to STDIN, STDOUT or STDERR
-      --blkio-weight uint16            Block IO (relative weight), between 10 and
-                                       1000, or 0 to disable (default 0)
-      --blkio-weight-device list       Block IO weight (relative device weight)
-                                       (default [])
-      --cap-add list                   Add Linux capabilities
-      --cap-drop list                  Drop Linux capabilities
-      --cgroup-parent string           Optional parent cgroup for the container
-      --cidfile string                 Write the container ID to the file
-      --cpu-period int                 Limit CPU CFS (Completely Fair Scheduler) period
-      --cpu-quota int                  Limit CPU CFS (Completely Fair Scheduler) quota
-      --cpu-rt-period int              Limit CPU real-time period in microseconds
-      --cpu-rt-runtime int             Limit CPU real-time runtime in microseconds
-  -c, --cpu-shares int                 CPU shares (relative weight)
-      --cpus decimal                   Number of CPUs
-      --cpuset-cpus string             CPUs in which to allow execution (0-3, 0,1)
-      --cpuset-mems string             MEMs in which to allow execution (0-3, 0,1)
-  -d, --detach                         Run container in background and print
-                                       container ID
-      --detach-keys string             Override the key sequence for detaching a
-                                       container
-      --device list                    Add a host device to the container
-      --device-cgroup-rule list        Add a rule to the cgroup allowed devices list
-      --device-read-bps list           Limit read rate (bytes per second) from a
-                                       device (default [])
-      --device-read-iops list          Limit read rate (IO per second) from a
-                                       device (default [])
-      --device-write-bps list          Limit write rate (bytes per second) to a
-                                       device (default [])
-      --device-write-iops list         Limit write rate (IO per second) to a
-                                       device (default [])
-      --disable-content-trust          Skip image verification (default true)
-      --dns list                       Set custom DNS servers
-      --dns-option list                Set DNS options
-      --dns-search list                Set custom DNS search domains
-      --domainname string              Container NIS domain name
-      --entrypoint string              Overwrite the default ENTRYPOINT of the image
-  -e, --env list                       Set environment variables
-      --env-file list                  Read in a file of environment variables
-      --expose list                    Expose a port or a range of ports
-      --gpus gpu-request               GPU devices to add to the container ('all'
-                                       to pass all GPUs)
-      --group-add list                 Add additional groups to join
-      --health-cmd string              Command to run to check health
-      --health-interval duration       Time between running the check (ms|s|m|h)
-                                       (default 0s)
-      --health-retries int             Consecutive failures needed to report unhealthy
-      --health-start-period duration   Start period for the container to
-                                       initialize before starting health-retries
-                                       countdown (ms|s|m|h) (default 0s)
-      --health-timeout duration        Maximum time to allow one check to run
-                                       (ms|s|m|h) (default 0s)
-      --help                           Print usage
-  -h, --hostname string                Container host name
-      --init                           Run an init inside the container that
-                                       forwards signals and reaps processes
-  -i, --interactive                    Keep STDIN open even if not attached
-      --ip string                      IPv4 address (e.g., 172.30.100.104)
-      --ip6 string                     IPv6 address (e.g., 2001:db8::33)
-      --ipc string                     IPC mode to use
-      --isolation string               Container isolation technology
-      --kernel-memory bytes            Kernel memory limit
-  -l, --label list                     Set meta data on a container
-      --label-file list                Read in a line delimited file of labels
-      --link list                      Add link to another container
-      --link-local-ip list             Container IPv4/IPv6 link-local addresses
-      --log-driver string              Logging driver for the container
-      --log-opt list                   Log driver options
-      --mac-address string             Container MAC address (e.g., 92:d0:c6:0a:29:33)
-  -m, --memory bytes                   Memory limit
-      --memory-reservation bytes       Memory soft limit
-      --memory-swap bytes              Swap limit equal to memory plus swap: '-1'
-                                       to enable unlimited swap
-      --memory-swappiness int          Tune container memory swappiness (0 to 100)
-                                       (default -1)
-      --mount mount                    Attach a filesystem mount to the container
-      --name string                    Assign a name to the container
-      --network network                Connect a container to a network
-      --network-alias list             Add network-scoped alias for the container
-      --no-healthcheck                 Disable any container-specified HEALTHCHECK
-      --oom-kill-disable               Disable OOM Killer
-      --oom-score-adj int              Tune host's OOM preferences (-1000 to 1000)
-      --pid string                     PID namespace to use
-      --pids-limit int                 Tune container pids limit (set -1 for unlimited)
-      --privileged                     Give extended privileges to this container
-  -p, --publish list                   Publish a container's port(s) to the host
-  -P, --publish-all                    Publish all exposed ports to random ports
-      --read-only                      Mount the container's root filesystem as
-                                       read only
-      --restart string                 Restart policy to apply when a container
-                                       exits (default "no")
-      --rm                             Automatically remove the container when it exits
-      --runtime string                 Runtime to use for this container
-      --security-opt list              Security Options
-      --shm-size bytes                 Size of /dev/shm
-      --sig-proxy                      Proxy received signals to the process
-                                       (default true)
-      --stop-signal string             Signal to stop a container (default "SIGTERM")
-      --stop-timeout int               Timeout (in seconds) to stop a container
-      --storage-opt list               Storage driver options for the container
-      --sysctl map                     Sysctl options (default map[])
-      --tmpfs list                     Mount a tmpfs directory
-  -t, --tty                            Allocate a pseudo-TTY
-      --ulimit ulimit                  Ulimit options (default [])
-  -u, --user string                    Username or UID (format:
-                                       <name|uid>[:<group|gid>])
-      --userns string                  User namespace to use
-      --uts string                     UTS namespace to use
-  -v, --volume list                    Bind mount a volume
-      --volume-driver string           Optional volume driver for the container
-      --volumes-from list              Mount volumes from the specified container(s)
-  -w, --workdir string                 Working directory inside the container
+```docker
+docker ps -a
 ```
 ## save
 Save one or more images to a tar archive (streamed to STDOUT by default)
 ## search：DockerHub查询镜像
 Search the Docker Hub for images
-## tag
-Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
-Update configuration of one or more containers
-## version
+```docker
+docker search [image_name]
+```
+## version：显示docker版本信息
 Show the Docker version information
+```docker
+docker version
+
+Client:
+ Version:           19.03.5-ce
+ API version:       1.40
+ Go version:        go1.13.4
+ Git commit:        633a0ea838
+ Built:             Fri Nov 15 03:19:09 2019
+ OS/Arch:           linux/amd64
+ Experimental:      false
+
+Server:
+ Engine:
+  Version:          19.03.5-ce
+  API version:      1.40 (minimum version 1.12)
+  Go version:       go1.13.4
+  Git commit:       633a0ea838
+  Built:            Fri Nov 15 03:17:51 2019
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          v1.3.2.m
+  GitCommit:        d50db0a42053864a270f648048f9a8b4f24eced3.m
+ runc:
+  Version:          1.0.0-rc9
+  GitCommit:        d736ef14f0288d6993a1845745d6756cfc9ddd5a
+ docker-init:
+  Version:          0.18.0
+  GitCommit:        fec3683
+```
 # builder
 ## build：通过dockerfile构建一个image
 Build an image from a Dockerfile
@@ -179,34 +125,11 @@ Usage:  docker build [OPTIONS] PATH | URL | -
 Build an image from a Dockerfile
 
 Options:
-      --add-host list           Add a custom host-to-IP mapping (host:ip)
-      --build-arg list          Set build-time variables
-      --cache-from strings      Images to consider as cache sources
-      --cgroup-parent string    Optional parent cgroup for the container
-      --compress                Compress the build context using gzip
-      --cpu-period int          Limit the CPU CFS (Completely Fair Scheduler) period
-      --cpu-quota int           Limit the CPU CFS (Completely Fair Scheduler) quota
   -c, --cpu-shares int          CPU shares (relative weight)
-      --cpuset-cpus string      CPUs in which to allow execution (0-3, 0,1)
-      --cpuset-mems string      MEMs in which to allow execution (0-3, 0,1)
-      --disable-content-trust   Skip image verification (default true)
   -f, --file string             Name of the Dockerfile (Default is 'PATH/Dockerfile')
-      --force-rm                Always remove intermediate containers
-      --iidfile string          Write the image ID to the file
-      --isolation string        Container isolation technology
-      --label list              Set metadata for an image
   -m, --memory bytes            Memory limit
-      --memory-swap bytes       Swap limit equal to memory plus swap: '-1' to enable unlimited swap
-      --network string          Set the networking mode for the RUN instructions during build (default "default")
-      --no-cache                Do not use cache when building the image
-      --pull                    Always attempt to pull a newer version of the image
   -q, --quiet                   Suppress the build output and print image ID on success
-      --rm                      Remove intermediate containers after a successful build (default true)
-      --security-opt strings    Security options
-      --shm-size bytes          Size of /dev/shm
   -t, --tag list                Name and optionally a tag in the 'name:tag' format
-      --target string           Set the target build stage to build.
-      --ulimit ulimit           Ulimit options (default [])
 ```
 ## prune：删除构建缓存
 ```docker
@@ -284,10 +207,19 @@ docker port [container_id/container_name]
 ## prune：Remove all stopped containers
 ## rename：更改container名字
 Rename a container
+```docker
+docker rename [old_container_name/id] [new_container_name]
+```
 ## restart：重启container
 Restart one or more containers
+```docker
+docker restart [container_name/id]
+```
 ## rm：删除container
 Remove one or more containers
+```docker
+docker rm [container_name/id]
+```
 ## run：Run a command in a new container
 ## start：启动一个或多个container
 Start one or more stopped containers
@@ -306,27 +238,96 @@ Block until one or more containers stop, then print their exit codes
 ## activate：Activate Enterprise Edition
 ## check：Check for available engine updates
 ## update：Update a local engine
+
+
+
+
 # image
-## build       Build an image from a Dockerfile
-## history     Show the history of an image
-## import      Import the contents from a tarball to create a filesystem image
-## inspect     Display detailed information on one or more images
-## load        Load an image from a tar archive or STDIN
-## ls          List images
-## prune       Remove unused images
-## pull        Pull an image or a repository from a registry
-## push        Push an image or a repository to a registry
-## rm          Remove one or more images
-## save        Save one or more images to a tar archive (streamed to STDOUT by default)
-## tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+## build       
+Build an image from a Dockerfile
+## import      
+Import the contents from a tarball to create a filesystem image
+## inspect     
+Display detailed information on one or more images
+## load        
+Load an image from a tar archive or STDIN
+## prune       
+Remove unused images
+## save        
+Save one or more images to a tar archive (streamed to STDOUT by default)
+## tag：标记本地镜像，将其归入某一仓库
+Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+Update configuration of one or more containers
+## history：查看指定镜像的创建历史
+Show the history of an image
+```docker
+docker history imageIdOrName
+```
+## images：获取镜像列表（等同于docker image ls）
+```docker
+docker images
+```
+## import：从归档文件中创建镜像
+Import the contents from a tarball to create a filesystem image
+```docker
+docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]
+docker import  my_ubuntu_v3.tar runoob/ubuntu:v4
+docker images runoob/ubuntu:v4
+```
+## pull：从repository（例如dockerhub）中拉取一个image
+Pull an image or a repository from a registry
+```docker
+docker search image
+docker pull image
+```
+## push：提交个image
+Push an image or a repository to a registry
+## rmi：删除镜像（等同docker image rm）
+Remove one or more images
+```java
+docker rmi image
+```
+## run：运行一个镜像（集成从仓库拉取）
+-d 后台执行
+Run a command in a new container
+```
+Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+Run a command in a new container
+
+Options:
+  -a, --attach list                    Attach to STDIN, STDOUT or STDERR
+  -c, --cpu-shares int                 CPU shares (relative weight)
+  -d, --detach                         Run container in background and print
+  -e, --env list                       Set environment variables
+  -h, --hostname string                Container host name
+  -i, --interactive                    Keep STDIN open even if not attached
+  -l, --label list                     Set meta data on a container
+  -m, --memory bytes                   Memory limit
+  -p, --publish list                   Publish a container's port(s) to the host
+  -P, --publish-all                    Publish all exposed ports to random ports
+  -t, --tty                            Allocate a pseudo-TTY
+  -u, --user string                    Username or UID (format:
+  -v, --volume list                    Bind mount a volume
+  -w, --workdir string                 Working directory inside the container
+```
+
+
 # network
-## connect     Connect a container to a network
-## create      Create a network
-## disconnect  Disconnect a container from a network
-## inspect     Display detailed information on one or more networks
-## ls          List networks
-## prune       Remove all unused networks
-## rm          Remove one or more networks
+## connect
+Connect a container to a network
+## create
+Create a network
+## disconnect
+Disconnect a container from a network
+## inspect
+Display detailed information on one or more networks
+## ls
+List networks
+## prune
+Remove all unused networks
+## rm
+Remove one or more networks
 # node
 ## demote      Demote one or more nodes from manager in the swarm
 ## inspect     Display detailed information on one or more nodes

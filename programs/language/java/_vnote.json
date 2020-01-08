@@ -51,6 +51,9 @@
         },
         {
             "name": "framework"
+        },
+        {
+            "name": "rt.jar学习"
         }
     ],
     "version": "1"

@@ -3,6 +3,10 @@
 ![](_v_images/20200106170347430_1504130535.png)
 # 个人总结
 ThreadLocal就是让当前线程持有一个对象
+# 什么是Threadlocal
+ThreadLocal类顾名思义可以理解为线程本地变量。也就是说如果定义了一个ThreadLocal，每个线程往这个ThreadLocal中读写是线程隔离，互相之间不会影响的。它提供了一种将可变数据通过每个线程有自己的独立副本从而实现线程封闭的机制。
+# 它大致的实现思路是怎样的
+Thread类有一个类型为ThreadLocal.ThreadLocalMap的实例变量threadLocals，也就是说每个线程有一个自己的ThreadLocalMap。ThreadLocalMap有自己的独立实现，可以简单地将它的key视作ThreadLocal，value为代码中放入的值（实际上key并不是ThreadLocal本身，而是它的一个弱引用）。每个线程在往某个ThreadLocal里塞值的时候，都会往自己的ThreadLocalMap里存，读也是以某个ThreadLocal作为引用，在自己的map里找对应的key，从而实现了线程隔离。
 # Threadlocal两大使用场景
 + 每个线程需要一个独享的对象（典型需要使用的类有SimpleDateFormat和Random）
 + 每个线程内需要保存全局变量（例如在拦截器中获取用户信息），可以让不同方法直接使用，避免参数传递的麻烦
@@ -431,6 +435,3 @@ public Long get(){
 # 实际应用场景：在Spring中的实例分析
 + DateTimeContextHolder类，看到里面用了ThreadLocal
 + RequestContextHolder类，在每次HTTP请求中都对应一个线程，线程之间相互隔离，这就是ThreadLocal的典型应用场景
-
-
-[一篇文章](https://www.cnblogs.com/micrari/p/6790229.html)

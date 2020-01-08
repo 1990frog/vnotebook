@@ -1,0 +1,24 @@
+# Sentinel集群
+## Sentinel集群注意事项
+1. 只有Sentinel集群中大多数服务器认定Master主观下线时Master才会被认定为客观下线，才可以进行故障迁移，也就是说，即使不管我们在Sentinel monitor中设置的数是多少，就算是满足了该值，只要达不到大多数，就不会发生故障迁移。
+2. 官方建议Sentinel至少部署三台，且分布在不同机器。这里主要考虑到Sentinel的可用性，假如我们只部署了两台Sentinel，且quorum设置为1，也可以实现自动故障迁移，但假如其中一台Sentinel挂了，就永远不会触发自动故障迁移，因为永远达不到大多数Sentinel认定Master主观下线了。
+3. Sentinel monitor配置中的Master IP尽量不要写127.0.0.1或localhost，因为客户端，如jedis获取Master是根据这个获取的，若这样配置，jedis获取的ip则是127.0.0.1，这样就可能导致程序连接不上Master
+4. 当Sentinel 启动后会自动的修改Sentinel.conf文件，如已发现的Master的Slave信息，和集群中其它Sentinel 的信息等，这样即使重启Sentinel也能保持原来的状态。注意，当集群服务器调整时，如更换Sentinel的机器，或者新配置一个Sentinel，请不要直接复制原来运行过得Sentinel配置文件，因为其里面自动生成了以上说的那些信息，我们应该复制一个新的配置文件或者把自动生成的信息给删掉。
+5. 当发生故障迁移的时候，Master的变更记录与Slave更换Master的修改会自动同步到Redis的配置文件，这样即使重启Redis也能保持变更后的状态。
+# Sentinel和Redis身份验证
+当一个Master配置为需要密码才能连接时，客户端和Slave在连接时都需要提供密码。
+Master通过requirepass设置自身的密码，不提供密码无法连接到这个Master。
+Slave通过Masterauth来设置访问Master时的密码。
+但是当使用了Sentinel时，由于一个Master可能会变成一个Slave，一个Slave也可能会变成Master，所以需要同时设置上述两个配置项。
+# 增加或删除Sentinel
+由于有Sentinel自动发现机制，所以添加一个Sentinel到你的集群中非常容易，你所需要做的只是监控到某个Master上，然后新添加的Sentinel就能获得其他Sentinel的信息以及Master所有的Slaves。
+如果你需要添加多个Sentinel，建议你一个接着一个添加，这样可以预防网络隔离带来的问题。你可以每个30秒添加一个Sentinel。最后你可以用Sentinel Master Mastername来检查一下是否所有的Sentinel都已经监控到了Master。
+删除一个Sentinel显得有点复杂：因为Sentinel永远不会删除一个已经存在过的Sentinel，即使它已经与组织失去联系很久了。
+要想删除一个Sentinel，应该遵循如下步骤：
+1）停止所要删除的Sentinel
+2）发送一个Sentinel RESET * 命令给所有其它的Sentinel实例，如果你想要重置指定Master上面的Sentinel，只需要把*号改为特定的名字，注意，需要一个接一个发，每次发送的间隔不低于30秒。
+3）检查一下所有的Sentinels是否都有一致的当前Sentinel数。使用Sentinel Master Mastername 来查询。
+# 删除旧Master或者不可达Slave
+Sentinel永远会记录好一个Master的Slaves，即使Slave已经与组织失联好久了。这是很有用的，因为Sentinel集群必须有能力把一个恢复可用的Slave进行重新配置。
+并且，failover后，失效的Master将会被标记为新Master的一个Slave，这样的话，当它变得可用时，就会从新Master上复制数据。
+然后，有时候你想要永久地删除掉一个Slave(有可能它曾经是个Master)，你只需要发送一个`Sentinel RESET Master`命令给所有的Sentinels，它们将会更新列表里能够正确地复制Master数据的Slave。
