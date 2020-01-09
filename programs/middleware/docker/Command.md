@@ -12,7 +12,6 @@ Get real time events from the server
 ```docker
 docker events
 ```
-
 ## info：显示系统信息
 Display system-wide information
 ```docker
@@ -71,11 +70,6 @@ Load an image from a tar archive or STDIN
 Log in to a Docker registry
 ## logout：登出
 Log out from a Docker registry
-## ps：container列表
-List containers
-```docker
-docker ps -a
-```
 ## save
 Save one or more images to a tar archive (streamed to STDOUT by default)
 ## search：DockerHub查询镜像
@@ -116,6 +110,15 @@ Server:
   Version:          0.18.0
   GitCommit:        fec3683
 ```
+
+# engine
+## activate：Activate Enterprise Edition
+## check：Check for available engine updates
+## update：Update a local engine
+
+
+
+
 # builder
 ## build：通过dockerfile构建一个image
 Build an image from a Dockerfile
@@ -151,7 +154,84 @@ docker system prune
 ## inspect：Display detailed information on one or more configs
 ## ls：List configs
 ## rm：Remove one or more configs
+
+
+# image
+## import      
+Import the contents from a tarball to create a filesystem image
+## inspect     
+Display detailed information on one or more images
+## load        
+Load an image from a tar archive or STDIN
+## prune       
+Remove unused images
+## save        
+Save one or more images to a tar archive (streamed to STDOUT by default)
+## tag：标记本地镜像，将其归入某一仓库
+Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+Update configuration of one or more containers
+## history：查看指定镜像的创建历史
+Show the history of an image
+```docker
+docker history imageIdOrName
+```
+## images：获取镜像列表（等同于docker image ls）
+```docker
+docker images
+```
+## import：从归档文件中创建镜像
+Import the contents from a tarball to create a filesystem image
+```docker
+docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]
+docker import  my_ubuntu_v3.tar runoob/ubuntu:v4
+docker images runoob/ubuntu:v4
+```
+## pull：从repository（例如dockerhub）中拉取一个image
+Pull an image or a repository from a registry
+```docker
+docker search image
+docker pull image
+```
+## push：提交个image
+Push an image or a repository to a registry
+## rmi：删除镜像（等同docker image rm）
+Remove one or more images
+```java
+docker rmi image
+```
+## run：运行一个镜像（集成从仓库拉取）
+-d 后台执行
+Run a command in a new container
+```
+Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+Run a command in a new container
+
+Options:
+  -a, --attach list                    Attach to STDIN, STDOUT or STDERR
+  -c, --cpu-shares int                 CPU shares (relative weight)
+  -d, --detach                         Run container in background and print
+  -e, --env list                       Set environment variables
+  -h, --hostname string                Container host name
+  -i, --interactive                    Keep STDIN open even if not attached
+  -l, --label list                     Set meta data on a container
+  -m, --memory bytes                   Memory limit
+  -p, --publish list                   Publish a container's port(s) to the host
+  -P, --publish-all                    Publish all exposed ports to random ports
+  -t, --tty                            Allocate a pseudo-TTY
+  -u, --user string                    Username or UID (format:
+  -v, --volume list                    Bind mount a volume
+  -w, --workdir string                 Working directory inside the container
+```
+
+
+
 # container
+## ps：container列表
+List containers
+```docker
+docker ps -a
+```
 ## commit：通过变化后的container创建一个新的image
 Create a new image from a container's changes
 ```docker
@@ -227,90 +307,17 @@ Start one or more stopped containers
 Display a live stream of container(s) resource usage statistics
 ## stop：停止一个或多个container
 Stop one or more running containers
-## top：Display the running processes of a container
+## top：显示container的pid
 Display the running processes of a container
+```docker
+docker top [container_name/id]
+```
 ## unpause：Unpause all processes within one or more containers
 Unpause all processes within one or more containers
 ## update：Update configuration of one or more containers
 ## wait
 Block until one or more containers stop, then print their exit codes
-# engine
-## activate：Activate Enterprise Edition
-## check：Check for available engine updates
-## update：Update a local engine
 
-
-
-
-# image
-## build       
-Build an image from a Dockerfile
-## import      
-Import the contents from a tarball to create a filesystem image
-## inspect     
-Display detailed information on one or more images
-## load        
-Load an image from a tar archive or STDIN
-## prune       
-Remove unused images
-## save        
-Save one or more images to a tar archive (streamed to STDOUT by default)
-## tag：标记本地镜像，将其归入某一仓库
-Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
-Update configuration of one or more containers
-## history：查看指定镜像的创建历史
-Show the history of an image
-```docker
-docker history imageIdOrName
-```
-## images：获取镜像列表（等同于docker image ls）
-```docker
-docker images
-```
-## import：从归档文件中创建镜像
-Import the contents from a tarball to create a filesystem image
-```docker
-docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]
-docker import  my_ubuntu_v3.tar runoob/ubuntu:v4
-docker images runoob/ubuntu:v4
-```
-## pull：从repository（例如dockerhub）中拉取一个image
-Pull an image or a repository from a registry
-```docker
-docker search image
-docker pull image
-```
-## push：提交个image
-Push an image or a repository to a registry
-## rmi：删除镜像（等同docker image rm）
-Remove one or more images
-```java
-docker rmi image
-```
-## run：运行一个镜像（集成从仓库拉取）
--d 后台执行
-Run a command in a new container
-```
-Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
-
-Run a command in a new container
-
-Options:
-  -a, --attach list                    Attach to STDIN, STDOUT or STDERR
-  -c, --cpu-shares int                 CPU shares (relative weight)
-  -d, --detach                         Run container in background and print
-  -e, --env list                       Set environment variables
-  -h, --hostname string                Container host name
-  -i, --interactive                    Keep STDIN open even if not attached
-  -l, --label list                     Set meta data on a container
-  -m, --memory bytes                   Memory limit
-  -p, --publish list                   Publish a container's port(s) to the host
-  -P, --publish-all                    Publish all exposed ports to random ports
-  -t, --tty                            Allocate a pseudo-TTY
-  -u, --user string                    Username or UID (format:
-  -v, --volume list                    Bind mount a volume
-  -w, --workdir string                 Working directory inside the container
-```
 
 
 # network
