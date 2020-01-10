@@ -1,12 +1,10 @@
 [TOC]
 
 # docker
-## attach：将本地标准输入，输出和错误流附加到正在运行的容器
-Attach local standard input, output, and error streams to a running container
-```docker
-# Docker提供了attach命令来进入Docker容器。
-docker attach [container_id]
-```
+## login：登录例如（dockerhub这种）
+Log in to a Docker registry
+## logout：登出
+Log out from a Docker registry
 ## events：获取docker实时操作信息
 Get real time events from the server
 ```docker
@@ -64,14 +62,12 @@ Return low-level information on Docker objects
 ```docker
 docker inspect [container_id/container_name]
 ```
-## load
-Load an image from a tar archive or STDIN
-## login：登录例如（dockerhub这种）
-Log in to a Docker registry
-## logout：登出
-Log out from a Docker registry
-## save
-Save one or more images to a tar archive (streamed to STDOUT by default)
+## attach：将本地标准输入，输出和错误流附加到正在运行的容器
+Attach local standard input, output, and error streams to a running container
+```docker
+# Docker提供了attach命令来进入Docker容器。
+docker attach [container_id]
+```
 ## search：DockerHub查询镜像
 Search the Docker Hub for images
 ```docker
@@ -112,12 +108,12 @@ Server:
 ```
 
 # engine
-## activate：Activate Enterprise Edition
-## check：Check for available engine updates
-## update：Update a local engine
-
-
-
+## activate：激活商用版本
+Activate Enterprise Edition
+## check：检查可用的引擎更新
+Check for available engine updates
+## update：更新本地引擎
+Update a local engine
 
 # builder
 ## build：通过dockerfile构建一个image
@@ -157,16 +153,22 @@ docker system prune
 
 
 # image
-## import      
+## import：从压缩文件中创建一个镜像
 Import the contents from a tarball to create a filesystem image
-## inspect     
+## inspect：显示image的详细信息
 Display detailed information on one or more images
-## load        
-Load an image from a tar archive or STDIN
-## prune       
-Remove unused images
-## save        
+## save：保存镜像到本地
 Save one or more images to a tar archive (streamed to STDOUT by default)
+```docker
+docker save spring-boot-docker  -o  /home/wzh/docker/spring-boot-docker.tar
+```
+## load：加载本地镜像
+Load an image from a tar archive or STDIN
+```docker
+docker load -i spring-boot-docker.tar
+```
+## prune：删除未使用的镜像
+Remove unused images
 ## tag：标记本地镜像，将其归入某一仓库
 Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
 Update configuration of one or more containers
@@ -271,12 +273,9 @@ Options:
 ## export：Export a container's filesystem as a tar archive
 Export a container's filesystem as a tar archive
 ## inspect：Display detailed information on one or more containers
-## kill：干掉一个或多个运行中的container
-Kill one or more running containers
 ## logs：获取container的日志
 Fetch the logs of a container
-## ls：List containers
-## pause：Pause all processes within one or more containers
+## ls：container列表
 ## port：获取container端口
 List port mappings or a specific mapping for the container
 ```docker
@@ -284,7 +283,7 @@ docker port [container_id/container_name]
 1521/tcp -> 0.0.0.0:49161
 22/tcp -> 0.0.0.0:49160
 ```
-## prune：Remove all stopped containers
+## prune：删除全部关闭的container
 ## rename：更改container名字
 Rename a container
 ```docker
@@ -300,24 +299,38 @@ Remove one or more containers
 ```docker
 docker rm [container_name/id]
 ```
-## run：Run a command in a new container
 ## start：启动一个或多个container
 Start one or more stopped containers
-## stats：Display a live stream of container(s) resource usage statistics
-Display a live stream of container(s) resource usage statistics
 ## stop：停止一个或多个container
 Stop one or more running containers
+## kill：干掉一个或多个运行中的container
+Kill one or more running containers
+## stats：实时监控容器资源数据统计
+Display a live stream of container(s) resource usage statistics
+```docker
+docker stats
+```
 ## top：显示container的pid
 Display the running processes of a container
 ```docker
 docker top [container_name/id]
 ```
-## unpause：Unpause all processes within one or more containers
+## pause：暂停container的全部进程
+Pause all processes within one or more containers
+```docker
+docker pause [container_name/id]
+```
+## unpause：取消暂停container的全部进程
 Unpause all processes within one or more containers
+```docker
+docker unpause [container_name/id]
+```
 ## update：Update configuration of one or more containers
-## wait
+## wait：阻塞运行直到容器停止，然后打印出它的退出代码
 Block until one or more containers stop, then print their exit codes
-
+```docekr
+docker wait [container_name/id]
+```
 
 
 # network
