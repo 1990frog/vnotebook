@@ -139,3 +139,37 @@ repl_backlog_histlen:0
 2.单机器复制风暴
 如下图：机器宕机后，大量全量复制
 ![](_v_images/20200102225127022_1697652587.png)
+
+---
+## Redis Sentinel 主从切换(failover)的容灾环境部署记录
+Redis主从复制简单来说：
+A）Redis的复制功能是支持多个数据库之间的数据同步。一类是主数据库（Master）一类是从数据库（Slave），主数据库可以进行读写操作，当发生写操作的时候自动将数据同步到从数据库，而从数据库一般是只读的，并接收主数据库同步过来的数据，一个主数据库可以有多个从数据库，而一个从数据库只能有一个主数据库。
+B）通过Redis的复制功能可以很好的实现数据库的读写分离，提高服务器的负载能力。主数据库主要进行写操作，而从数据库负责读操作。
+Redis主从复制的大致过程：
+1）当一个从数据库启动时，会向主数据库发送sync命令，
+2）主数据库接收到sync命令后会开始在后台保存快照（执行rdb操作），并将保存期间接收到的命令缓存起来
+3）当快照完成后，Redis会将快照文件和所有缓存的命令发送给从数据库。
+4）从数据库收到后，会载入快照文件并执行收到的缓存的命令。
+
+注意：Redis2.8之前的版本：当主从数据库同步的时候从数据库因为网络原因断开重连后会重新执行上述操作，不支持断点续传。Redis2.8之后支持断点续传。
+
+0）Redis主从结构支持一主多从+n个Sentinel模式，信息如下：
+```
+192.168.10.202   Redis-Master    Redis（6379）、Sentinel（26379）
+192.168.10.203   Redis-Slave01   Redis（6379）、Sentinel（26379）
+192.168.10.205   Redis-Slave02   Redis（6379）、Sentinel（26379） 
+  
+关闭三个节点机器的iptables和selinux（所有节点机器上都要操作）
+[root@Redis-Master ~]# /etc/init.d/iptables stop
+[root@Redis-Master ~]# vim /etc/sysconfig/selinux
+......
+SELINUX=disabled
+[root@Redis-Master ~]# setenforce 0
+[root@Redis-Master ~]# getenforce
+Permissive
+  
+注意：本案例采用1主2从+3 Sentinel的集群模式，所有从节点的配置都一样。
+```
+a）Redis服务器上各自存在一个Sentinel，监控本机Redis的运行情况，并通知给闭路环上其它的Redis节点；
+b）当Master发生异常（例如：宕机和断电等）导致不可运行时，Sentinel将通知给其它节点，而剩余节点上的Sentinel将重新选举出新的Master，而原来的Master重新恢复正常后，则一直扮演Slave角色；
+c）规定整个架构体系中，Master提供读写服务，而Slave只提供读取服务。
