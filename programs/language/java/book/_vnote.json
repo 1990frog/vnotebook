@@ -4,12 +4,6 @@
     ],
     "sub_directories": [
         {
-            "name": "ThinkInJava"
-        },
-        {
-            "name": "OnJava8"
-        },
-        {
             "name": "Brian Goetz"
         }
     ],

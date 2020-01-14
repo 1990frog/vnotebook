@@ -5,3 +5,5 @@
 # Runnable
 # ClassLoader
 # SecurityManager
+# ReentrantLock
+AbstractQueuedSynchronizer
