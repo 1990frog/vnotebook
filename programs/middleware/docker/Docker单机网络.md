@@ -3,13 +3,12 @@
 # 单机模式
 Docker自身的4种网络工作方式，和一些自定义网络模式。安装Docker时，它会自动创建三个网络，bridge（创建容器默认连接到此网络）、 none 、host
 + Host NetWork （主机网络）：容器将不会虚拟出自己的网卡，配置自己的IP等，而是使用宿主机的IP和端口。
-+ Container：创建的容器不会创建自己的网卡，配置自己的IP，而是和一个指定的容器共享IP、端口范围。
 + None NetWork （无网络）：该模式关闭了容器的网络功能。
-+ bridge NetWork（桥接网络）：此模式会为每一个容器分配、设置IP等，并将容器连接到一个docker0虚拟网桥，通过docker0网桥以及Iptables nat表配置与宿主机通信。
++ Bridge NetWork（桥接网络）：此模式会为每一个容器分配、设置IP等，并将容器连接到一个docker0虚拟网桥，通过docker0网桥以及Iptables nat表配置与宿主机通信。
 # 多机模式
 + overlay network（覆盖网络）
 # 默认网络
-当你安装Docker时，它会自动创建三个网络。你可以使用以下docker network ls命令列出这些网络：
+当你安装Docker时，它会自动创建三个网络：
 
 ```
 docker network ls

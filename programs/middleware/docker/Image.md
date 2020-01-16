@@ -14,6 +14,10 @@
 + base image 也可以共享
 + base image 只包含rootfs，所以image很小
 
+# image与container之间的联系
+镜像的概念更多偏向于一个环境包，这个环境包可以移动到任意的Docker平台中去运行；而容器就是你运行环境包的实例。你可以针对这个环境包运行N个实例。换句话说container是images的一种具体表现形式。你也可以认为镜像与你装载操作系统iso镜像是一个概念，容器则可理解为镜像启动的操作系统。一个镜像可以启动任意多个容器，即可以装载多个操作系统。
+也可以形容成：类与实例
+
 # dockerhub获取image
 ```docker
 docker pull hello-world
@@ -29,4 +33,3 @@ docker commit container_id
 ```docker
 docker build -t dockerid/dockername .
 ```
-[dockerfile](./dockerfile.md)

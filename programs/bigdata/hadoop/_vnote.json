@@ -7,7 +7,7 @@
             "name": "hive"
         },
         {
-            "name": "HDFS"
+            "name": "hdfs"
         },
         {
             "name": "mapreduce"
