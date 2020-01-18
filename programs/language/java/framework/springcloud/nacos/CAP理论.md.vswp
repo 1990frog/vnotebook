@@ -1,0 +1,38 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/language/java/framework/springcloud/nacos/CAP理论.md
+
+# CAP
++ Consistency：一致性，所有节点在同一时间具有相同的数据
++ Availability：可用性，保证每个请求不管成功或者失败都有响应
++ Partition tolerance：分隔容忍，系统中任意信息的丢失或失败不会影响系统的继续运作
+
+# CAP 不可能都取，只能取其中2个
++ 如果C是第一需求的话，那么会影响A的性能，因为要数据同步，不然请求结果会有差异，但是数据同步会消耗时间，期间可用性就会降低。
++ 如果A是第一需求，那么只要有一个服务在，就能正常接受请求，但是对与返回结果变不能保证，原因是，在分布式部署的时候，数据一致的过程不可能想切线路那么快。
++ 再如果，同事满足一致性和可用性，那么分区容错就很难保证了，也就是单点，也是分布式的基本核心，好了，明白这些理论，就可以在相应的场景选取服务注册与发现了
+
+|                    |             Nacos             |    Eureka     |        Consul         |    CoreDNS    | Zookeeper  |
+| ------------------ | ----------------------------- | ------------- | --------------------- | ------------- | ---------- |
+| 一致性协议	     | CP+AP	                     | AP	         | CP                    | —             | CP         |
+| 健康检查	         | TCP/HTTP/MYSQL/Client Beat	 | Client Beat	 | TCP/HTTP/gRPC/Cmd	 | —             | Keep Alive |
+| 负载均衡策略	     | 权重/metadata/Selector	     | Ribbon        | Fabio	             | RoundRobin	 | —          |
+| 雪崩保护	         | 有                            | 有	         | 无	                 | 无            | 无         |
+| 自动注销实例	     | 支持	                         | 支持	         | 不支持	             | 	不支持       | 支持       |
+| 访问协议	         | HTTP/DNS	                     | HTTP	         | HTTP/DNS	             | 	DNS          | TCP        |
+| 监听支持	         | 支持                          | 支持	         | 支持	                 | 不支持	     | 支持       |
+| 多数据中心	     | 支持                          | 支持	         | 支持	                 | 不支持	     | 不支持     |
+| 跨注册中心同步	 | 支持                          | 不支持	     | 支持	                 | 不支持	     | 不支持     |
+| SpringCloud集成	 | 支持                          | 支持          | 支持	                 | 不支持	     | 不支持     |
+| Dubbo集成	         | 支持                          | 不支持	     | 不支持                | 不支持	     | 	支持     |
+| K8S集成	         | 支持                          | 不支持	     | 支持	                 | 	支持         |       不支持     |
+
+# Apache Zookeeper
+
+# Spring Cloud Eureka
+
+# Nacos
+Nacos是阿里开源的，Nacos 支持基于 DNS 和基于 RPC 的服务发现。在Spring Cloud中使用Nacos，只需要先下载 Nacos 并启动 Nacos server，Nacos只需要简单的配置就可以完成服务的注册发现。
+
+Nacos除了服务的注册发现之外，还支持动态配置服务。动态配置服务可以让您以中心化、外部化和动态化的方式管理所有环境的应用配置和服务配置。动态配置消除了配置变更时重新部署应用和服务的需要，让配置管理变得更加高效和敏捷。配置中心化管理让实现无状态服务变得更简单，让服务按需弹性扩展变得更容易。
+
+一句话概括就是Nacos = Spring Cloud注册中心 + Spring Cloud配置中心。
+

@@ -11,6 +11,9 @@
         },
         {
             "name": "netty"
+        },
+        {
+            "name": "springcloud"
         }
     ],
     "version": "1"
