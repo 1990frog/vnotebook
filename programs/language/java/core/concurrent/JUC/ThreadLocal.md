@@ -1,8 +1,6 @@
 [TOC]
 
 ![](_v_images/20200106170347430_1504130535.png)
-# 个人总结
-ThreadLocal就是让当前线程持有一个对象
 # 什么是Threadlocal
 ThreadLocal类顾名思义可以理解为线程本地变量。也就是说如果定义了一个ThreadLocal，每个线程往这个ThreadLocal中读写是线程隔离，互相之间不会影响的。它提供了一种将可变数据通过每个线程有自己的独立副本从而实现线程封闭的机制。
 # 它大致的实现思路是怎样的
@@ -435,3 +433,43 @@ public Long get(){
 # 实际应用场景：在Spring中的实例分析
 + DateTimeContextHolder类，看到里面用了ThreadLocal
 + RequestContextHolder类，在每次HTTP请求中都对应一个线程，线程之间相互隔离，这就是ThreadLocal的典型应用场景
+
+
+
+# 线程获取ThreadLocal的过程
+ThreadLocal类
+```java
+/**
+ * Returns the value in the current thread's copy of this
+ * thread-local variable.  If the variable has no value for the
+ * current thread, it is first initialized to the value returned
+ * by an invocation of the {@link #initialValue} method.
+ *
+ * @return the current thread's value of this thread-local
+ */
+public T get() {
+    Thread t = Thread.currentThread();//获取当前线程
+    ThreadLocalMap map = getMap(t);//获取当前线程的ThreadLocalMap对象
+    if (map != null) {//如果为null，初始化（懒汉式）
+        ThreadLocalMap.Entry e = map.getEntry(this);//在ThreadLocalMap中通过ThreadLocal的hash去获取对象
+        if (e != null) {//存在就返回对象
+            @SuppressWarnings("unchecked")
+            T result = (T)e.value;
+            return result;
+        }
+    }
+    return setInitialValue();//不存在就返回初始值
+}
+
+ThreadLocalMap getMap(Thread t) {
+    return t.threadLocals;
+}
+```
+Thread的ThreadLocalMap中存储ThreadLocal
+
+总结：
+1. 获取当前线程
+2. 获取当前线程的ThreadLocalMap
+3. map不为null，通过ThreadLocal的hash去获取对应的对象
+4. 如果对象不为空，返回对象
+5. 如果map为null或者ThreadLocal为null，返回ThreadLocal的初始值
