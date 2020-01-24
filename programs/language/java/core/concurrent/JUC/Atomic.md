@@ -1,3 +1,4 @@
+[TOC]
 
 # 什么是元子类，有什么作用
 + 原子类的作用和锁类似，是为了保证并发情况下线程安全。不过原子类相比于锁，有一定的优势
@@ -9,11 +10,11 @@
 AtomicInterget
 AtomicLong
 AtomicBoolean
-## AtomicArray数组类型原子类
+## Atomic*Array数组类型原子类
 AtomicIntegerArray
 AtomicLongArray
 AtomicReferenceArray
-## AtomicReference引用类型原子类
+## Atomic*Reference引用类型原子类
 AtomicReference
 AtomicStampedReference
 AtomicMarkableReference
@@ -29,12 +30,14 @@ LongAccumulator
 DoubleAccumulator
 
 # AtomicInteger常用方法
+```java
 public final int get()    //获取当前值
 public final int getAndSet(int newValue)    //获取当前值并设置新的值
 public final int getAndINcrement()    //获取当前值并自增
 getAndDecrement()    //获取当前的值，并自减
 getAndAdd(int delta)    //获取当前的值，并加上预期的值
 boolean compareAndSet(int expect,int update)    //如果输入的数值等于预期值，则以原子方式将该值设置为输入值（update）
+```
 
 # Atomic*Reference引用类型原子类
 AtomicReference类的作用，和AtomicInteger并没有本质区别，AtomicInteger可以让一个整数保证原子性，而AtomicReference可以让一个对象保证原子性，当然，AtomicReference的功能明细比AtomicInteger强，因为一个对象里可以包含很多属性，用法和AtomicInteger类似
@@ -55,18 +58,21 @@ AtomicReference类的作用，和AtomicInteger并没有本质区别，AtomicInte
 + 是java8引入的，相对是比较新的一个类
 + 高并发下LongAdder比AtomicLong效率高，不过本质是空间换时间
 + 竞争激烈的时候，LongAdder把不同线程对应到不同的Cell上进行修改，降低冲突的概率，是多段锁的理念，提高了并发性
++ AtomicLong由于竞争很激烈，每一次加法，都要flush和refresh，导致很耗费资源
 
-![](_v_images/20200122201842010_1499854953.png)
+# LongAdder带来的改进和原理
++ 在内部，这个LongAdder的实现原理和刚才的AtomicLong是有不同的，刚才的AtomicLong的实现原理是，每一次加法都需要做同步，所以在高并发的时候会导致冲突比较多，也就降低了效率
++ 而此时的LongAdder，每个线程会有自己的一个计数器，仅用来在自己线程内计数，这样一来就不会和其他线程的计数器干扰
++ 第一个线程的计数器数值也就是ctr'，为1的时候，可能线程2的计数器ctr''的数值已经是3了，他们之间并不存在竞争关系，所以在加和的过程中，根本不需要同步机制，也不需要刚才的flush和refresh。这里也没有一个公共的counter来给所有线程统一计数
 
-![](_v_images/20200122204047746_899146585.png)
+# LongAdder带来的改进和原理
++ LongAdder引入了分段累加的概念，内部有一个base变量和一个Cell[]数组共同参与计数
++ base变量：竞争不激烈，直接累加到该变量上
++ Cell[]：竞争激烈，各个线程分散累加到自己的槽Cell[i]中
 
-![](_v_images/20200122210003852_294842184.png)
-
-![](_v_images/20200122210152189_1577671280.png)
-
-![](_v_images/20200122210527574_940613451.png)
-
-![](_v_images/20200122210806340_1263145390.png)
+# 对比AtomicLong和LongAdder
++ 在低争用下，AtomicLong和LongAdder这两个类具有相似的特征。但是在竞争激烈的情况下，LongAdder的预期吞吐量要高得多，但要消耗更多的空间
++ LongAdder适合的场景是统计求和计数的场景，而且LongAdder基本只提供了add方法，而AtomicLong还具有cas方法
 
 # Accumulator累加器
 Accumulator和Adder非常相似，Accumulator就是一个更通用版本的Adder
