@@ -11,6 +11,9 @@
         },
         {
             "name": "springcloud"
+        },
+        {
+            "name": "springboot"
         }
     ],
     "version": "1"

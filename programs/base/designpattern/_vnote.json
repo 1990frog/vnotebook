@@ -163,6 +163,9 @@
         }
     ],
     "sub_directories": [
+        {
+            "name": "Geely"
+        }
     ],
     "version": "1"
 }
