@@ -74,7 +74,7 @@
     ],
     "sub_directories": [
         {
-            "name": "base"
+            "name": "basis"
         },
         {
             "name": "bigdata"
