@@ -7,6 +7,9 @@
             "name": "basis"
         },
         {
+            "name": "keyword"
+        },
+        {
             "name": "concurrent"
         },
         {
