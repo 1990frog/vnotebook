@@ -101,6 +101,9 @@
         },
         {
             "name": "framework"
+        },
+        {
+            "name": "阿里巴巴Java开发手册"
         }
     ],
     "version": "1"
