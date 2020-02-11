@@ -84,7 +84,16 @@
     ],
     "sub_directories": [
         {
-            "name": "basis"
+            "name": "datastructure"
+        },
+        {
+            "name": "algorithm"
+        },
+        {
+            "name": "designpattern"
+        },
+        {
+            "name": "network"
         },
         {
             "name": "bigdata"

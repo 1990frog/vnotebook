@@ -13,7 +13,7 @@
             "name": "concurrent"
         },
         {
-            "name": "containers"
+            "name": "collection"
         },
         {
             "name": "datatypes"

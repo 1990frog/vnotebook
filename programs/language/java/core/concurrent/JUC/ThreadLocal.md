@@ -4,14 +4,16 @@
 # 概览
 ## 什么是Threadlocal
 ThreadLocal类顾名思义可以理解为线程本地变量。也就是说如果定义了一个ThreadLocal，每个线程往这个ThreadLocal中读写是线程隔离，互相之间不会影响的。它提供了一种将可变数据通过每个线程有自己的独立副本从而实现线程封闭的机制。
-## 它大致的实现思路是怎样的
-Thread类有一个类型为ThreadLocal.ThreadLocalMap的实例变量threadLocals，也就是说每个线程有一个自己的ThreadLocalMap。ThreadLocalMap有自己的独立实现，可以简单地将它的ThreadLocal视作key，value为代码中放入的值（实际上key并不是ThreadLocal本身，而是它的一个弱引用）。每个线程在往某个ThreadLocal里塞值的时候，都会往自己的ThreadLocalMap里存，读也是以某个ThreadLocal作为引用，在自己的map里找对应的key，从而实现了线程隔离。
+## 实现思路
+Thread类有一个类型为ThreadLocal.ThreadLocalMap的实例变量threadLocals，也就是说每个线程有一个自己的ThreadLocalMap。
+ThreadLocalMap有自己的独立实现，可以简单地将它的ThreadLocal视作key，value为代码中放入的值（实际上key并不是ThreadLocal本身，而是它的一个弱引用）。
+每个线程在往某个ThreadLocal里塞值的时候，都会往自己的ThreadLocalMap里存，读也是以某个ThreadLocal作为引用，在自己的map里找对应的key，从而实现了线程隔离。
 ## 使用ThreadLocal带来的好处
 1. 达到线程安全【单线程】
 2. 不需要加锁，提高执行效率【不需要排队】
 3. 更高效地利用内存、节省开销：相比于每个任务都新建一个SimpleDateFormat，显然用ThreadLocal可以节省内存和开销【单线程单例】
-4. 免去传参的繁琐：无论是场景一的工具类，还是场景二的用户名，都可以在任何地方直接通过ThreadLocal拿到，再也不需要每次都传同样的参数。ThreadLocal使得代码耦合度低，更优雅【打破栈封闭】
-## 备注
+4. 免去传参的繁琐：无论是场景一的工具类，还是场景二的用户名，都可以在任何地方直接通过ThreadLocal拿到，再也不需要每次都传同样的参数。ThreadLocal使得代码耦合度低，更优雅【打破栈封闭，每个方法不要传值传来传去了】
+## 备注（java四种引用类型）
 1. 强引用：如果JVM垃圾回收器GC Roots可达性分析结果为可达，表示引用类型仍然被引用着，这类对象始终不会被垃圾回收器回收，即使JVM发生OOM也不会回收。而如果GC Roots的可达性分析结果为不可达，那么在GC时会被回收
 2. 软引用：在JVM内存充足的情况下，软引用并不会被垃圾回收器回收，只有在JVM内存不足的情况下，才会被垃圾回收器回收
 3. 弱引用：弱引用是一种比软引用生命周期更短的引用。它的生命周期很短，不论当前内存是否充足，都只能存活到下一次垃圾收集之前
@@ -154,8 +156,6 @@ class ThreadSafeFormatter {
 6. 我们可以选择加锁，加锁结果正常，但是效率低【线性执行】
 7. 在这里更好的解决方案是使用ThreadLocal【每个线程持有一个】
 8. lambda表达式【初始化方式】
-
-![未命名文件](_v_images/20200106161442136_1341038037.png)
 ## 场景二：当前用户信息需要被线程内所有方法共享
 + 场景：一个比较繁琐的解决方案是把user作为参数层层传递，从service1()传递到service2()，再从service2()传递到service3()，以此类推，但是这样做会导致代码冗余且不移维护
 + 目标：每个线程内需要保存全局变量，可以让不同方法直接使用，避免参数传递的麻烦
@@ -226,38 +226,54 @@ class User {
     }
 }
 ```
-## 总结：ThreadLocal的两个作用
-1. 让某个需要用到的对象在**线程间隔离**（每个线程都有自己的独立对象）
-2. 在任何方法中都可以轻松获取到该对象
+
 # ThreadLocal的重要方法
 ## T initialValue()：初始化
 1. 该方法会返回当前线程对应的“初始值”，这是一个延迟加载的方法，只有在调用get的时候，才会触发
 2. 当线程第一次使用get方法访问变量时，将调用次方法，除非线程当前调用了set方法，在这种情况下，不会为线程调用initialValue方法
 3. 通常，每个线程最多调用一次此方法，但如果已经调用了remove()后，在调用get()，则可以再次调用此方法
-4. 如果不重写本方法，这个方法会返回null。一般使用匿名内部类的方法来重写initialize()方法，以便在后续使用者可以初始化副本对象
+4. <font color="red">如果不重写本方法，这个方法会返回null。一般使用匿名内部类的方法来重写initialize()方法，以便在后续使用者可以初始化副本对象</font>
+## withInitial(Supplier<? extends S> supplier)
+```java
+static final class SuppliedThreadLocal<T> extends ThreadLocal<T> {
+
+    private final Supplier<? extends T> supplier;
+
+    SuppliedThreadLocal(Supplier<? extends T> supplier) {
+        this.supplier = Objects.requireNonNull(supplier);
+    }
+
+    @Override
+    protected T initialValue() {
+        return supplier.get();
+    }
+}
+```
 ## void set(T t)：为这个线程设置一个新值
+
 ```java
 /**
-     * Sets the current thread's copy of this thread-local variable
-     * to the specified value.  Most subclasses will have no need to
-     * override this method, relying solely on the {@link #initialValue}
-     * method to set the values of thread-locals.
-     *
-     * @param value the value to be stored in the current thread's copy of
-     *        this thread-local.
-     */
-    public void set(T value) {
-        Thread t = Thread.currentThread();
-        ThreadLocalMap map = getMap(t);
-        if (map != null)
-            map.set(this, value);
-        else
-            createMap(t, value);
-    }
+ * Sets the current thread's copy of this thread-local variable
+ * to the specified value.  Most subclasses will have no need to
+ * override this method, relying solely on the {@link #initialValue}
+ * method to set the values of thread-locals.
+ *
+ * @param value the value to be stored in the current thread's copy of
+ *        this thread-local.
+ */
+public void set(T value) {
+    Thread t = Thread.currentThread();
+    ThreadLocalMap map = getMap(t);
+    if (map != null)
+        map.set(this, value);
+    else
+        createMap(t, value);
+}
 ```
+
 ## T get()：得到这个线程对应的value。如果是首次调用get()，则会调用initialize来得到这个值
 + get方法是先取出当前线程的ThreadLocalMap，然后调用map.getEntry方法，把本ThreadLocal的引用作为参数传入，取出map中属于本ThreadLocal的value
-+ 注意，这个map以及map中的key和value都是保存在线程中的，而不是保存在ThreadLocal中
++ 注意，这个map以及map中的key和value都是保存在线程中的，而不是保存在ThreadLocal中，Thread持有ThreadLocalMap，ThreadLocalMap持有ThreadLocal
 
 ```java
 /**
@@ -281,7 +297,25 @@ public T get() {
     }
     return setInitialValue();
 }
+
+/**
+ * Variant of set() to establish initialValue. Used instead
+ * of set() in case user has overridden the set() method.
+ *
+ * @return the initial value
+ */
+private T setInitialValue() {
+    T value = initialValue();
+    Thread t = Thread.currentThread();
+    ThreadLocalMap map = getMap(t);
+    if (map != null)
+        map.set(this, value);
+    else
+        createMap(t, value);
+    return value;
+}
 ```
+set()/initialValue()并不是直接将
 ## void remove()：删除对应这个线程的值
 ```java
 /**
@@ -303,62 +337,39 @@ public T get() {
 ```
 ## 根据共享对象的生成时机不同，选择initialValue或set来保存对象
 + initialValue：在ThreadLocal第一次get的时候把对象给初始化出来，对象的初始化时机可以由我们控制【懒加载】
-+ set：如果需要保存到ThreadLocal里的对象的生成时机不有我们随意控制，例如拦截器生成的用户信息，用ThreadLocal.set直接放到我们的ThreadLocal中去，以便后续使用
++ set：如果需要保存到ThreadLocal里的对象的生成时机不由我们随意控制，例如拦截器生成的用户信息，用ThreadLocal.set直接放到我们的ThreadLocal中去，以便后续使用
 + 通过源码分析可以看出，setInitialValue和自己set最后都是利用map.set()方法来设置值
 + 也就是说，最后都会对应到ThreadLocalMap的一个Entity，只不过是起点和入口不一样
 
-理解成构造方法赋值
-# 原理、源码分析
-搞清楚Thread、ThreadLocal以及ThreadLocalMap三者之间的关系：
-Thread类
-
-```java
-public class Thread implements Runnable{
-    /* ThreadLocal values pertaining to this thread. This map is maintained
-     * by the ThreadLocal class. */
-    ThreadLocal.ThreadLocalMap threadLocals = null;
-    /*
-     * InheritableThreadLocal values pertaining to this thread. This map is
-     * maintained by the InheritableThreadLocal class.
-     */
-    ThreadLocal.ThreadLocalMap inheritableThreadLocals = null;
-}
-```
-
-ThreadLocal类
-```java
-public class ThreadLocal<T> {
-    static class ThreadLocalMap {
-        static class Entry extends WeakReference<ThreadLocal<?>> {
-            /** The value associated with this ThreadLocal. */
-            Object value;
-
-            Entry(ThreadLocal<?> k, Object v) {
-                super(k);
-                value = v;
-            }
-        }
-    }
-}
-```
+# Thread、ThreadLocal以及ThreadLocalMap三者之间的关系
 ## ThreadLocalMap类
+```java
+static class ThreadMap{
+    Entry[] table
+
+    class Entry{}//容器
+    int getEntry(ThreadLocal<?>)
+    set(ThreadLocal<?>)
+    remove(ThreadLocal<?>)
+    ......
+}
+```
 + ThreadLocalMap类，也就是Thread.threadLocals
-+ ThreadLocalMap类是每个线程Thread类里面的变量，里面最重要的是一个键值对数组Entry[] table，可以认为是一个map，键值对：
-    键：这个ThreadLocal
-    值：实际需要的成员变量，比如user或者simpleDateFormat对象
++ ThreadLocalMap类是每个线程Thread类里面的变量，里面最重要的是一个键值对数组Entry[] table，可以认为是一个map键值对
 + ThreadLocalMap这里采用的是线性探测法，也就是如果发生冲突，就继续找下一个空位置，而不是链表拉链（切换红黑树）
 
 ![7432604-ad2ff581127ba8cc](_v_images/20200107101305050_152078636.jpg)
-从上图我们可以初步窥见ThreadLocal的核心机制：
-1. 每个Thread线程内部都有一个Map
-2. Map里面储存线程本地对象key和线程的变量副本value
-3. Thread内部的Map是由ThreadLocal维护的，由ThreadLocal负责向Map获取和设置线程的变量值
-
-这样对于不同的线程，每次获取副本值时，别的线程并不能获取到当前线程的副本值，这样就形成了副本隔离，互不干扰
 
 ## 线程获取ThreadLocal的过程
-ThreadLocal类
+1. 获取当前线程
+2. 获取当前线程的ThreadLocalMap
+3. map不为null，通过ThreadLocal的hash去获取对应的对象
+4. 如果对象不为空，返回对象
+5. 如果map为null或者ThreadLocal为null，返回ThreadLocal的初始值
+
+ThreadLocalMap类
 ```java
+private Entry[] table;
 /**
  * Returns the value in the current thread's copy of this
  * thread-local variable.  If the variable has no value for the
@@ -384,30 +395,90 @@ public T get() {
 ThreadLocalMap getMap(Thread t) {
     return t.threadLocals;
 }
-```
-Thread的ThreadLocalMap中存储ThreadLocal
 
-总结：
-1. 获取当前线程
-2. 获取当前线程的ThreadLocalMap
-3. map不为null，通过ThreadLocal的hash去获取对应的对象
-4. 如果对象不为空，返回对象
-5. 如果map为null或者ThreadLocal为null，返回ThreadLocal的初始值
-# 常见问题
-## 内存泄露
+static class Entry extends WeakReference<ThreadLocal<?>> {
+    /** The value associated with this ThreadLocal. */
+    Object value;
+
+    //private T referent;         /* Treated specially by GC Reference类持有*/
+
+    Entry(ThreadLocal<?> k, Object v) {
+        super(k);//WeakReference(T referent)
+        value = v;
+    }
+}
+
+/**
+ * Get the entry associated with key.  This method
+ * itself handles only the fast path: a direct hit of existing
+ * key. It otherwise relays to getEntryAfterMiss.  This is
+ * designed to maximize performance for direct hits, in part
+ * by making this method readily inlinable.
+ *
+ * @param  key the thread local object
+ * @return the entry associated with key, or null if no such
+ */
+private Entry getEntry(ThreadLocal<?> key) {
+    int i = key.threadLocalHashCode & (table.length - 1);
+    Entry e = table[i];
+    if (e != null && e.get() == key)
+        return e;
+    else
+        return getEntryAfterMiss(key, i, e);
+}
+
+/**
+ * Set the value associated with key.
+ *
+ * @param key the thread local object
+ * @param value the value to be set
+ */
+private void set(ThreadLocal<?> key, Object value) {
+
+    // We don't use a fast path as with get() because it is at
+    // least as common to use set() to create new entries as
+    // it is to replace existing ones, in which case, a fast
+    // path would fail more often than not.
+
+    Entry[] tab = table;
+    int len = tab.length;
+    int i = key.threadLocalHashCode & (len-1);
+
+    for (Entry e = tab[i];
+         e != null;
+         e = tab[i = nextIndex(i, len)]) {
+        ThreadLocal<?> k = e.get();
+
+        if (k == key) {
+            e.value = value;
+            return;
+        }
+
+        if (k == null) {
+            replaceStaleEntry(key, value, i);
+            return;
+        }
+    }
+
+    tab[i] = new Entry(key, value);
+    int sz = ++size;
+    if (!cleanSomeSlots(i, sz) && sz >= threshold)
+        rehash();
+}
+```
+# ThreadLocal常见问题
+## 内存泄露：某个对象不再有用，但是占用的内存却不能被回收
 ![7432604-072ea1eed5e63601](_v_images/20200130140258339_358079252.jpg)
 
 ThreadLocal的原理：每个Thread内部维护着一个ThreadLocalMap，它是一个Map。这个映射表的Key是一个弱引用，其实就是ThreadLocal本身，Value是真正存的线程变量Object。
-
 也就是说ThreadLocal本身并不真正存储线程的变量值，它只是一个工具，用来维护Thread内部的Map，帮助存和取。注意上图的虚线，它代表一个弱引用类型，而弱引用的生命周期只能存活到下次GC前。
 
-### 什么是内存泄露
-某个对象不再有用，但是占用的内存却不能被回收
-
 ### ThreadLocal为什么会内存泄漏
-ThreadLocal在ThreadLocalMap中是以一个弱引用身份被Entry中的Key引用的，因此如果ThreadLocal没有外部强引用来引用它，那么ThreadLocal会在下次JVM垃圾收集时被回收。这个时候就会出现Entry中Key已经被回收，出现一个null Key的情况，外部读取ThreadLocalMap中的元素是无法通过null Key来找到Value的。因此如果当前线程的生命周期很长，一直存在，那么其内部的ThreadLocalMap对象也一直生存下来，这些null key就存在一条强引用链的关系一直存在：Thread --> ThreadLocalMap-->Entry-->Value，这条强引用链会导致Entry不会回收，Value也不会回收，但Entry中的Key却已经被回收的情况，造成内存泄漏。
+ThreadLocal在ThreadLocalMap中是以一个弱引用身份被Entry中的Key引用的，因此如果ThreadLocal没有外部强引用来引用它，那么ThreadLocal会在下次JVM垃圾收集时被回收。
+这个时候就会出现Entry中Key已经被回收，出现一个null Key的情况，外部读取ThreadLocalMap中的元素是无法通过null Key来找到Value的。
+因此如果当前线程的生命周期很长，一直存在，那么其内部的ThreadLocalMap对象也一直生存下来，这些null key就存在一条强引用链的关系一直存在：Thread --> ThreadLocalMap-->Entry-->Value，这条强引用链会导致Entry不会回收，Value也不会回收，但Entry中的Key却已经被回收的情况，造成内存泄漏。
 
-但是JVM团队已经考虑到这样的情况，并做了一些措施来保证ThreadLocal尽量不会内存泄漏：在ThreadLocal的get()、set()、remove()方法调用的时候会清除掉线程ThreadLocalMap中所有Entry中Key为null的Value，并将整个Entry设置为null，利于下次内存回收。
+<font color="red">但是JVM团队已经考虑到这样的情况，并做了一些措施来保证ThreadLocal尽量不会内存泄漏：在ThreadLocal的get()、set()、remove()方法调用的时候会清除掉线程ThreadLocalMap中所有Entry中Key为null的Value，并将整个Entry设置为null，利于下次内存回收。</font>
 
 将Entry的Key设置成弱引用，在配合线程池使用的情况下可能会有内存泄露的风险。之设计成弱引用的目的是为了更好地对ThreadLocal进行回收，当我们在代码中将ThreadLocal的强引用置为null后，这时候Entry中的ThreadLocal理应被回收了，但是如果Entry的key被设置成强引用则该ThreadLocal就不能被回收，这就是将其设置成弱引用的目的。
 
@@ -416,11 +487,6 @@ WeakReference对象的特性就是代码运行一段时间，如果碰到gc，We
 WeakReference的一个特点是它何时被回收是不可确定的, 因为这是由GC运行的不确定性所确定的. 所以, 一般用weak reference引用的对象是有价值被cache, 而且很容易被重新被构建, 且很消耗内存的对象.
 
 ### ThreadLocalMap的key为啥要设置成WeakReference类型呢？
-就是为了防止内存泄漏，让gc回收，没别的。 value也设置成WeakReference岂不更好，感觉上毕竟value是从外面传入的，万一被别人引用了呢。纯猜的。
-
-并且ThreadLocalMap源码里面有个这个方法expungeStaleEntry（），这个方法的目的就是将key为null的Entry的velue设置为null，在ThreadLocal的get(),set(),remove()的时候都会直接或者间接调用这个方法。相当于加了个保险，如果key被gc回收后，那你只要有操作map，我就给你做清楚操作。相当于为内存泄漏又加了个保险。
-
-### 有个哥们儿总结的挺牛逼
 从表面上看内存泄漏的根源在于使用了弱引用。网上的文章大多着重分析ThreadLocal使用了弱引用会导致内存泄漏，但是另一个问题也同样值得思考：为什么使用弱引用而不是强引用？
 我们先来看看官方文档的说法：
 To help deal with very large and long-lived usages, the hash table entries use WeakReferences for keys.
@@ -433,6 +499,16 @@ key 使用弱引用：引用的ThreadLocal的对象被回收了，由于ThreadLo
 比较两种情况，我们可以发现：由于ThreadLocalMap的生命周期跟Thread一样长，如果都没有手动删除对应key，都会导致内存泄漏，但是使用弱引用可以多一层保障：弱引用ThreadLocal不会内存泄漏，对应的value在下一次ThreadLocalMap调用set,get,remove的时候会被清除。
 
 因此，ThreadLocal内存泄漏的根源是：由于ThreadLocalMap的生命周期跟Thread一样长，如果没有手动删除对应key就会导致内存泄漏，而不是因为弱引用。
+
+```java
+static class ThreadLoaclMap{
+    public void remove() {
+         ThreadLocalMap m = getMap(Thread.currentThread());
+         if (m != null)
+             m.remove(this);
+     }
+}
+```
 
 ### 什么情况下内存会泄漏呢？
 假设你用的是线程池，那池子里面的线程自始至终都是活的，线程不被销毁，并且你用完后就没怎么操作过这个ThreadLocal，key虽然会在gc时被回收，value一直被ThreadLocalMap引用着，可能会造成value的累积。

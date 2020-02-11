@@ -1,14 +1,13 @@
-# geo
-![](_v_images/20191126222051962_1093131264.png)
 
-![](_v_images/20191126222306542_1073544835.png)
 
-![](_v_images/20191126222344381_1562477292.png)
+GEO（地理信息定位）：存储经纬度、计算两地距离，范围计算等
 
-![](_v_images/20191126222405563_1894627029.png)
 
-![](_v_images/20191126222428484_170719787.png)
+```redis
+georadiusbymember cities:locations beijing 150 km
+beijing
+tianjin
+tangshan
+baoding
+```
 
-![](_v_images/20191126222457612_456545550.png)
-
-![](_v_images/20191126222523513_2146317801.png)

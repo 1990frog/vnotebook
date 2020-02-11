@@ -7,42 +7,63 @@ Redis提供了5种数据结构,但除此之外,Redis还提供了注入慢查询�
 
 + 发送命令
 + 命令排队
-+ 命令执行
++ 命令执行（慢查询只统计此步骤的时间,所以没有慢查询并不代表客户端没有超时问题）
 + 返回结果
-需要注意,慢查询只统计步骤3的时间,所以没有慢查询并不代表客户端没有超时问题.
 
-# 慢查询两个配置
-对于慢查询功能,需要明确两件事:
+# 配置参数
++ slowlog-log-slower-than选项：指定执行时间超过多少微秒（1秒等于1000 000微秒）的命令请求会被记录到日志上，举个例子，如果这个选项的值为100，那么执行时间超过100微秒的命令就会被记录到慢 查询日志，如果这个选项的值为500，那么执行时间超过500微秒的命令就会被记录到慢查询日志
++ slowlog-max-len选项：指定服务器最多保存多少条慢查询日志
 
-+ 预设阈值怎么设置?
-+ 慢查询记录存放在那?
+# 配置慢查询
+redis.conf文件中配置
+```
+# The following time is expressed in microseconds, so 1000000 is equivalent
+# to one second. Note that a negative number disables the slow log, while
+# a value of zero forces the logging of every command.
+# 下面的时间以微秒表示，所以1000000等于一秒。
+# 注意，一个负数禁用慢速日志，而值为0则会强制每个命令的日志记录。
+slowlog-log-slower-than 10000
 
-# slowlog-max-len
+
+# There is no limit to this length. Just be aware that it will consume memory.
+# You can reclaim memory used by the slow log with SLOWLOG RESET.
+# 这个长度是没有限制的。
+# 只要意识到它会消耗内存。
+# 您可以使用慢速日志重置慢速日志所使用的内存。
+slowlog-max-len 128
+```
+config set命令配置
+```
+config set slow-max-len=128
+config set slowlog-log-slower-than=10000
+config rewrite #Redis Config rewrite 命令对启动 Redis 服务器时所指定的 redis.conf 配置文件进行改写。
+```
+
+# slowlog-max-len：慢查询队列长度
 设置存放多少条慢查询指令
-
 1. 先进先出队列
 2. 固定长度
 3. 保存在内存中
 
-从字面意思看,slowlog-max-len只是说明了慢查询日志最多存储多少条,并没有说明存放在哪里?实际上Redis使用了一个列表来存储慢查询日志,slowlog-max-len就是列表的最大长度.一个新的命令满足慢查询条件时被插入到这个列表中,当慢查询日志列表已处于其最大长度时,最早插入的一个命令将从列表中移出,例如slowlog-max-len设置长度为64.当有第65条慢查询日志插入的话,那么队头的第一条数据就出列,第65条慢查询就会入列.
+从字面意思看,slowlog-max-len只是说明了慢查询日志最多存储多少条，并没有说明存放在哪里？
+实际上Redis使用了一个列表来存储慢查询日志，slowlog-max-len就是列表的最大长度。
+一个新的命令满足慢查询条件时被插入到这个列表中，当慢查询日志列表已处于其最大长度时,最早插入的一个命令将从列表中移出，例如slowlog-max-len设置长度为64。当有第65条慢查询日志插入的话，那么队头的第一条数据就出列，第65条慢查询就会入列。
 ```
 默认值
 config get slow-max-len=128
 config get slowlog-log-slower-than=10000
 ```
 
-# slowlog-log-slower-than
-设置慢查询阈值
-
+# slowlog-log-slower-than：设置慢查询阈值
 1. 慢查询阈值（单位：微秒）
 2. slowlog-log-slower-than=0，记录所有命令
 3. slowlog-log-slower-than<0，不记录任何命令
 
-Redis提供了slowlog-log-slower-than和slowlog-max-len配置来解决这两个问题.从字面意思就可以看出,slowlog-log-slower-than就是这个预设阈值,它的单位是毫秒(1秒=1000000微秒)默认值是10000,假如执行了一条"很慢"的命令(例如key *),如果执行时间超过10000微秒,那么它将被记录在慢查询日志中.
+Redis提供了slowlog-log-slower-than和slowlog-max-len配置来解决这两个问题。从字面意思就可以看出slowlog-log-slower-than就是这个预设阈值，它的单位是毫秒(1秒=1000000微秒)默认值是10000，假如执行了一条"很慢"的命令(例如key *)，如果执行时间超过10000微秒，那么它将被记录在慢查询日志中。
 
 # 修改配置
-在Redis中有两种修改配置的方法,一种是修改配置文件,另一种是使用config set命令动态修改.
-例如下面使用config set命令将slowlog-log-slower-than设置为20000微妙.slowlog-max-len设置为1024:
+在Redis中有两种修改配置的方法，一种是修改配置文件，另一种是使用config set命令动态修改。
+例如下面使用config set命令将slowlog-log-slower-than设置为20000微秒，slowlog-max-len设置为1024：
 ```
 redis> config set slowlog-log-slower-than 20000
 OK
@@ -51,7 +72,7 @@ redis> config rewrite #Redis Config rewrite 命令对启动 Redis 服务器时�
 ```
 
 # 慢查询命令
-1.slowlog get[n] ：获取慢查询队列
+## slowlog get[n] ：获取慢查询队列
 ```
 127.0.0.1:6379> slowlog get 1
 1) 1) (integer) 14 #id
@@ -63,8 +84,8 @@ redis> config rewrite #Redis Config rewrite 命令对启动 Redis 服务器时�
    5) "127.0.0.1:53902"
    6) ""
 ```
-2.slowlog len：获取慢查询队列长度
-3.slowlog reset：清空慢查询
+## slowlog len：获取慢查询队列长度
+## slowlog reset：清空慢查询
 
 # 运维经验
 1.slow-max-len不要设置过大，默认10ms，通常设置1ms

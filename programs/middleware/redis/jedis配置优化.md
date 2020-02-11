@@ -1,12 +1,17 @@
-# redis连接池使用
+[TOC]
+
+# 参数
+Jedis(String host,int port,int connectionTimeout,int soTimeout)
+host：Redis节点的所在机器的ip
+port：Redis节点的端口
+connectTimeout：客户端连接超时
+soTimeout：客户端读写超时
 
 初始化Jedis连接池，通常来讲JedisPool是单例的
 ```
 GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
 JedisPool jedisPool = new JedisPool(poolConfig,"127.0.0.1",6379)；
 ```
-![](_v_images/20191124131747376_1230164100.png)
-
 
 commo-pool
 配置（资源数控制）
@@ -64,8 +69,6 @@ testOnReturn
 建议：false
 
 
-常见问题：
-![](_v_images/20191124134729427_230948244.png)
 
 解决思路
 1.慢查询阻塞：池子连接都被hang住。（设置超时时间）
@@ -73,4 +76,5 @@ testOnReturn
 3.连接泄露（没有close()）：此类问题比较难定位，例如client list、netstat等，最重要的是代码。
 4.DNS异常等。
 
-![](_v_images/20191124135532697_480217532.png)
+
+池？？？？？？？

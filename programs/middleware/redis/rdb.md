@@ -1,5 +1,10 @@
 [TOC]
 
+# 快记
+config中save参数
+save命令：同步rdb
+bgsave命令：异步rdb
+
 # 数据库常见备份策略
 快照：
 1. MySQL Dump
@@ -52,18 +57,44 @@ rdbchecksum yes    #是否对rdb文件进行检验
 # 试验
 config配置
 ```
-daemonize yes    #是否以守护进程来启动
-logfile "{port}.log}"    #日志文件
-#save 900 1
-#save 300 10
-#save 60 10000
-dbfilename dump-{port}.rdb    #定义rdb名称
-dir /opt/soft/redis/data    #定义rdb目录
-```
+################################ SNAPSHOTTING 快照配置 ################################
+#
+# Save the DB on disk:
+# 将数据保存在磁盘上：
+#
+#   save <seconds> <changes>
+#
+#   Will save the DB if both the given number of seconds and the given
+#   如果给定的秒数和给定的秒数，就会保存DB（针对参数seconds）
+#   number of write operations against the DB occurred.
+#   发生了针对DB的写操作的数量。（针对参数changes）
+#
+#   In the example below the behaviour will be to save:
+#   在下面的例子中，行为将是保存：
+#   after 900 sec (15 min) if at least 1 key changed
+#   900秒内至少有1次写入
+#   after 300 sec (5 min) if at least 10 keys changed
+#   300秒内至少有10次写入
+#   after 60 sec if at least 10000 keys changed
+#   60秒内至少有10000次写入
+#
+#   Note: you can disable saving completely by commenting out all "save" lines.
+#   注意：你可以通过注释掉所有的“保存”行来完全禁用保存。
+#
+#   It is also possible to remove all the previously configured save
+#   也可以删除先前配置的所有save
+#   points by adding a save directive with a single empty string argument
+#   通过添加一个带有空字符串参数的save指令
+#   like in the following example:
+#   如下面的例子：
+#
+#   save ""
+
+save 900 1
+save 300 10
+save 60 10000
+
 启动：redis-server redis-6379.conf
-```
-dbsize 数据量
-info memory 内存用量
 ```
 
 ## 测试redis阻塞
