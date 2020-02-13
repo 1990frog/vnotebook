@@ -36,11 +36,7 @@ docker-compose exec mysql bash
 # docker-compose scale
 ![](_v_images/20200112151017585_60943431.png)
 
-haproxy负载均衡
-![](_v_images/20200112151538280_282308826.png)
-
 # 部署一个复杂的投票应用
-
 docker-compose build
 docker-compose up
 

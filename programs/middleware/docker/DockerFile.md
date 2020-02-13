@@ -21,6 +21,25 @@ RUN chmod 775 /run.sh
 CMD ["/run.sh"]
 ```
 # 命令
+|    命令名    |        简介        |
+| ----------- | ------------------ |
+| FROM        | 模板               |
+| ENV         | 环境变量            |
+| ARG         | 构建变量            |
+| COPY        | 复制               |
+| ADD         | 高级复制（解压）      |
+| LABEL       | 标签               |
+| WORKDIR     | 工作目录            |
+| VOLUME      | 挂载，设置卷         |
+| RUN         | 构建环境            |
+| CMD         | 执行命令，只能有效一次 |
+| ENTRYPOINT  | 执行命令            |
+| USER        | 用户信息            |
+| HEALTHCHECK | 健康检查            |
+| STOPSIGNAL  | 停止信号            |
+| MAINTAINER  | 设置作者信息         |
+| ONBUILD     | 触发               |
+
 ## FROM：指定基础镜像
 ```Docker
 FROM <image> [AS <name>]
@@ -40,35 +59,6 @@ COPY ["<源路径1>",... "<目标路径>"]
 ADD ubuntu-xenial-core-cloudimg-amd64-root.tar.gz /
 #<源路径> 可以是一个 URL ，下载后的文件权限自动设置为 600 。
 ```
-## ARG：构建参数
-与ENV不同的是，容器运行时不会存在这些环境变量。
-可以用 docker build --build-arg <参数名>=<值> 来覆盖。
-```Docker
-#Syntax
-ARG <name>[=<default value>]
-
-#Default values
-ARG user1=someuser
-
-#Scope
-FROM busybox
-USER ${user:-some_user}
-ARG user
-USER $user
-$ docker build --build-arg user=what_user .
-
-FROM busybox
-ARG SETTINGS
-RUN ./run/setup $SETTINGS
-
-FROM busybox
-ARG SETTINGS
-RUN ./run/other $SETTINGS
-
-ENV arg    #声明变量
-${arg:default}    #设置默认值
-$arg    #调用变量
-```
 ## ENV：设置环境变量
 在其他指令中可以直接引用ENV设置的环境变量。
 ```Docker
@@ -80,25 +70,27 @@ ENV VERSION=1.0 DEBUG=on NAME="Happy Feet"
 这个指令很简单，就是设置环境变量而已，无论是后面的其它指令，如RUN ，还 是运行时的应用，都可以直接使用这里定义的环境变量。
 这个例子中演示了如何换行，以及对含有空格的值用双引号括起来的办法，这和Shell下的行为是一致的。
 定义了环境变量，那么在后续的指令中，就可以使用这个环境变量。比如在官方node镜像 Dockerfile 中，就有类似这样的代码:
+## ARG：构建参数
+与ENV不同的是，容器运行时不会存在这些环境变量。
+可以用 `docker build --build-arg <参数名>=<值> `来覆盖。
 ```Docker
-ENV VERSION=1.0 DEBUG=on \
-    NAME="Happy Feet"
-ENV NODE_VERSION 7.2.0
-RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NOD
-E_VERSION-linux-x64.tar.xz" \
-  && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS25
-6.txt.asc" \
-  && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.tx
-t.asc \
-  && grep " node-v$NODE_VERSION-linux-x64.tar.xz\$" SHASUMS256.t
-xt | sha256sum -c - \
-  && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/loc
-al --strip-components=1 \
-  && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.as
-c SHASUMS256.txt \
-  && ln -s /usr/local/bin/node /usr/local/bin/nodejs
+#Syntax
+ARG <name>[=<default value>]
+ENV arg    #声明变量
+${arg:default}    #设置默认值
+$arg    #调用变量
+
+#Default values
+ARG user1=someuser
+
+#Scope
+FROM busybox
+USER ${user:-some_user}
+ARG user
+USER $user
+$ docker build --build-arg user=what_user .
 ```
-## LABEL：设置metadata（The LABEL instruction adds metadata to an image）
+## LABEL：指定标签（设定邮箱、版本号、描述等信息）
 LABEL 指令会添加元数据到镜像。LABEL是以键值对形式出现的。为了在LABEL的值里面可以包含空格，你可以在命令行解析中使用引号和反斜杠。
 ```Docker
 LABEL <key>=<value> <key>=<value> <key>=<value> ...
@@ -121,8 +113,8 @@ ENV DIRPATH /path
 WORKDIR $DIRPATH/$DIRNAME
 RUN pwd
 ```
-## VOLUME：定义匿名卷
-volume也是绕过container的文件系统，直接将数据写到host机器上，只是volume是被docker管理的，docker下所有的volume都在host机器上的指定目录下/var/lib/docker/volumes。
+## VOLUME：定义匿名卷（挂载，还有bind mount）
+volume也是绕过container的文件系统，直接将数据写到host机器上，只是volume是被docker管理的，docker下所有的volume都在host机器上的指定目录下/var/lib/docker/volumes
 ```Docker
 VOLUME ["<路径1>", "<路径2>"...]
 VOLUME <路径>
@@ -130,6 +122,9 @@ EXPOSE：暴露端口
 ```
 将my-volume挂载到container中的/mydata目录
 ```
+# 语法
+docker run -it -v [volume_name可选择匿名]:[valume_path] [image] [iamge_command]
+# demo
 docker run -it -v my-volume:/mydata alpine sh
 ```
 然后可以查看到给my-volume的volume
@@ -147,7 +142,7 @@ docker volume inspect my-volume
     }
 ]
 ```
-可以看到，volume在host机器的目录为/var/lib/docker/volumes/my-volume/_data。此时，如果my-volume不存在，那么docker会自动创建my-volume，然后再挂载。
+可以看到，volume在host机器的目录为`/var/lib/docker/volumes/my-volume/_data`。此时如果my-volume不存在，那么docker会自动创建my-volume，然后再挂载。
 也可以不指定host上的volume：
 ```Docker
 docker run -it -v /mydata alpine sh
@@ -162,18 +157,22 @@ docker volume create my-volume-2
 ```Docker
 docker run -it -v my-volume-2:/mydata alpine sh
 ```
-需要注意的是，与bind mount不同的是，如果volume是空的而container中的目录有内容，那么docker会将container目录中的内容拷贝到volume中，但是如果volume中已经有内容，则会将container中的目录覆盖
-
+### bind Mount
+bind mount自docker早期便开始为人们使用了，用于将host机器的目录mount到container中。但是bind mount在不同的宿主机系统时不可移植的，比如Windows和Linux的目录结构是不一样的，bind mount所指向的host目录也不能一样。这也是为什么bind mount不能出现在Dockerfile中的原因，因为这样Dockerfile就不可移植了。
+```docker
+docker run -it -v $(pwd)/host-dava:/container-data alpine sh
+```
+有几点需要注意：
++ host机器的目录路径必须为全路径(准确的说需要以/或~/开始的路径)，不然docker会将其当做volume而不是volume处理
++ 如果host机器上的目录不存在，docker会自动创建该目录
++ 如果container中的目录不存在，docker会自动创建该目录
++ 如果container中的目录已经有内容，那么docker会使用host上的目录将其覆盖掉（如果使用volume，host上存在数据，会使用container的内容将host覆盖）
+### dockerFile中使用
 在Dockerfile中，我们也可以使用VOLUME指令来申明contaienr中的某个目录需要映射到某个volume：
 ```Docker
 #Dockerfile
 VOLUME /foo
 ```
-这表示，在docker运行时，docker会创建一个匿名的volume，并将此volume绑定到container的/foo目录中，如果container的/foo目录下已经有内容，则会将内容拷贝的volume中。也即，Dockerfile中的VOLUME /foo与docker run -v /foo alpine的效果一样。
-
-Dockerfile中的VOLUME使每次运行一个新的container时，都会为其自动创建一个匿名的volume，如果需要在不同container之间共享数据，那么我们依然需要通过docker run -it -v my-volume:/foo的方式将/foo中数据存放于指定的my-volume中。
-
-因此，VOLUME /foo在某些时候会产生歧义，如果不了解的话将导致问题。
 ## EXPOSE <端口1> [<端口2>...]
 ```Docker
 EXPOSE <port> [<port>/<protocol>...]
@@ -240,21 +239,18 @@ $ docker run myip -i
 USER <用户名>
 ```
 ## HEALTHCHECK：健康检查
-```Docker
-HEALTHCHECK [选项] CMD <命令> ：设置检查容器健康状况的命令
-HEALTHCHECK NONE ：如果基础镜像有健康检查指令，使用这行可以屏蔽掉其健康检查指令
-
 HEALTHCHECK 支持下列选项：
-    --interval=DURATION (default: 30s)    #两次健康检查的间隔，默认为 30 秒；
-    --timeout=DURATION (default: 30s)    #健康检查命令运行超时时间，如果超过这个时间，本次健康检查就被视为失败，默认 30 秒；
-    --start-period=DURATION (default: 0s)
-    --retries=N (default: 3)    #当连续失败指定次数后，则将容器状态视为 unhealthy ，默认 3次。
++ interval=DURATION (default: 30s)    #两次健康检查的间隔，默认为 30 秒；
+ + timeout=DURATION (default: 30s)    #健康检查命令运行超时时间，如果超过这个时间，本次健康检查就被视为失败，默认 30 秒；
++ start-period=DURATION (default: 0s)
++ retries=N (default: 3)    #当连续失败指定次数后，则将容器状态视为 unhealthy ，默认 3次。
 
-#示例
+```Docker
 FROM nginx
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 HEALTHCHECK --interval=5m --timeout=3s \
   CMD curl -f http://localhost/ || exit 1
+
 ```
 ## ONBUILD：触发
 ```Docker
@@ -276,10 +272,95 @@ STOPSIGNAL signal
 ## MAINTAINER：设置作者信息
 ```Docker
 MAINTAINER <name>
-```
-The MAINTAINER instruction sets the Author field of the generated images. The LABEL instruction is a much more flexible version of this and you should use it instead, as it enables setting any metadata you require, and can be viewed easily, for example with docker inspect. To set a label corresponding to the MAINTAINER field you could use:
-```Docker
 LABEL maintainer="1990frog@gmail.com"
 ```
-This will then be visible from docker inspect with the other labels.
 
+# 运行
+1. 创建dockerfile文件
+2. 运行 `docker build -t [image_name] .`
+
+# FROM常用模板
+## BusyBox
+Busybox是一个集成了一百多个最常用Linux命令和工具的软件工具箱，它在单一的可执行文件中提供了精简的Unix工具集。BusyBox可运行于多款POSIX环境操作系统中，如Linux（包括Andoroid）、Hurd、FreeBSD等。
+Busybox既包含了一些简单实用的工具，如cat和echo，也包含了一些更大，更复杂的工具，如grep、find、mount以及telnet。可以说BusyBox是Linux系统的瑞士军刀。
+## alpine
+
+# Demo
+## MySQL-8.0
+```docker
+FROM debian:stretch-slim
+
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN groupadd -r mysql && useradd -r -g mysql mysql
+
+RUN apt-get update && apt-get install -y --no-install-recommends gnupg dirmngr && rm -rf /var/lib/apt/lists/*
+
+# add gosu for easy step-down from root
+ENV GOSU_VERSION 1.7
+RUN set -x \
+	&& apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
+	&& wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
+	&& wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
+	&& export GNUPGHOME="$(mktemp -d)" \
+	&& gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
+	&& gpgconf --kill all \
+	&& rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
+	&& chmod +x /usr/local/bin/gosu \
+	&& gosu nobody true \
+	&& apt-get purge -y --auto-remove ca-certificates wget
+
+RUN mkdir /docker-entrypoint-initdb.d
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+# for MYSQL_RANDOM_ROOT_PASSWORD
+		pwgen \
+# for mysql_ssl_rsa_setup
+		openssl \
+# FATAL ERROR: please install the following Perl modules before executing /usr/local/mysql/scripts/mysql_install_db:
+# File::Basename
+# File::Copy
+# Sys::Hostname
+# Data::Dumper
+		perl \
+	&& rm -rf /var/lib/apt/lists/*
+
+RUN set -ex; \
+# gpg: key 5072E1F5: public key "MySQL Release Engineering <mysql-build@oss.oracle.com>" imported
+	key='A4A9406876FCBD3C456770C88C718D3B5072E1F5'; \
+	export GNUPGHOME="$(mktemp -d)"; \
+	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+	gpg --batch --export "$key" > /etc/apt/trusted.gpg.d/mysql.gpg; \
+	gpgconf --kill all; \
+	rm -rf "$GNUPGHOME"; \
+	apt-key list > /dev/null
+
+ENV MYSQL_MAJOR 8.0
+ENV MYSQL_VERSION 8.0.19-1debian9
+
+RUN echo "deb http://repo.mysql.com/apt/debian/ stretch mysql-${MYSQL_MAJOR}" > /etc/apt/sources.list.d/mysql.list
+
+# the "/var/lib/mysql" stuff here is because the mysql-server postinst doesn't have an explicit way to disable the mysql_install_db codepath besides having a database already "configured" (ie, stuff in /var/lib/mysql/mysql)
+# also, we set debconf keys to make APT a little quieter
+RUN { \
+		echo mysql-community-server mysql-community-server/data-dir select ''; \
+		echo mysql-community-server mysql-community-server/root-pass password ''; \
+		echo mysql-community-server mysql-community-server/re-root-pass password ''; \
+		echo mysql-community-server mysql-community-server/remove-test-db select false; \
+	} | debconf-set-selections \
+	&& apt-get update && apt-get install -y mysql-community-client="${MYSQL_VERSION}" mysql-community-server-core="${MYSQL_VERSION}" && rm -rf /var/lib/apt/lists/* \
+	&& rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld \
+	&& chown -R mysql:mysql /var/lib/mysql /var/run/mysqld \
+# ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
+	&& chmod 777 /var/run/mysqld
+
+VOLUME /var/lib/mysql
+# Config files
+COPY config/ /etc/mysql/
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+EXPOSE 3306 33060
+CMD ["mysqld"]
+```

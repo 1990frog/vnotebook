@@ -68,7 +68,7 @@ Attach local standard input, output, and error streams to a running container
 # Docker提供了attach命令来进入Docker容器。
 docker attach [container_id]
 ```
-## search：DockerHub查询镜像
+## search：dockerHub查询镜像
 Search the Docker Hub for images
 ```docker
 docker search [image_name]

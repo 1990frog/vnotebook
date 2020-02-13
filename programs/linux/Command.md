@@ -592,3 +592,6 @@ find ./ -name data.txt(文件全名)
 ## tmux：分屏
 
 
+---
+
+set -x 与 set +x

@@ -1,12 +1,5 @@
 [TOC]
 
-# 并发容器概览
-+ ConcurrentHashMap：线程安全的HashMap
-+ CopyOnWriteArrayList：线程安全的List
-+ BlockingQueue：这是一个接口，表示阻塞队列，非常适合用于作为数据共享的通道
-+ ConcurrentLinkedQueue：高效的非阻塞并发队列，使用链表实现。可以看做一个线程安全的LinkedList
-+ ConcurrentSkipListMap：是一个Map，使用跳表的数据结构进行快速查找
-
 
 
 # ConcurrentHashMap和CopyOnWriteArrayList
@@ -19,47 +12,6 @@
 + LinkedHashMap
 + TreeMap
 
-# CopyOnWriteArrayList
-+ 代替Vector和SynchronizedList，就和ConcurrentHashMap代替SynchronizedMap的原因一样
-+ Vector和SynchronizedList的锁的粒度太大，并发效率相对比较低，并且迭代时无法编辑
-+ Copy-On-Write并发容器还包括CopyOnWriteArraySet，用来替代同步Set
-
-# CopyOnWriteArrayList适用场景
-+ 读操作可以尽可能地快，而写操作即使慢一些也没有太大关系
-+ 读多写少：黑名单，每日更新；监听器：迭代操作远多余修改操作
-
-# CopyOnWriteArrayList读写规则
-+ 回顾读写锁：读读共享、其他都互斥（写写互斥、读写互斥、写读互斥）
-+ 读写锁规则的升级：读取是完全不用加锁的，并且更厉害的是写入也不会阻塞读取操作。只有写入和写入之间需要进行同步等待
-
-![](_v_images/20200129145138440_1452252089.png)
-hashmap不能在迭代的时候修改
-
-![](_v_images/20200129145244852_409166032.png)
-CopyOnWriteArrayList可以在迭代中修改
-
-
-# CopyOnWriteArrayList实现原理
-+ CopyOnWrite的含义
-+ 创建新副本、读写分离
-+ “不可变”原理
-+ 迭代的时候（依然使用旧数组不报错）
-
-![](_v_images/20200129150301101_710854899.png)
-
-![](_v_images/20200129150349992_1345448040.png)
-modCount修改的次数
-
-![](_v_images/20200129152302374_837513938.png)
-
-迭代出现数据过期的问题
-
-# CopyOnWriteArrayList的缺点
-+ 数据一致性问题：CopyOnWrite容器只能保证数据的最终一致性，不能保证数据的实时一致性。所以如果你希望写入的数据，马上能读到，请不要使用CopyOnWrite容器
-+ 内存占用问题：因为CopyOnWrite的写是复制机制，所以在进行写操作的时候，内存里会同时驻扎两个对象的内存
-
-
-![](_v_images/20200129153430071_124661264.png)
 
 # 并发队列Queue
 阻塞队列
@@ -73,8 +25,8 @@ modCount修改的次数
 + Queue
 + BlockingQUeue
 
-部分：
-![](_v_images/20200129154302703_1648858905.png)
+![](_v_images/20200213114134655_778768935.png)
+
 
 # 什么是阻塞队列
 + 阻塞队列是具有阻塞功能的队列，所以它首先是一个队列，其次是具有阻塞功能
@@ -99,7 +51,8 @@ modCount修改的次数
 + 指定容量
 + 公平：还可以指定是否要保证公平，如果想保证公平的话，那么等待了最长时间的线程会被优先处理，不过这会同时带来一定的性能消耗
 
-![](_v_images/20200130105014859_1220152153.png)
+![](_v_images/20200213114150607_1639988253.png)
+
 
 # LinkedBlockingQueue
 + 无界
@@ -132,7 +85,3 @@ modCount修改的次数
 + 边界
 + 空间
 + 吞吐量
-
-# 并发容器总结
-java.util.concurrent包提供的容器，分为3类：Concurrent*、CopyOnWrite*、Blocking*
-Concurrent*的特点是大部分通过CAS实现并发、而CopyOnWrite*则是通过复制一份原数据来实现的、Blocking通过AQS实现的
