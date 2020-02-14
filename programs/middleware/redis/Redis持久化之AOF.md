@@ -7,7 +7,7 @@ AOF和RDB持久性可以同时启用，而不会出现问题。如果在启动�
 ## 操作粒度
 aof：每条操作之后
 rdb：快照时间点
-# AOF配置
+# 配置
 ```
 //输出路径
 dir /bigdiskpath    #保存rdb、log、aof的目录

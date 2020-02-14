@@ -9,29 +9,23 @@
 可以看出，使用Sentinel命令和发布订阅两种机制就能很好的实现和客户端的集成整合：
 使用`get-Master-addr-by-name`和`Slaves`指令可以获取当前的Master和Slaves的地址和信息；而当发生故障转移时，即Master发生切换，可以通过订阅的+switch-Master事件获得最新的Master信息。
 # 概览
-+ Sentinel进程是用于监控Redis集群中Master、Slave、Sentinel各成员
-+ Sentinel是特殊的Redis，其默认端口26379
++ Sentinel是特殊的Redis，其默认端口26379，用于监控Redis集群中Master、Slave、Sentinel各成员
 + Master主服务器发生故障的时候，可以实现Master和Slave服务器的切换，保证系统的高可用
 + Sentinel当前最新的稳定版本称为Sentinel2(与之前的Sentinel 1区分开来）
-+ 随着Redis2.8的安装包一起发行。安装完Redis2.8后，可以在Redis2.8/src/里面找到Redis-Sentinel的启动程序；**强烈建议：如果你使用的是Redis2.6(Sentinel版本为Sentinel 1)，你最好应该使用Redis2.8版本的Sentinel 2，因为Sentinel 1有很多的Bug，已经被官方弃用，所以强烈建议使用Redis2.8以及Sentinel2**
-# 配置与持久化（纠正）
+
+随着Redis2.8的安装包一起发行。安装完Redis2.8后，可以在Redis2.8/src/里面找到Redis-Sentinel的启动程序；**强烈建议：如果你使用的是Redis2.6(Sentinel版本为Sentinel 1)，你最好应该使用Redis2.8版本的Sentinel 2，因为Sentinel 1有很多的Bug，已经被官方弃用，所以强烈建议使用Redis2.8以及Sentinel2**
+
+Redis2.6中Sentinel的bug有哪些？
+
+# 配置持久化（纠正）
 Snetinel的状态会被持久化地写入Sentinel的配置文件中。每次当收到一个新的配置时，或者新创建一个配置时，配置会被持久化到硬盘中，并带上配置的版本戳。这意味着，可以安全的停止和重启Sentinel进程。
-## 发生failover后配置纠正
-+ 一旦一个Sentinel成功地对一个Master进行了failover，它将会把关于Master的最新配置通过广播形式（pub/sub）通知其它Sentinel，其它的Sentinel则更新对应Master的配置
-+ 一个failover要想被成功实行，Sentinel必须能够向选为Master的Slave发送`SlaveOF NO ONE`命令，然后能够通过INFO命令看到新Master的配置信息。
-+ 当将一个Slave选举为Master并发送`SlaveOF NO ONE`后，即使其它的Slave还没针对新Master重新配置自己，failover也被认为是成功了的，然后所有Sentinels将会发布新的配置信息。
-+ 新配在集群中相互传播的方式，就是为什么我们需要当一个Sentinel进行failover时必须被授权一个版本号的原因。
-+ 每个Sentinel使用【发布/订阅(pub/sub)】的方式持续地传播Master的配置版本信息，配置传播的【发布/订阅】管道是：`__Sentinel__:hello`
-+ 因为每一个配置都有一个版本号，所以以版本号最大的那个为标准。
-## 无failover时的配置纠正
-即使当前没有failover正在进行，Sentinel依然会使用当前配置去设置监控的Master。
-+ 根据最新配置确认为Slaves的节点却声称自己是Master，这时它们会被重新配置为当前Master的Slave。
-+ 如果Slaves连接了一个错误的Master，将会被改正过来，连接到正确的Master。
+
 # Sentinel三大使命
 + 监控（Monitoring）：Sentinel会不断检查Master和Slave是否运行正常
 + 提醒（Notification）：当被监控的某个Redis节点出现问题时， Sentinel可以通过api向管理员或者其他应用程序发送通知（调用脚本）
 + 自动故障转移（Automatic failover）：failover
-# 监控
+
+# 监控（三个定时任务）
 ## 定时任务一：每1秒每个Sentinel对其他Sentinel和Redis执行ping
 + 心跳检查、失败判定依据
 ![1173043-20180613115036920-1108346645](_v_images/20200106140437424_177469351.png)
@@ -41,29 +35,23 @@ Snetinel的状态会被持久化地写入Sentinel的配置文件中。每次当�
 
 ![1173043-20180613113556319-876141444](_v_images/20200106140223328_1665992046.png)
 ## 定时任务三：每2秒每个Sentinel通过Master节点的channel（发布订阅的频道）交换信息（pub/sub）
-+ 通过__Sentinel__:hello频道交互
++ 通过`__Sentinel__:hello`频道交互
 + 交互对节点的“看法”和自身信息
 
 ![1173043-20180613114216222-8932705](_v_images/20200106140339734_2052542565.png)
 上图的原理就是:
 订阅这个channel的所有Sentinel，一旦其中一个Sentinel发布消息到这个chennel其他订阅这个channel的Sentinel就会收到消息，它们就是这样传递消息
 
-## Sentinel之间和Slaves之间的自动发现机制
-虽然Sentinel集群中各个Sentinel都互相连接彼此来检查对方的可用性以及互相发送消息。<font color="red">但是你不用在任何一个Sentinel配置任何其它的Sentinel的节点</font>。因为Sentinel利用了Master的发布/订阅机制去自动发现其它也监控了统一Master的Sentinel节点。
-+ 通过向名为`__Sentinel__:hello`的管道中发送消息来实现。
-+ 同样，你也不需要在Sentinel中配置某个Master的所有Slave的地址，Sentinel会通过询问Master来得到这些Slave的地址的。
-+ 每个Sentinel通过向每个Master和Slave的【发布/订阅】频道__Sentinel__:hello每秒发送一次消息，来宣布它的存在。
-+ 每个Sentinel也订阅了每个Master和Slave的频道__Sentinel__:hello的内容，来发现未知的Sentinel，当检测到了新的Sentinel，则将其加入到自身维护的Master监控列表中。
-+ 每个Sentinel发送的消息中也包含了其当前维护的最新的Master配置。如果某个Sentinel发现
-+ 自己的配置版本低于接收到的配置版本，则会用新的配置更新自己的Master配置。
-+ 在为一个Master添加一个新的Sentinel前，Sentinel总是检查是否已经有Sentinel与新的Sentinel的进程号或者是地址是一样的。如果是那样，这个Sentinel将会被删除，而把新的Sentinel添加上去。
+## Sentinel之间和Slaves之间的自动发现机制（利用Master）
+虽然Sentinel集群中各个Sentinel都互相连接彼此来检查对方的可用性以及互相发送消息。<font color="red">但是你不用在任何一个Sentinel配置任何其它的Sentinel的节点。因为Sentinel利用了Master的【发布/订阅】机制去自动发现其它也监控了统一Master的Sentinel节点。</font>
+1. Sentinel发现Slave：通过向Master发送`info`命令，频率是10s
+2. Sentinel发现新Sentinel：通过订阅Master的`__Sentinel__:hello`频道，频率是2s
 ## 举个例子
 假设有一个名为myMaster的地址为192.168.10.202:6379。
 一开始，集群中所有的Sentinel都知道这个地址，于是为myMaster的配置打上版本号1。
 一段时候后myMaster死了，有一个Sentinel被授权用版本号2对其进行failover。
 如果failover成功了，假设地址改为了192.168.10.202:9000，此时配置的版本号为2，进行failover的Sentinel会将新配置广播给其他的Sentinel，由于其他Sentinel维护的版本号为1，发现新配置的版本号为2时，版本号变大了，说明配置更新了，于是就会采用最新的版本号为2的配置。
 这意味着Sentinel集群保证了第二种活跃性：一个能够互相通信的Sentinel集群最终会采用版本号最高且相同的配置。
-
 
 # 提醒
 ## 执行脚本
@@ -78,9 +66,9 @@ Sentinel notification-script myMaster /var/Redis/notify.sh
 + 如果Sentinel.conf配置文件中配置了这个脚本路径，那么必须保证这个脚本存在于这个路径，并且是可执行的，否则Sentinel无法正常启动成功
 ## 发布与订阅信息（Sentinel的日志文件里可以看到这些信息）
 客户端可以将Sentinel看作是一个只提供了订阅功能的Redis服务器：
-你不可以使用PUBLISH命令向这个服务器发送信息， 但你可以用SUBSCRIBE命令或者PSUBSCRIBE命令， 通过订阅给定的频道来获取相应的事件提醒。
+你不可以使用`PUBLISH`命令向这个服务器发送信息， 但你可以用`SUBSCRIBE`命令或者`PSUBSCRIBE`命令， 通过订阅给定的频道来获取相应的事件提醒。
 
-事件有对应的频道：比如说， 名为 +sdown 的频道就可以接收所有实例进入主观下线（SDOWN）状态的事件。
+事件有对应的频道：比如说， 名为`+sdown`的频道就可以接收所有实例进入主观下线（SDOWN）状态的事件。
 
 通过执行`PSUBSCRIBE *`命令可以接收所有事件信息（即订阅所有消息）
 ## 频道
@@ -138,6 +126,7 @@ failover成功完成时
 进入Tilt模式
 ### -tilt
 退出Tilt模式
+
 # 故障转移（failover）
 ## 流程
 1. 每个Sentinel进程每秒钟一次的频率向整个集群中**Master**、**Slave**以及其它**Sentinel**进程发送一个`ping`命令<font color="red">【监听】</font>
@@ -147,7 +136,7 @@ failover成功完成时
 5. 在一般情况下， 每个Sentinel进程会以每10秒一次的频率向集群中的所有Master主服务器、Slave从服务器发送`info`命令<font color="red">【查询下线】</font>
 6. 当Master主服务器被Sentinel进程标记为客观下线时，Sentinel进程向下线的Master主服务器的所有Slave从服务器发送`info`命令的频率会从10秒一次改为每秒一次【一个faiover要想被成功实行，Sentinel必须能够向选为Master的Slave发送`SlaveOF NO ONE`命令，然后能够通过INFO命令看到新Master的配置信息】
 7. 若没有足够数量的Sentinel进程同意Master已经下线， Master主服务器的客观下线状态就会被移除。若Master主服务器重新向Sentinel进程发送 `ping`命令返回有效回复，Master主服务器的主观下线状态就会被移除
-## sdown and odown
+## sdown&odown
 1. 每个Sentinel实例在启动后，都会和已知的Slaves/Master以及其他Sentinels建立TCP连接，并周期性发送PING(默认为1秒)
 2. 在交互中，如果Redis-server无法在`down-after-milliseconds`时间内响应或者响应错误信息，都会被认为此Redis-server处于SDOWN状态。
 2. 如果SDOWN的server为Master，那么此时Sentinel实例将会向其他Sentinel间歇性(一秒)发送`is-Master-down-by-addr <ip> <port>`指令并获取响应信息，如果足够多的Sentinel实例检测到Master处于SDOWN，那么此时当前Sentinel实例标记Master为ODOWN...其他Sentinel实例做同样的交互操作。
