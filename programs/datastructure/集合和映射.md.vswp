@@ -1,0 +1,435 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/datastructure/集合和映射.md
+[TOC]
+
+集合与映射是高层定义，底层可以用各种方式实现
+
+# 集合
+## 接口
+```java
+Set<E>
+void add(E)    //不能添加重复元素
+void remove(E)
+boolean contains(E)
+int getSize()
+boolean isEmpty()
+```
+## BST实现
+```java
+public class BST<E extends Comparable<E>> {
+
+    private class Node{
+        public E e;
+        public Node left, right;
+
+        public Node(E e){
+            this.e = e;
+            left = null;
+            right = null;
+        }
+    }
+
+    private Node root;
+    private int size;
+
+    public BST(){
+        root = null;
+        size = 0;
+    }
+
+    public int size(){
+        return size;
+    }
+
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+    // 向二分搜索树中添加新的元素e
+    public void add(E e){
+        root = add(root, e);
+    }
+
+    // 向以node为根的二分搜索树中插入元素e，递归算法
+    // 返回插入新节点后二分搜索树的根
+    private Node add(Node node, E e){
+
+        if(node == null){
+            size ++;
+            return new Node(e);
+        }
+
+        if(e.compareTo(node.e) < 0)
+            node.left = add(node.left, e);
+        else if(e.compareTo(node.e) > 0)
+            node.right = add(node.right, e);
+
+        return node;
+    }
+
+    // 看二分搜索树中是否包含元素e
+    public boolean contains(E e){
+        return contains(root, e);
+    }
+
+    // 看以node为根的二分搜索树中是否包含元素e, 递归算法
+    private boolean contains(Node node, E e){
+
+        if(node == null)
+            return false;
+
+        if(e.compareTo(node.e) == 0)
+            return true;
+        else if(e.compareTo(node.e) < 0)
+            return contains(node.left, e);
+        else // e.compareTo(node.e) > 0
+            return contains(node.right, e);
+    }
+
+    // 二分搜索树的前序遍历
+    public void preOrder(){
+        preOrder(root);
+    }
+
+    // 前序遍历以node为根的二分搜索树, 递归算法
+    private void preOrder(Node node){
+
+        if(node == null)
+            return;
+
+        System.out.println(node.e);
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+
+    // 二分搜索树的非递归前序遍历
+    public void preOrderNR(){
+
+        Stack<Node> stack = new Stack<>();
+        stack.push(root);
+        while(!stack.isEmpty()){
+            Node cur = stack.pop();
+            System.out.println(cur.e);
+
+            if(cur.right != null)
+                stack.push(cur.right);
+            if(cur.left != null)
+                stack.push(cur.left);
+        }
+    }
+
+    // 二分搜索树的中序遍历
+    public void inOrder(){
+        inOrder(root);
+    }
+
+    // 中序遍历以node为根的二分搜索树, 递归算法
+    private void inOrder(Node node){
+
+        if(node == null)
+            return;
+
+        inOrder(node.left);
+        System.out.println(node.e);
+        inOrder(node.right);
+    }
+
+    // 二分搜索树的后序遍历
+    public void postOrder(){
+        postOrder(root);
+    }
+
+    // 后序遍历以node为根的二分搜索树, 递归算法
+    private void postOrder(Node node){
+
+        if(node == null)
+            return;
+
+        postOrder(node.left);
+        postOrder(node.right);
+        System.out.println(node.e);
+    }
+
+    // 二分搜索树的层序遍历
+    public void levelOrder(){
+
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            Node cur = q.remove();
+            System.out.println(cur.e);
+
+            if(cur.left != null)
+                q.add(cur.left);
+            if(cur.right != null)
+                q.add(cur.right);
+        }
+    }
+
+    // 寻找二分搜索树的最小元素
+    public E minimum(){
+        if(size == 0)
+            throw new IllegalArgumentException("BST is empty!");
+
+        return minimum(root).e;
+    }
+
+    // 返回以node为根的二分搜索树的最小值所在的节点
+    private Node minimum(Node node){
+        if(node.left == null)
+            return node;
+        return minimum(node.left);
+    }
+
+    // 寻找二分搜索树的最大元素
+    public E maximum(){
+        if(size == 0)
+            throw new IllegalArgumentException("BST is empty");
+
+        return maximum(root).e;
+    }
+
+    // 返回以node为根的二分搜索树的最大值所在的节点
+    private Node maximum(Node node){
+        if(node.right == null)
+            return node;
+
+        return maximum(node.right);
+    }
+
+    // 从二分搜索树中删除最小值所在节点, 返回最小值
+    public E removeMin(){
+        E ret = minimum();
+        root = removeMin(root);
+        return ret;
+    }
+
+    // 删除掉以node为根的二分搜索树中的最小节点
+    // 返回删除节点后新的二分搜索树的根
+    private Node removeMin(Node node){
+
+        if(node.left == null){
+            Node rightNode = node.right;
+            node.right = null;
+            size --;
+            return rightNode;
+        }
+
+        node.left = removeMin(node.left);
+        return node;
+    }
+
+    // 从二分搜索树中删除最大值所在节点
+    public E removeMax(){
+        E ret = maximum();
+        root = removeMax(root);
+        return ret;
+    }
+
+    // 删除掉以node为根的二分搜索树中的最大节点
+    // 返回删除节点后新的二分搜索树的根
+    private Node removeMax(Node node){
+
+        if(node.right == null){
+            Node leftNode = node.left;
+            node.left = null;
+            size --;
+            return leftNode;
+        }
+
+        node.right = removeMax(node.right);
+        return node;
+    }
+
+    // 从二分搜索树中删除元素为e的节点
+    public void remove(E e){
+        root = remove(root, e);
+    }
+
+    // 删除掉以node为根的二分搜索树中值为e的节点, 递归算法
+    // 返回删除节点后新的二分搜索树的根
+    private Node remove(Node node, E e){
+
+        if( node == null )
+            return null;
+
+        if( e.compareTo(node.e) < 0 ){
+            node.left = remove(node.left , e);
+            return node;
+        }
+        else if(e.compareTo(node.e) > 0 ){
+            node.right = remove(node.right, e);
+            return node;
+        }
+        else{   // e.compareTo(node.e) == 0
+
+            // 待删除节点左子树为空的情况
+            if(node.left == null){
+                Node rightNode = node.right;
+                node.right = null;
+                size --;
+                return rightNode;
+            }
+
+            // 待删除节点右子树为空的情况
+            if(node.right == null){
+                Node leftNode = node.left;
+                node.left = null;
+                size --;
+                return leftNode;
+            }
+
+            // 待删除节点左右子树均不为空的情况
+
+            // 找到比待删除节点大的最小节点, 即待删除节点右子树的最小节点
+            // 用这个节点顶替待删除节点的位置
+            Node successor = minimum(node.right);
+            successor.right = removeMin(node.right);
+            successor.left = node.left;
+
+            node.left = node.right = null;
+
+            return successor;
+        }
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder res = new StringBuilder();
+        generateBSTString(root, 0, res);
+        return res.toString();
+    }
+
+    // 生成以node为根节点，深度为depth的描述二叉树的字符串
+    private void generateBSTString(Node node, int depth, StringBuilder res){
+
+        if(node == null){
+            res.append(generateDepthString(depth) + "null\n");
+            return;
+        }
+
+        res.append(generateDepthString(depth) + node.e +"\n");
+        generateBSTString(node.left, depth + 1, res);
+        generateBSTString(node.right, depth + 1, res);
+    }
+
+    private String generateDepthString(int depth){
+        StringBuilder res = new StringBuilder();
+        for(int i = 0 ; i < depth ; i ++)
+            res.append("--");
+        return res.toString();
+    }
+}
+```
+## 链表实现
+```java
+public class LinkedListSet<E> implements Set<E> {
+
+    private LinkedList<E> list;
+
+    public LinkedListSet(){
+        list = new LinkedList<>();
+    }
+
+    @Override
+    public int getSize(){
+        return list.getSize();
+    }
+
+    @Override
+    public boolean isEmpty(){
+        return list.isEmpty();
+    }
+
+    @Override
+    public void add(E e){
+        if(!list.contains(e))
+            list.addFirst(e);
+    }
+
+    @Override
+    public boolean contains(E e){
+        return list.contains(e);
+    }
+
+    @Override
+    public void remove(E e){
+        list.removeElement(e);
+    }
+
+}
+```
+## 性能对比
+```java
+pride-and-prejudice.txt
+Total words: 125981
+Total different words: 6532
+BST Set: 0.114946142 s
+
+pride-and-prejudice.txt
+Total words: 125981
+Total different words: 6532
+Linked List Set: 2.478073063 s
+
+Process finished with exit code 0
+```
+
+# 集合的时间复杂度分析
+|    操作    | LinkedListSet |           BSTSet            |
+| --------- | ------------ | --------------------------- |
+| 增add      | O(n)          | 均摊：O(h)/O(logn)，最差：O(n) |
+| 查contains | O(n)          | 均摊：O(h)/O(logn)，最差：O(n)                |
+| 删remove   | O(n)          | 均摊：O(h)/O(logn)，最差：O(n)                |
+
+
+# logn和n的差距
+|        | logn |  n   |          |
+| ------ | ---- | ---- | -------- |
+| n=16   | 4     | 16   | 相差4倍   |
+| n=1024 | 10   | 1024 | 相差100倍 |
+| n=100w | 20   | 100w | 相差5万倍 |
+
+
+注意：
+满二叉树、倾斜二叉树
+二分搜索树使用不当可能退化成链表
+
+# 映射
+map、dict
+存储（键、值）数据对的数据结构（key、value）
+根据键（key），寻找值（value）
+
+```java
+Map<K,V>
+void add(K,V)
+V remove(K)
+boolean contains(K)
+V get(K)
+void set(K,V)
+int getSize()
+boolean isEmpty()
+```
+
+# 映射的时间复杂度分析
+|    操作    | LinkedListMap |           BSTMap            |
+| --------- | ------------ | --------------------------- |
+| 增add      | O(n)          | 均摊：O(h)/O(logn)，最差：O(n) |
+| 查contains | O(n)          | 均摊：O(h)/O(logn)，最差：O(n) |
+| 查get      | O(n)          | 均摊：O(h)/O(logn)，最差：O(n) |
+| 改set      | O(n)          | 均摊：O(h)/O(logn)，最差：O(n) |
+| 删remove   | O(n)          | 均摊：O(h)/O(logn)，最差：O(n) |
+
+## 有序映射和无序映射
++ 有序映射中的键具有顺序性：基于搜索树的实现
++ 无序映射中的键没有循序性：基于哈希表的实现
+
+## 多重映射
+多重映射的键可以重复
+
+---
+
+也可以基于映射包装集合，key=empty，value=null
+
+
+![](_v_images/20200217215453405_336582657.png)
+
+![](_v_images/20200217215615560_337902901.png)

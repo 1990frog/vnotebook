@@ -110,6 +110,10 @@ sogou-qimpanel
 ```
 yaourt -S fcitx-qt4
 ```
+
+## fcitx打中文经常漏英文出来
+将fcitx-im全部的包都安装
+
 ## 安装mlocate
 ```
 sudo pacman -S mlocate

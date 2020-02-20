@@ -88,7 +88,8 @@ FROM busybox
 USER ${user:-some_user}
 ARG user
 USER $user
-$ docker build --build-arg user=what_user .
+
+>docker build --build-arg user=what_user .
 ```
 ## LABEL：指定标签（设定邮箱、版本号、描述等信息）
 LABEL 指令会添加元数据到镜像。LABEL是以键值对形式出现的。为了在LABEL的值里面可以包含空格，你可以在命令行解析中使用引号和反斜杠。
@@ -145,22 +146,22 @@ docker volume inspect my-volume
 可以看到，volume在host机器的目录为`/var/lib/docker/volumes/my-volume/_data`。此时如果my-volume不存在，那么docker会自动创建my-volume，然后再挂载。
 也可以不指定host上的volume：
 ```Docker
-docker run -it -v /mydata alpine sh
+>docker run -it -v /mydata alpine sh
 ```
 此时docker将自动创建一个匿名的volume，并将其挂载到container中的/mydata目录。匿名volume在host机器上的目录路径类似于：
 `/var/lib/docker/volumes/300c2264cd0acfe862507eedf156eb61c197720f69e7e9a053c87c2182b2e7d8/_data。`
 除了让docker帮我们自动创建volume，我们也可以自行创建：
 ```Docker
-docker volume create my-volume-2
+>docker volume create my-volume-2
 ```
 然后将这个已有的my-volume-2挂载到container中:
 ```Docker
-docker run -it -v my-volume-2:/mydata alpine sh
+>docker run -it -v my-volume-2:/mydata alpine sh
 ```
 ### bind Mount
 bind mount自docker早期便开始为人们使用了，用于将host机器的目录mount到container中。但是bind mount在不同的宿主机系统时不可移植的，比如Windows和Linux的目录结构是不一样的，bind mount所指向的host目录也不能一样。这也是为什么bind mount不能出现在Dockerfile中的原因，因为这样Dockerfile就不可移植了。
 ```docker
-docker run -it -v $(pwd)/host-dava:/container-data alpine sh
+>docker run -it -v $(pwd)/host-dava:/container-data alpine sh
 ```
 有几点需要注意：
 + host机器的目录路径必须为全路径(准确的说需要以/或~/开始的路径)，不然docker会将其当做volume而不是volume处理
@@ -178,7 +179,8 @@ VOLUME /foo
 EXPOSE <port> [<port>/<protocol>...]
 EXPOSE 80/tcp
 EXPOSE 80/udp
-docker run -p 80:80/tcp -p 80:80/udp ...
+
+>docker run -p 80:80/tcp -p 80:80/udp ...
 #EXPOSE 仅仅是声明容器打算使用什么端口而已，并不会自动在宿主进行端口映射。
 ```
 ## RUN：执行命令并创建新的Image Layer
@@ -284,6 +286,7 @@ LABEL maintainer="1990frog@gmail.com"
 Busybox是一个集成了一百多个最常用Linux命令和工具的软件工具箱，它在单一的可执行文件中提供了精简的Unix工具集。BusyBox可运行于多款POSIX环境操作系统中，如Linux（包括Andoroid）、Hurd、FreeBSD等。
 Busybox既包含了一些简单实用的工具，如cat和echo，也包含了一些更大，更复杂的工具，如grep、find、mount以及telnet。可以说BusyBox是Linux系统的瑞士军刀。
 ## alpine
+## scratch
 
 # Demo
 ## MySQL-8.0

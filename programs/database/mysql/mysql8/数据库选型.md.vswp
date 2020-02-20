@@ -1,0 +1,33 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/database/mysql/mysql8/数据库选型.md
+[TOC]
+
+# sql
++ mysql
++ oracle
++ sqlserver
++ postgresql
+
+# nosql
++ hbase
++ mongodb
++ redis
++ hadoop
+
+# newsql
+除了sql和NoSQL外还有一种非常流行的数据库存储系统称之为newsql。
+newsql系统通常可以使用sql对数据库进行操作也就是说具有sql的特征，另外数据存储上大多使用分布式存储方式，因此可以方便的对存储进行扩充，常见的newsql系统有：tidb和cockroachDB
+
+# 关系型数据库
+## 特点
++ 数据结构化存储在二维表中（大部分现在也支持json了）
+![](_v_images/20200221002353838_1053756365.png)
++ 支持事物的原子性A，一致性C，隔离性I，持久性D特性
++ 支持使用sql语言对存储在其中的数据进行操作
+
+## 场景
++ 数据之间存在着一定关系，需要关联查询数据的场景
++ 需要事务支持的业务场景
++ 需要使用sql语言灵活操作数据的场景
+
+![5cbd9698096d3de409630475](_v_images/20200221002726279_456361206.png)
+

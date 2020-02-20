@@ -5,6 +5,12 @@
     "sub_directories": [
         {
             "name": "各方面对性能的影响"
+        },
+        {
+            "name": "demo2"
+        },
+        {
+            "name": "mysql8"
         }
     ],
     "version": "1"
