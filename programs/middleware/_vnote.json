@@ -11,6 +11,12 @@
         },
         {
             "name": "redis"
+        },
+        {
+            "name": "kubernetes"
+        },
+        {
+            "name": "elasticstack"
         }
     ],
     "version": "1"

@@ -1,0 +1,8 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/middleware/kubernetes/kubectl.md
+[TOC]
+
+# 自动补全
+
+# 配置 .kube
+cd .kube
+kubectl config -h

@@ -1,0 +1,73 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/middleware/elasticstack/入门.md
+[TOC]
+
+# 配置信息
+config目录
++ elasticsearch.yml es的相关配置
++ jvm.options jvm的相关参数
++ log4j2.properties 日志相关配置
+
+# elasticsearch.yml
+cluster.name 集群名称，以此作为是否同一集群的判断条件
+node.name 节点名称，以此作为集群中不同节点的区分条件
+network.host/http.port 网络地址和端口，用于http和transport服务
+path.data 数据存储地址
+path.log 日志存储地址
+
+# Development模式与Production模式
++ Development模式下在启动时会以warning的方式提示配置检查异常
++ Production模式下在启动时会以error的方式提示配置检查异常并退出
+
+# 命令
+```
+>bin/elasticsearch -Ehttp.port=19200
+```
+快速启动一个Elasticsearch集群
+```
+>bin/elasticsearch
+>bin/elasticsearch -Ehttp.port=8200 -Epath.data=node2
+>bin/elasticsearch -Ehttp.port=7200 -Epath.data=node3
+```
+
+# Kibana
+localhost:5601
+
+## 配置
+配置位于config文件夹中
+kibana.yml关键配置说明
+server.host/server.port 访问kibana用的地址和端口
+elasticsearch.url带访问elasticsearch的地址
+
+## 常用功能
+Discover数据搜索查看
+Visualize图表制作
+Dashboard仪表盘制作
+Timelion时序数据的高级可视化分析
+DevTools开发者工具
+Management配置
+
+# Elasticsearch常用术语
+Document文档数据
+Index索引
+Type索引中的数据类型
+Field字段，文档的属性
+Query DSL查询语法
+
+# Elasticsearch CRUB
+Create
+Read
+Update
+Delete
+
+![](_v_images/20200221183725917_1057732633.png)
+
+![](_v_images/20200221183833372_64294361.png)
+
+获取文档
+GET accounts/persion/1
+
+![](_v_images/20200221183931672_1156771400.png)
+
+![](_v_images/20200221184009731_1935721276.png)
+
+![](_v_images/20200221184046099_1792918728.png)
