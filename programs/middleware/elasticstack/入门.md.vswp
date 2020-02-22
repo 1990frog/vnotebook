@@ -71,3 +71,133 @@ GET accounts/persion/1
 ![](_v_images/20200221184009731_1935721276.png)
 
 ![](_v_images/20200221184046099_1792918728.png)
+
+# Beats
+Lightweight Data Shipper
++ Filebeat日志文件
++ Metricbeat度量数据
++ Packetbeat网络数据
++ Winlogbeat Windows数据
++ Heartbeat健康检查
+
+![20190911084149342](_v_images/20200222191043742_986810788.png)
+
+## Filebeat
+处理流程
++ 输入Input
++ 处理Filter
++ 输出Output
+
+### 配置
+yaml语法：
+input_type:log,stdin
+```yml
+filebeat.prospectors:
+    -input_type:log
+    paths:
+        -/var/log/apache/httpd-*.log
+    -input_type:log
+    paths:
+        -/var/log/messages
+        -/var/log/*.log
+```
+output:
++ Console
++ Elasticsearch
++ Logstash
++ Kafka
++ Resi
++ File
+
+```yml
+output.elasticsearch:
+    hosts:["http://localhsot:9200"]
+    username:"admin"
+    password:"123"
+```
+
+```yml
+output.console
+    pretty:true
+```
+
+# Filebeat Filter
+## Input时处理
++ Include_lines
++ exclude_lines
++ exclude_files
+
+## Output前处理--Processor
++ drop_event
++ drop_fields
++ Decode_json_fields
++ Include_fields
+
+```yml
+processors:
+    - drop_event:
+        when:
+            regexp:
+                message:"^DCG:"
+```
+
+```yml
+processors:
+    -decode_json_fields:
+        fields:["inner"]
+```
+
+# Filebeat+Elasticsearch Ingest Node
++ Filebeat缺乏数据转换的能力
++ Elasticsearch Ingest Node
+新增的node类型
+在数据写入es前对数据进行处理转换
+pipeline api
+
+# Filebeat Module
+对于社区常见需求进行配置封装增加易用性
+
+# demo
+filebeat收集nginx log
+通过stdin收集日志
+通过console输出结果
+
+```yml
+filebeat.prospectors:
+    input_type:stdin
+    output_type.console:
+        pretty:true
+```
+
+```
+>head -n 2 /nginx.log ./filebeat -e -c nginx.yml
+```
+
+# packetbeat
+实时抓取网络包
+自动解析应用层协议
+ICMP
+DNS
+HTTP
+MySQL
+Redis
+......
+
+Wireshark
+
+## 解析Elasticsearch http请求
+```yml
+packetbeat.interfaces.device:any
+packetbeat.protocols.http:port:[9200]
+send_request:true
+include_body_for:["application/json","x-www-form-urlencoded"]
+output.console:
+    pretty:true
+```
+
+```
+>sudo ./packetbeat -e -c es.yml -strict.perms=false
+```
+
+down packetbeat
+down filebeat

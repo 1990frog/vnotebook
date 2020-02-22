@@ -139,3 +139,161 @@ public class AnimalFactory {
 + 配置繁琐
 + 开发效率低
 + 文件解析耗时
+
+# 注解方式配置bean
+## @Conponent声明
+```java
+@Component
+```
+## 配置类中使用@Bean
+```java
+@Configuration
+public class BeanConfiguration{
+
+    @Bean("dog")
+    Animal getDog(){
+        return new Dog();
+    }
+}
+```
+## 继承FactoryBean
+```java
+@Component
+public class MyCat implements FactoryBean<Animal> {
+    @Override
+    public Animal getObject() throws Exception {
+        return new Cat();
+    }
+
+    @Override
+    public Class<?> getObjectType() {
+        return Animal.class;
+    }
+}
+```
+## 继承BeanDefinitionRegistryPostProcessor
+```java
+@Component
+public class MyBeanRegister implements BeanDefinitionRegistryPostProcessor {
+    @Override
+    public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+        RootBeanDefinition rootBeanDefinition = new RootBeanDefinition();
+        rootBeanDefinition.setBeanClass(Monkey.class);
+        registry.registerBeanDefinition("monkey", rootBeanDefinition);
+    }
+
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+
+    }
+}
+```
+## 继承ImportBeanDefinitionRegistrar
+```java
+public class MyBeanImport implements ImportBeanDefinitionRegistrar {
+
+    @Override
+    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+        RootBeanDefinition rootBeanDefinition = new RootBeanDefinition();
+        rootBeanDefinition.setBeanClass(Bird.class);
+        registry.registerBeanDefinition("bird", rootBeanDefinition);
+    }
+}
+
+```
+
+## 优点
++ 使用简单
++ 开发效率高
++ 高内聚
+
+## 缺点
++ 配置分散
++ 对象关系不清晰
++ 配置修改需要重新编译工程
+
+# refresh方法解析
++ bean配置读取加载入口
++ spring框架启动流程
+
+## refresh方法调用了13个子方法
+![](_v_images/20200222071240161_1132654311.png)
+
+```java
+@Override
+public void refresh() throws BeansException, IllegalStateException {
+	synchronized (this.startupShutdownMonitor) {//为什么要设置为同步快
+		// Prepare this context for refreshing.
+		// 刷新上下文之前做个准备：1.容器状态设置，2.初始化属性设置，3.检查必备属性是否存在
+		prepareRefresh();
+
+		// Tell the subclass to refresh the internal bean factory.
+		// 1.设置beanFactory序列化id，2.获取beanFactory
+		ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+
+		// Prepare the bean factory for use in this context.
+		// 1.设置beanFactory一些属性，2.添加后置处理器，3.设置忽略的自动装配接口，4.注册一些组件
+		prepareBeanFactory(beanFactory);
+
+		try {
+			// Allows post-processing of the bean factory in context subclasses.
+			// web请求处理器与bean的一些配置
+			postProcessBeanFactory(beanFactory);
+
+			// Invoke factory processors registered as beans in the context.
+			// 1.调用BeanDefinitionRegistryPostProcessor实现向容器内添加bean的定义
+			// 2.调用BeanFactoryPostProcessor实现向容器内bean的定义添加属性
+			invokeBeanFactoryPostProcessors(beanFactory);
+
+			// Register bean processors that intercept bean creation.
+			// 1.找到BeanPostProcessor的实现，2.排序后注册进容器内
+			registerBeanPostProcessors(beanFactory);
+
+			// Initialize message source for this context.
+			// 初始化国际化相关的属性
+			initMessageSource();
+
+			// Initialize event multicaster for this context.
+			// 初始化事件广播器
+			initApplicationEventMulticaster();
+
+			// Initialize other special beans in specific context subclasses.
+			onRefresh();
+
+			// Check for listener beans and register them.
+			// 1.添加容器内事件监听器至事件广播器中，2.派发早期事件
+			registerListeners();
+
+			// Instantiate all remaining (non-lazy-init) singletons.
+			// 初始化所有剩下的单实例bean
+			finishBeanFactoryInitialization(beanFactory);
+
+			// Last step: publish corresponding event.
+			// 1.初始化生命周期处理器，2.调用生命周期处理器onRefresh方法，3.发布ContextRefreshedEvent事件
+			finishRefresh();
+		}
+
+		catch (BeansException ex) {
+			if (logger.isWarnEnabled()) {
+				logger.warn("Exception encountered during context initialization - " +
+						"cancelling refresh attempt: " + ex);
+			}
+
+			// Destroy already created singletons to avoid dangling resources.
+			destroyBeans();
+
+			// Reset 'active' flag.
+			cancelRefresh(ex);
+
+			// Propagate exception to caller.
+			throw ex;
+		}
+
+		finally {
+			// Reset common introspection caches in Spring's core, since we
+			// might not ever need metadata for singleton beans anymore...
+			resetCommonCaches();
+		}
+	}
+}
+```

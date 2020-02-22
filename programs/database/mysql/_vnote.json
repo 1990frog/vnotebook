@@ -4,10 +4,10 @@
     ],
     "sub_directories": [
         {
-            "name": "各方面对性能的影响"
+            "name": "mysql性能优化"
         },
         {
-            "name": "demo2"
+            "name": "mysql要点总结"
         },
         {
             "name": "mysql8"
