@@ -12,4 +12,3 @@
 + Consistency一致性
 + Isolation隔离性
 + Durability耐久性
-

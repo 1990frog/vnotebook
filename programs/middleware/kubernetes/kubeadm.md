@@ -112,3 +112,23 @@ systemctl enable kubelet.service
 ```
 
 vagrant up
+
+# 初始化
+```
+k8s-master>sudo kubeadm init --pod-network-cidr 172.100.0.0/15 --apiserver-advertise-address 192.168.205.120
+```
+
+在master节点上运行
+```
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+kubectl get pod --all-namespaces
+
+安装网络插件
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+
+添加worker节点
+sudo kubeadm join
