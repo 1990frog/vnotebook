@@ -1,8 +1,11 @@
 [TOC]
 
 # 常用最小镜像
-+ busybox
-+ scratch
+## BusyBox
+Busybox是一个集成了一百多个最常用Linux命令和工具的软件工具箱，它在单一的可执行文件中提供了精简的Unix工具集。BusyBox可运行于多款POSIX环境操作系统中，如Linux（包括Andoroid）、Hurd、FreeBSD等。
+Busybox既包含了一些简单实用的工具，如cat和echo，也包含了一些更大，更复杂的工具，如grep、find、mount以及telnet。可以说BusyBox是Linux系统的瑞士军刀。
+## alpine
+## scratch
 
 # 什么是Image
 1. 文件和meta data的集合（root filesystem）

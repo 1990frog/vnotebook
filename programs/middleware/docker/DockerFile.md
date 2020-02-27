@@ -41,55 +41,64 @@ CMD ["/run.sh"]
 | ONBUILD     | 触发               |
 
 ## FROM：指定基础镜像
+Syntax
 ```Docker
-FROM <image> [AS <name>]
-FROM <image>[:<tag>] [AS <name>]
-FROM <image>[@<digest>] [AS <name>]
-FROM scratch    #空白镜像（详见dockerhub）
+FROM busybox
+FROM reids:latest
 ```
-## COPY：复制文本
+## COPY：复制
+Syntax
 ```Docker
-COPY <源路径>... <目标路径>
-COPY ["<源路径1>",... "<目标路径>"]
-#<源路径> 可以是多个、以及使用通配符，通配符规则满足Go的filepath.Match 规则，如：COPY hom* /mydir/    COPY hom?.txt /mydir/
-#<目标路径>使用 COPY 指令，源文件的各种元数据都会保留。比如读、写、执行权限、文件变更时间等。
+COPY <src> <dest>
+COPY ["<src>","<dest>"]
 ```
-## ADD：高级复制文件（对比COPY强在可以自动解压）
+```
+>copy app.py /
+>copy app/*.py /
+```
+## ADD：加强版复制（解压、下载）
 ```Docker
+#原路径可以是一个URL或压缩包，下载后的文件权限自动设置为600
 ADD ubuntu-xenial-core-cloudimg-amd64-root.tar.gz /
-#<源路径> 可以是一个 URL ，下载后的文件权限自动设置为 600 。
+```
+## ARG：构建参数
++ build时指定参数`docker build --build-arg <参数名>=<值>`可以覆盖默认值
++ 与ENV不同的是，容器运行时不会存在这些环境变量
+
+Syntax
+```Docker
+#声明变量，设置默认值
+ARG <name>[=<default value>]
+#调用变量
+ENV env1=$arg
+ENV env2=${arg}
+```
+```
+>docker build --build-arg user=what_user .
 ```
 ## ENV：设置环境变量
-在其他指令中可以直接引用ENV设置的环境变量。
+在其他指令中可以直接引用ENV设置的环境变量，可以在run时指定变量
+Syntax
 ```Docker
 ENV <key> <value>
 ENV <key1>=<value1> <key2>=<value2>...
-#示例：
-ENV VERSION=1.0 DEBUG=on NAME="Happy Feet"
 ```
-这个指令很简单，就是设置环境变量而已，无论是后面的其它指令，如RUN ，还 是运行时的应用，都可以直接使用这里定义的环境变量。
-这个例子中演示了如何换行，以及对含有空格的值用双引号括起来的办法，这和Shell下的行为是一致的。
-定义了环境变量，那么在后续的指令中，就可以使用这个环境变量。比如在官方node镜像 Dockerfile 中，就有类似这样的代码:
-## ARG：构建参数
-与ENV不同的是，容器运行时不会存在这些环境变量。
-可以用 `docker build --build-arg <参数名>=<值> `来覆盖。
-```Docker
-#Syntax
-ARG <name>[=<default value>]
-ENV arg    #声明变量
-${arg:default}    #设置默认值
-$arg    #调用变量
-
-#Default values
-ARG user1=someuser
-
-#Scope
+```dockerfile
 FROM busybox
-USER ${user:-some_user}
-ARG user
-USER $user
+ARG var
+ENV name=${var}\
+    pwd password\
+    ip 127.0.0.1
 
->docker build --build-arg user=what_user .
+ENTRYPOINT echo ${name}\
+    && echo ${pwd}
+```
+实例化
+```
+>docker build -t env . --build-arg var=hello
+>docker run -e pwd=world env
+hello
+world
 ```
 ## LABEL：指定标签（设定邮箱、版本号、描述等信息）
 LABEL 指令会添加元数据到镜像。LABEL是以键值对形式出现的。为了在LABEL的值里面可以包含空格，你可以在命令行解析中使用引号和反斜杠。
@@ -280,90 +289,3 @@ LABEL maintainer="1990frog@gmail.com"
 # 运行
 1. 创建dockerfile文件
 2. 运行 `docker build -t [image_name] .`
-
-# FROM常用模板
-## BusyBox
-Busybox是一个集成了一百多个最常用Linux命令和工具的软件工具箱，它在单一的可执行文件中提供了精简的Unix工具集。BusyBox可运行于多款POSIX环境操作系统中，如Linux（包括Andoroid）、Hurd、FreeBSD等。
-Busybox既包含了一些简单实用的工具，如cat和echo，也包含了一些更大，更复杂的工具，如grep、find、mount以及telnet。可以说BusyBox是Linux系统的瑞士军刀。
-## alpine
-## scratch
-
-# Demo
-## MySQL-8.0
-```docker
-FROM debian:stretch-slim
-
-# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -r mysql && useradd -r -g mysql mysql
-
-RUN apt-get update && apt-get install -y --no-install-recommends gnupg dirmngr && rm -rf /var/lib/apt/lists/*
-
-# add gosu for easy step-down from root
-ENV GOSU_VERSION 1.7
-RUN set -x \
-	&& apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
-	&& wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
-	&& wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
-	&& export GNUPGHOME="$(mktemp -d)" \
-	&& gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
-	&& gpgconf --kill all \
-	&& rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
-	&& chmod +x /usr/local/bin/gosu \
-	&& gosu nobody true \
-	&& apt-get purge -y --auto-remove ca-certificates wget
-
-RUN mkdir /docker-entrypoint-initdb.d
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-# for MYSQL_RANDOM_ROOT_PASSWORD
-		pwgen \
-# for mysql_ssl_rsa_setup
-		openssl \
-# FATAL ERROR: please install the following Perl modules before executing /usr/local/mysql/scripts/mysql_install_db:
-# File::Basename
-# File::Copy
-# Sys::Hostname
-# Data::Dumper
-		perl \
-	&& rm -rf /var/lib/apt/lists/*
-
-RUN set -ex; \
-# gpg: key 5072E1F5: public key "MySQL Release Engineering <mysql-build@oss.oracle.com>" imported
-	key='A4A9406876FCBD3C456770C88C718D3B5072E1F5'; \
-	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
-	gpg --batch --export "$key" > /etc/apt/trusted.gpg.d/mysql.gpg; \
-	gpgconf --kill all; \
-	rm -rf "$GNUPGHOME"; \
-	apt-key list > /dev/null
-
-ENV MYSQL_MAJOR 8.0
-ENV MYSQL_VERSION 8.0.19-1debian9
-
-RUN echo "deb http://repo.mysql.com/apt/debian/ stretch mysql-${MYSQL_MAJOR}" > /etc/apt/sources.list.d/mysql.list
-
-# the "/var/lib/mysql" stuff here is because the mysql-server postinst doesn't have an explicit way to disable the mysql_install_db codepath besides having a database already "configured" (ie, stuff in /var/lib/mysql/mysql)
-# also, we set debconf keys to make APT a little quieter
-RUN { \
-		echo mysql-community-server mysql-community-server/data-dir select ''; \
-		echo mysql-community-server mysql-community-server/root-pass password ''; \
-		echo mysql-community-server mysql-community-server/re-root-pass password ''; \
-		echo mysql-community-server mysql-community-server/remove-test-db select false; \
-	} | debconf-set-selections \
-	&& apt-get update && apt-get install -y mysql-community-client="${MYSQL_VERSION}" mysql-community-server-core="${MYSQL_VERSION}" && rm -rf /var/lib/apt/lists/* \
-	&& rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld \
-	&& chown -R mysql:mysql /var/lib/mysql /var/run/mysqld \
-# ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
-	&& chmod 777 /var/run/mysqld
-
-VOLUME /var/lib/mysql
-# Config files
-COPY config/ /etc/mysql/
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
-ENTRYPOINT ["docker-entrypoint.sh"]
-
-EXPOSE 3306 33060
-CMD ["mysqld"]
-```

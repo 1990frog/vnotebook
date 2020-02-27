@@ -1,0 +1,55 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/middleware/jmeter/数据驱动性测试.md
+[TOC]
+
+# 定义
++ 从数据文件中读取测试数据，驱动测试过程的一种测试方法
++ 数据驱动可以理解为更高级的参数化
+
+# 特点
++ 测试数据与测试代码分离
++ 数据控制过程
+
+# 优点
++ 减少测试代码量
++ 降低脚本开发和维护的成本
+
+# 数据驱动的使用场景
++ 复杂的业务流程
++ 根据业务场景分流
++ 复合条件的并发场景
+
+# jmeter中的数据驱动
++ 参数化
++ 逻辑控制器
+
+# Debug Sampler调试取样器
+
+# 场景
++ 登录后男性浏览电子商品
++ 登录后女性浏览化妆品
+
+# 配置数据库配置元件
+
+# JDBC Request
+![](_v_images/20200227145128957_1510931170.png)
+
+Variable Name对应jdbc配置元件名称
+
+Parameter values:
+Parameter types:
+Variable names:
+Result variable name:
+Query timeout(s):
+Limit ResultSet:
+Handle ResultSet:
+
+# 流程
+1. 从csv读取目标数据（为了一条条处理）
+2. JDBC通过csv的id获取对应数据
+3. 判断查询字段是否满足if控制器
+4. 满足通过beanshell输出
+
+# 函数助手
+__v：函数拼接
+
+# 循环

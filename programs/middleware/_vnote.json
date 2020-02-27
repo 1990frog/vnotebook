@@ -17,6 +17,27 @@
         },
         {
             "name": "elasticstack"
+        },
+        {
+            "name": "jmeter"
+        },
+        {
+            "name": "自动化测试"
+        },
+        {
+            "name": "性能优化"
+        },
+        {
+            "name": "springboot"
+        },
+        {
+            "name": "springcloud"
+        },
+        {
+            "name": "netty"
+        },
+        {
+            "name": "es"
         }
     ],
     "version": "1"

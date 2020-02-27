@@ -6,7 +6,7 @@
             "attachments": [
             ],
             "created_time": "2020-01-23T13:22:06Z",
-            "modified_time": "2020-01-23T13:22:06Z",
+            "modified_time": "2020-02-27T15:39:51Z",
             "name": "1.六大设计原则.md",
             "tags": [
             ]
@@ -170,12 +170,19 @@
             "name": "简单工厂(非创建型设计模式).md",
             "tags": [
             ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2020-02-15T02:05:53Z",
+            "modified_time": "2020-02-18T08:08:11Z",
+            "name": "Observer观察者.md",
+            "tags": [
+            ]
         }
     ],
     "sub_directories": [
-        {
-            "name": "Geely"
-        }
     ],
     "version": "1"
 }
