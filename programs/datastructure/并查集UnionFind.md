@@ -14,13 +14,18 @@ isConnected(p,q)
 
 
 ```java
+Interface UnionFind
 getSize()
 find(int p)
 isConnected(int p,int q)
 unionElements(int p,int q)
 ```
 
-![](_v_images/20200216213214697_1602896862.png)
+# Quick Find
++ unionElements(p,q) O(n)
++ isConnected(p,q) O(1)
+
+
 
 ---
 

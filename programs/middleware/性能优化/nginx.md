@@ -1,13 +1,21 @@
+[TOC]
 
+# 版本选择
++ 原版nginx模块太多，配置lua复杂
++ openResty版本比较懒人包
 
-grant all privileges on *.* to root@'%' identified by 'root'
+# 安装OpenResty版本安装
+1. 配置`.configure`
+2. 编译`make`
+3. 安装`make install`
 
-
-# nginx模块太多
-
-选择openResty版本
-
-
+# 常用命令
+```
+>nginx -c nginx.conf    #启动
+>nginx -s reload    #无缝重启
+>nginx -s quit    #安全退出服务
+>nginx -s stop    #强制关闭
+```
 
 # 配置文件
 ## server节点
@@ -95,72 +103,14 @@ http {
 }
 ```
 
-netstat -an | grep 80
+# mine.type文件
 
-# 配置
-worker_processes工作进程
-events
-
-server
-server_name多域名
-
-mine.type
-
-
-```
-location / {
-    root html;
-    index index.html index.htm;
-}
-```
-
-nginx
-root
-alias
-
-# 动静分离
-
-![](_v_images/20200226194538613_750512587.png)
-
-
-```
-upstream backend_server{
-    server ip:port weight=1;#weight权重
-    server ip:port weight=1;
-}
-
-location / {
-    proxy_pass http://backend_server;
-    proxy_set_header Host $http_host:$proxy_port;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-}
-
-```
-
-# 开启tomcat access log验证
-![](_v_images/20200226195505496_455646888.png)
-
-
-
----
-
-# nginx
+# 功能
 + 使用nginx作为web服务器
 + 使用nginx作为动静分离服务器
 + 使用nginx作为反向代理服务器
-# OpenResty版本安装
-1. 配置`.configure`
-2. 编译`make`
-3. 安装`make install`
-# 常用命令
-```
->nginx -c nginx.conf    #启动
->nginx -s reload    #无缝重启
->nginx -s quit    #安全退出服务
->nginx -s stop    #强制关闭
-```
-# 静态代理
+
+## 静态代理
 ```nginx
 http {
     include mine.types;
@@ -176,7 +126,7 @@ http {
     }
 }
 ```
-# 动静分离
+## 动静分离
 ```nginx
 http {
     include mine.types;
@@ -192,7 +142,7 @@ http {
     }
 }
 ```
-# 反向代理
+## 反向代理
 ```nginx
 http {
     include mine.types;
@@ -218,7 +168,7 @@ http {
 ```
 
 # nginx keepalivetime长连接
-http1.0协议默认是不支持keepalive的，使用1.1自动设置keepalive，并将header头文件置空
+http1.0协议默认是不支持keepalive的，使用http1.1自动设置keepalive，并将header头文件置空
 ```
 upstream servers{
     server ip:port weight=1;
@@ -233,3 +183,52 @@ location / {
 
 netstat -an | grep ip | grep ESTABLISHED
 netstat -an | grep ip | grep TIME_WAIT
+
+---
+
+# nginx高性能原因
++ epoll多路复用
++ master worker进程模型
++ 协程机制
+
+# epoll多路复用
++ java bio模型，阻塞进程式
++ linux select模型，变更触发轮训查找，有1024数量上限
++ epoll模型，变更查房回调直接读取，理论上无上限
+
+## java bio模型
+client与server通过tcp/ip的一个socket长连接去完成建联的操作
+client向server发送数据的时候就会有一个socker.write操作，这个操作就是一个bio模型
+client只有等到socket.write的所有字节流input到server的缓冲区之后，对应的client才会返回
+若网络发送的很慢，我们的tcp/ip的缓冲区被塞满的时候，client就不得不等待网络当中把对应的信息传输过去，使得缓冲区有空间给上游的人去写的时候，才可能会达到直接返回这样的一个效果
+## linux select模型
+假设server有100个client
+server首先阻塞自己，并且监听100个客户端连接，是否有变化，若有变化则唤醒自己，回去循环遍历100个连接，找到发生变化的一个或多个，然后执行read操作
+select多路复用：一个select可以对应n个客户端连接
+## epoll模型
+假设server有100个client
+server首先阻塞自己，并且监听100个客户端连接，是否有变化，设置回调函数，若有变化则唤醒自己并执行回调函数
+netty就是基于epoll模型
+
+# master-worker进程模型
+![](_v_images/20200228142223693_459374751.png)
+
+reload操作
+master进程的进程号并没有发生改变
+worker进程发生改变
+
+master主进程可以管理worker子进程的内存资源
+worker是由master通过fork操作生成的
+
+每一个worker内部只有一个线程(epoll模型),如果线程的内部是没有任何阻塞操作的，那么单线程的调用会比多线程的调用更快，为什么会有多线程？是因为一些io阻塞方法，或者一些耗时的任务处理，会导致block住其他的一些应用。
+
+# 协程机制
++ 依赖于线程的内存模型，切换开销小
++ 遇阻塞及归还执行权，代码同步
++ 无需加锁
+
+异步的坏处：处理对应的顺序的控制流就非常麻烦，处理异步控制流，就得异步回调函数内嵌套异步回调函数的机制
+
+golang语言就基于协程
+
+协程是一个线程更小的一个内存模型的概念，它是依附于线程的内存模型，因此他的切换，比如说一个线程可能有多个协程。协程之间的切换开销是非常小的，因为它不需要像线程一样有cpu的切换开销，它只需要一个内存的切换开销即可，然后我们对应的协程的运行其实就是线程的运行，cpu执行的还是线程并非是协程，协程只是线程的一个内存模型而已，若我们的协程程序遇到任何的阻塞的时候，我们的nginx的会立刻将对应的协程执行权限剥夺，并交给另外一个不阻塞的协程运行。这样做的好处是，我们对应的协程开发都是顺序性的执行代码。协程不需要加锁，协程是依附于线程的

@@ -5,10 +5,21 @@
 # 字典
 如果有n个条目，使用树结构，查询的时间复杂度是O(logn)，如果有100万个条目（2^20），logn大约是20
 # Trie
+![30214215-8a71ab1bca7c4920bd2143cef6596f08](_v_images/20200228001616879_1428495971.png)
+
 查询每个条目的时间复杂度，和字典中一共有多少条目无关，时间复杂度为O(w)，w为查询单词的长度，大多数单词的长度小于10
 每个节点有若干个指向下个节点的指针
 
-![](_v_images/20200214165901664_1392815597.png)
+```java
+class Node{
+    boolean isWord;
+    Map<char,Node> next;
+}
+```
+
+![400px-Trie_example](_v_images/20200228000711179_1735349854.png)
+
+
 
 单词Trie
 每个节点有26个指向下个节点的指针（不考虑大小写）
@@ -40,24 +51,44 @@ boolean isPrefix(String prefix)
 # Trie字典树和字符串映射
 
 # 更多的拓展
-![](_v_images/20200215111106190_1492914435.png)
 
-![](_v_images/20200215111252070_1959999655.png)
+# Trie的删除操作
 
+# Trie的局限性
+最大的问题：空间
+```java
+class Node{
+    //char c;
+    boolean isWord;
+    Tree<char,Node> next;
+}
+```
 
-![](_v_images/20200215111513013_199849320.png)
+# 压缩字典树 Compressed Trie
+Before compression
+![trie07](_v_images/20200228001329705_1706578987.gif)
+After compression
+![trie08](_v_images/20200228001338775_1642973520.gif)
+缺陷：
 维护成本更高
 
 
-![](_v_images/20200215111848392_1564596966.png)
+# 三叉搜索树（Ternary Search Trie）
+
 
 # 后缀树
-![](_v_images/20200215112013918_1628937767.png)
 
-![](_v_images/20200215112057926_1650484938.png)
+# 更多字符串问题
+子串查询
+KMP
+Boyer-Moore
+Rabin-Karp
 
-![](_v_images/20200215112146589_908208436.png)
+文件压缩
 
-![](_v_images/20200215112216795_232715519.png)
+模式匹配
+
+编译原理
+
 
 DNA
