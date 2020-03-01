@@ -1,7 +1,7 @@
 [TOC]
 
 # 用途
-ApplicationContextInitializer 是 Spring 在执行 ConfigurableApplicationContext.refresh() 方法对应用上下文进行刷新之前调用的一个回调接口，用来完成对 Spring 应用上下文个性化的初始化工作
+ApplicationContextInitializer是Spring在执行ConfigurableApplicationContext.refresh() 方法对应用上下文进行刷新之前调用的一个回调接口，用来完成对Spring应用上下文个性化的初始化工作
 
 + 类名：ApplicationContextInitializer
 + 介绍：Spring容器刷新之前执行的一个回调函数

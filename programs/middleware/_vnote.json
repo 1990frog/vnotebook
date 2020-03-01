@@ -38,6 +38,12 @@
         },
         {
             "name": "es"
+        },
+        {
+            "name": "mybatis"
+        },
+        {
+            "name": "lombok"
         }
     ],
     "version": "1"
