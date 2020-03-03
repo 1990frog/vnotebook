@@ -90,4 +90,3 @@ public class superCalss{
 + 对象创建后，其状态就不能修改
 + 所有属性都是final修饰的
 + 对象创建过程中没有发生逸出
-

@@ -1,0 +1,50 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/middleware/jmeter/数据库性能测试.md
+[TOC]
+
+# QPS
++ queries per seconds没秒钟查询数量
++ show global status like 'Question%';
++ Queries/seconds
+
+```
+mysql> show global status like'Question%';
++---------------+---------+
+| Variable_name | Value   |
++---------------+---------+
+| Questions     | 5742404 |
++---------------+---------+
+1 row in set (0.01 sec)
+```
+
+# TPS
++ Tranaction per seconds
++ TPS=(Com_commit+Com_rollback)/seconds
++ show global status like 'Com_commit%';
++ show global status like 'Com_rollback%';
+
+# 线程连接数
++ show global status like 'Max_used_connections';
++ show global status like 'Threads%';
+
+```
+mysql> show global status like 'Threads%';
++-------------------+-------+
+| Variable_name     | Value |
++-------------------+-------+
+| Threads_cached    | 8     |
+| Threads_connected | 1     |
+| Threads_created   | 2778  |
+| Threads_running   | 2     |
++-------------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> show global status like 'Max_used_connections';
++----------------------+-------+
+| Variable_name        | Value |
++----------------------+-------+
+| Max_used_connections | 152   |
++----------------------+-------+
+1 row in set (0.01 sec)
+```
+
+8分钟

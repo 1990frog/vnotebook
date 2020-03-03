@@ -130,6 +130,39 @@ sudo pacman -S virtio-win
 ```
 ## vargent谁用谁香
 
+## shadowsocks
+config.json
+```json
+{
+    "server":"",
+    "server_port":,
+    "local_port":,
+    "password":"",
+    "method":""
+}
+```
+启动命令
+```
+/usr/bin/ss-local -c /etc/shadowsocks-libev/config.json
+```
+服务启动
+/usr/lib/systemd/system/ss.service
+```
+[Unit]
+Description=SS Service
+After=multi-user.target
+ 
+[Service]
+Type=idle
+#ExecStart=/usr/bin/python /opt/shadowsocksr/shadowsocks/local.py -c /etc/shadowsocks/config.json
+ExecStart=/usr/bin/ss-local -c /etc/shadowsocks/config.json
+ 
+[Install]
+```
+systemctl daemon-reload
+
+systemctl start ss
+
 ## 缺失ifconfig
 ```
 sudo pacman -S net-tools

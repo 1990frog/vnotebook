@@ -22,22 +22,16 @@
             "name": "dynamicProxy"
         },
         {
-            "name": "enum"
-        },
-        {
             "name": "exception"
         },
         {
             "name": "genericity"
         },
         {
-            "name": "initialization"
-        },
-        {
             "name": "io"
         },
         {
-            "name": "stream&lambda"
+            "name": "lambda"
         }
     ],
     "version": "1"
