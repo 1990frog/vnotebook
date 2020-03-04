@@ -117,3 +117,31 @@ public class MyRibbonConfiguration {
 
 单独建包，不然会产生spring父子上下文重叠，导致该配置为全局配置
 
+
+# 配置属性方式
+<clientName>.ribbon.
++ NFloadBalancerClassName：ILoadBalancer实现类
++ NFloadBalancerRuleClassName：IRule实现类
++ NFloadBalancerPingClassName：IPing实现类
++ NiWSServerListClassName：ServerList实现类
++ NiWSServerListFilterClassName：ServerListFilter实现类
+
+# 饥饿加载
+默认情况下ribbon是懒加载
+
+开启饥饿加载
+```yml
+ribbon:
+    eager-load:
+        enabled:true
+        # 指定ribbon请求哪些微服务使用饥饿加载，多个可以使用逗号分隔
+        clients:user-center
+```
+
+# 在nacos控制台设置权重
+值在0-1之间，值越大几率越大
+
+# ribbon负载均衡权重
+https://imooc.com/article/288660
+
+# 拓展ribbon-同集群优先

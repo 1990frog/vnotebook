@@ -1,3 +1,4 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/component/mysql/mysql基础/DDL.md
 [TOC]
 
 # DDL(Data Definition language)
@@ -233,3 +234,7 @@ create table user
 create unique index user_id_uindex
     on user (id);
 ```
+
+# 其他的DDL语句
++ 清空表：TRUNCATE TABLE [table]
++ 重命名表：RENAME TABLE [oldtablename] TO [newtablename]
