@@ -28,3 +28,6 @@ git config --list --[global|local|system]
 >git init your_project # 会在当前路径下创建和项目名词同名的文件夹
 >cd your_project
 ```
+
+# 向仓库添加文件
+工作目录-->暂存区-->版本历史
