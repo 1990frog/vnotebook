@@ -1,0 +1,8 @@
+DataSourceAutoConfiguration
+配置DataSource
+DataSourceTransactionManagerAutoConfiguration
+配置DataSourceTransactionManager
+JdbcTemplateAutoConfiguration
+配置JdbcTemplate
+
+符合条件时才进行配置

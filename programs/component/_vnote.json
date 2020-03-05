@@ -4,76 +4,25 @@
     ],
     "sub_directories": [
         {
-            "name": "docker"
+            "name": "devops"
         },
         {
-            "name": "mq"
+            "name": "db"
         },
         {
-            "name": "redis"
+            "name": "test"
         },
         {
-            "name": "kubernetes"
+            "name": "performance"
         },
         {
-            "name": "elasticstack"
+            "name": "javafamily"
         },
         {
-            "name": "jmeter"
+            "name": "tool"
         },
         {
-            "name": "自动化测试"
-        },
-        {
-            "name": "性能优化"
-        },
-        {
-            "name": "springboot"
-        },
-        {
-            "name": "springcloud"
-        },
-        {
-            "name": "netty"
-        },
-        {
-            "name": "es"
-        },
-        {
-            "name": "mybatis"
-        },
-        {
-            "name": "lombok"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "druid"
-        },
-        {
-            "name": "tomcat"
-        },
-        {
-            "name": "git"
-        },
-        {
-            "name": "markdown"
-        },
-        {
-            "name": "svn"
-        },
-        {
-            "name": "vim"
-        },
-        {
-            "name": "mongodb"
-        },
-        {
-            "name": "mysql"
-        },
-        {
-            "name": "oracle"
+            "name": "bigdata"
         }
     ],
     "version": "1"
