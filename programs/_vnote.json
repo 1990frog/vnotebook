@@ -93,9 +93,6 @@
             "name": "designpattern"
         },
         {
-            "name": "network"
-        },
-        {
             "name": "language"
         },
         {
@@ -103,6 +100,9 @@
         },
         {
             "name": "component"
+        },
+        {
+            "name": "理论"
         }
     ],
     "version": "1"

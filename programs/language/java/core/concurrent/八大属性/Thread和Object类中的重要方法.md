@@ -1,21 +1,6 @@
 [TOC]
 
-# Object
-Synchronized使用Object做锁，所以有部分类在Object对象里面
-## Block阻塞阶段
-直到以下4种情况之一发生时，才会被唤醒
-1.另一个线程调用这个对象的notify()方法且刚好被唤醒的是本线程；
-2.另一个线程调用这个对象的notifyAll()方法；
-3.过了wait(long timeout)规定的超时时间，如果传入0就是永久等待；
-4.线程自身调用了interrupt()
-## wait
-当前调用synchronized修饰代码的线程进入阻塞状态（wait）
-## wait(long time)
-同上
-## notify
-唤醒一个block状态的线程（操作系统调度）
-## notifyAll
-唤醒全部block状态的线程
+
 # Thread
 ## sleep
 <font color="red">主动放弃占用的处理器资源，该线程进入阻塞状态（Blocked 状态），指定的睡眠时间超时后，线程进入就绪状态（Runnable），等待线程调度器的调用。</font>

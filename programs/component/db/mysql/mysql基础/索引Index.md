@@ -34,3 +34,4 @@ lock_option:
 # unique index
 
 
+not null搭配default方便配置索引

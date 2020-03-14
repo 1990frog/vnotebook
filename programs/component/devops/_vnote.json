@@ -8,6 +8,12 @@
         },
         {
             "name": "kubernetes"
+        },
+        {
+            "name": "vagrant"
+        },
+        {
+            "name": "nginx"
         }
     ],
     "version": "1"

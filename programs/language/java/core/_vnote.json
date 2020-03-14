@@ -32,6 +32,21 @@
         },
         {
             "name": "lambda"
+        },
+        {
+            "name": "annotation"
+        },
+        {
+            "name": "date"
+        },
+        {
+            "name": "class"
+        },
+        {
+            "name": "reflection"
+        },
+        {
+            "name": "jvm"
         }
     ],
     "version": "1"

@@ -167,6 +167,21 @@ docker volume inspect my-volume
 ```Docker
 >docker run -it -v my-volume-2:/mydata alpine sh
 ```
+---
+该指令使容器中的一个目录具有持久化存储的功能，该目录可被容器本身使用，也可共享给其他容器。当容器中的应用有持久化数据的需求时可以在Dockerfile中使用该指令。格式为：
+
+VOLUME ["/data"]
+示例：
+
+VOLUME /data
+使用示例：
+
+FROM nginx
+VOLUME /tmp
+当该Dockerfile被构建成镜像后，/tmp目录中的数据即使容器关闭也依然存在。如果另一个容器也有持久化的需求，并且想使用以上容器/tmp目录中的内容，则可使用如下命令启动容器：
+
+docker run -volume-from 容器ID 镜像名称  # 容器ID是di一个容器的ID，镜像是第二个容器所使用的镜像。
+
 ### bind Mount
 bind mount自docker早期便开始为人们使用了，用于将host机器的目录mount到container中。但是bind mount在不同的宿主机系统时不可移植的，比如Windows和Linux的目录结构是不一样的，bind mount所指向的host目录也不能一样。这也是为什么bind mount不能出现在Dockerfile中的原因，因为这样Dockerfile就不可移植了。
 ```docker
@@ -244,12 +259,13 @@ $ docker run myip -i
 + 使用 RUN 指令安装应用和软件包，构建镜像。
 + 如果 Docker 镜像的用途是运行应用程序或服务，比如运行一个 MySQL，应该优先使用 Exec 格式的 ENTRYPOINT 指令。CMD 可为 ENTRYPOINT 提供额外的默认参数，同时可利用 docker run 命令行替换默认参数。
 + 如果想为容器设置默认的启动命令，可使用 CMD 指令。用户可在 docker run 命令行中替换此默认命令。
-## USER：指定当前用户
+## USER：该指令用于设置启动镜像时的用户或者UID
+写在该指令后的RUN、CMD以及ENTRYPOINT指令都将使用该用户执行命令。
 ```
 这个用户必须是事先建立好的，否则无法切换。
 USER <用户名>
 ```
-## HEALTHCHECK：健康检查
+## HEALTHCHECK：健康检查（已过时）
 HEALTHCHECK 支持下列选项：
 + interval=DURATION (default: 30s)    #两次健康检查的间隔，默认为 30 秒；
  + timeout=DURATION (default: 30s)    #健康检查命令运行超时时间，如果超过这个时间，本次健康检查就被视为失败，默认 30 秒；

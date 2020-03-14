@@ -1,7 +1,6 @@
 [TOC]
 
 # 基础网络概念
-![](_v_images/20191228150339816_691047340.png)
 # 公有ip和私有ip
 + Public IP：互联网上的唯一标识，可以访问internet
 + Private IP：不可在互联网上使用，仅供机构内部使用
@@ -13,13 +12,6 @@
 
 # Telnet
 验证服务的可用性
-
-# 常用防火墙
-+ iptable
-+ firewall
-
-# 抓包工具
-wireshark
 
 
 # network namespace
@@ -117,7 +109,6 @@ container> env
 
 # 多机通信
 如果所有的container都在一台机器上可以使用bridge network来通信
-![](_v_images/20200101163144649_1314618479.png)
 
 
 # Docker Overlay网络和etcd实现多机容器通信

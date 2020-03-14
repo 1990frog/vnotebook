@@ -7,7 +7,7 @@ Docker提供了一个打包和运行应用的隔离环境，称之为容器，Do
 # Docker架构
 Docker更详细的架构如图所示，采用CS架构，client通过RESTFUL API发送docker命令到docker daemon进程，docker daemon进程执行镜像编译，容器启停以及分发，数据卷管理等，一个client可以与多个docker daemon通信。
 ![286774-de93d5fabc08b111](_v_images/20191226094257961_1816307987.png)
-+ Docker Daemon：Docker后台进程，用于管理镜像，容器以及数据卷。
++ Docker Daemon：Docker后台进程，用于管理镜像，容器以及数据卷。Daemon是Docker的守护进程，Docker Client通过命令行与Docker Damon通信，完成Docker相关操作
 + Docker Client：用于与Docker Daemon交互。
 + Docker Registry：用于存储Docker镜像，类似github，公共的Registry有Docker Hub和Docker Cloud。
 Images：镜像是用于创建容器的一种只读模板。镜像通常基于一个基础镜像，在此基础上安装额外的软件。比如你的nginx镜像可能基于debian然后安装nginx并添加配置，你可以从Docker Hub上拉取已有的镜像或者自己通过Dockerfile来编译一个镜像。

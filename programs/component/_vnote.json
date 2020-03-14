@@ -23,6 +23,9 @@
         },
         {
             "name": "bigdata"
+        },
+        {
+            "name": "mq"
         }
     ],
     "version": "1"

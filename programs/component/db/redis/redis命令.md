@@ -16,3 +16,7 @@ redis-server configPath
 + config get * #获取当前redis全部配置
 + ping
 + dbsize #计算key的总数，不会遍历全部key，是读取redis内置计数器【时间复杂度O(1)】
+
+
+# QPS测试
+>redis-benchmark -h 127.0.0.1 -p 6379 -c 50 -n 100000 -d 2
