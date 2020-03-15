@@ -64,6 +64,9 @@
         },
         {
             "name": "ribbon"
+        },
+        {
+            "name": "eureka"
         }
     ],
     "version": "1"
