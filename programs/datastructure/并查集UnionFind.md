@@ -55,8 +55,7 @@ rank pk size
 rank不是深度也不是个数，仅是个排名
 
 并查集的时间复杂度分析
-O(h)
-严格意义上：O(log*n) iterated logarithm
+O(h)严格意义上：O(log*n) iterated logarithm
 
 
 log*n比logn还快，近乎是O(1)级别的
