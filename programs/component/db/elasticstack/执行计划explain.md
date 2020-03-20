@@ -1,6 +1,6 @@
 # 执行计划
 ## 单字段
-```
+```json
 # 执行计划
 GET /movie/_search
 {
@@ -13,7 +13,7 @@ GET /movie/_search
 }
 ```
 结果分析
-```
+```json
 "_explanation":
 {
   "value" : 8.280251,
@@ -81,7 +81,7 @@ GET /movie/_search
 }
 ```
 ## 多字段
-```
+```json
 GET /movie/_search
 {
   "explain": true,
