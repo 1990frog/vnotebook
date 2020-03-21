@@ -91,7 +91,7 @@ redis> GET key1
 redis> GET key2
 "World"
 ```
-## decr
+## decr 自减1
 `DECR key`
 Time complexity: O(1)
 Decrements the number stored at key by one. If the key does not exist, it is set to 0 before performing the operation. An error is returned if the key contains a value of the wrong type or contains a string that can not be represented as integer. This operation is limited to 64 bit signed integers.
@@ -106,7 +106,7 @@ redis> DECR mykey
 ERR ERR value is not an integer or out of range
 redis>
 ```
-## decrby
+## decrby 自减指定值
 `DECRBY key decrement`
 Time complexity: O(1)
 Decrements the number stored at key by decrement. If the key does not exist, it is set to 0 before performing the operation. An error is returned if the key contains a value of the wrong type or contains a string that can not be represented as integer. This operation is limited to 64 bit signed integers.
@@ -117,7 +117,7 @@ redis> DECRBY mykey 3
 (integer) 7
 redis>
 ```
-## incr
+## incr 自增1
 `INCR key`
 Time complexity: O(1)
 Increments the number stored at key by one. If the key does not exist, it is set to 0 before performing the operation. An error is returned if the key contains a value of the wrong type or contains a string that can not be represented as integer. This operation is limited to 64 bit signed integers.
@@ -131,7 +131,7 @@ redis> INCR mykey
 redis> GET mykey
 "11"
 ```
-## incrby
+## incrby 自增指定值（可以设置负数）
 `INCRBY key increment`
 Time complexity: O(1)
 ```
@@ -155,7 +155,7 @@ redis> SET mykey 5.0e3
 redis> INCRBYFLOAT mykey 2.0e2
 "5200"
 ```
-## getrange
+## getrange 获取指定位置字符串
 `GETRANGE key start end`
 Time complexity: O(N)
 Warning: this command was renamed to **GETRANGE**, it is called **SUBSTR** in Redis versions <= 2.0.
@@ -174,7 +174,7 @@ redis> GETRANGE mykey 10 100
 "string"
 redis>
 ```
-## setrange
+## setrange 修改指定位置字符串
 `SETRANGE key offset value`
 ```
 redis> SET key1 "Hello World"
@@ -184,7 +184,7 @@ redis> SETRANGE key1 6 "Redis"
 redis> GET key1
 "Hello Redis"
 ```
-## strlen
+## strlen 获取string长度
 `STRLEN key`
 Time complexity: O(1)
 Returns the length of the string value stored at key. An error is returned when key holds a non-string value.
@@ -196,12 +196,12 @@ redis> STRLEN mykey
 redis> STRLEN nonexisting
 (integer) 0
 ```
-## msetnx
+## msetnx 原子设定多个值，如果存在回滚
 `MSETNX key value [key value ...]`
 Time complexity: O(N)
-Sets the given keys to their respective values. MSETNX will not perform any operation at all even if just a single key already exists.
-Because of this semantic MSETNX can be used in order to set different keys representing different fields of an unique logic object in a way that ensures that either all the fields or none at all are set.
-MSETNX is atomic, so all given keys are set at once. It is not possible for clients to see that some of the keys were updated while others are unchanged.
+同时设置一个或多个 key-value 对，当且仅当所有给定 key 都不存在。
+即使只有一个给定 key 已存在， MSETNX 也会拒绝执行所有给定 key 的设置操作。
+MSETNX 是原子性的，因此它可以用作设置多个不同 key 表示不同字段(field)的唯一性逻辑对象(unique logic object)，所有字段要么全被设置，要么全不被设置。
 ```
 redis> MSETNX key1 "Hello" key2 "there"
 (integer) 1
@@ -212,10 +212,10 @@ redis> MGET key1 key2 key3
 2) "there"
 3) (nil)
 ```
-## psetex
+## psetex 赋值并设置毫秒级生存时间
 `PSETEX key milliseconds value`
 Time complexity: O(1)
-PSETEX works exactly like SETEX with the sole difference that the expire time is specified in milliseconds instead of seconds.
+这个命令和`SETEX`命令相似，但它以毫秒为单位设置`key`的生存时间，而不是像`SETEX`命令那样，以秒为单位。
 ```
 redis> PSETEX mykey 1000 "Hello"
 "OK"
@@ -224,10 +224,9 @@ redis> PTTL mykey
 redis> GET mykey
 "Hello"
 ```
-## setex
+## setex 赋值并设置秒级生存时间
 `SETEX key seconds value`
 Time complexity: O(1)
-Set key to hold the string value and set key to timeout after a given number of seconds. This command is equivalent to executing the following commands:
 + SET mykey value
 + EXPIRE mykey seconds
 ```
@@ -238,7 +237,9 @@ redis> TTL mykey
 redis> GET mykey
 "Hello"
 ```
-## setnx
+## setnx 仅当key不存在时赋值
+将`key`的值设为`value`，当且仅当`key`不存在。
+若给定的`key`已经存在，则`SETNX`不做任何动作。
 `SETNX key value`
 Time complexity: O(1)
 Set key to hold string value if key does not exist. In that case, it is equal to SET. When key already holds a value, no operation is performed. SETNX is short for "SET if Not eXists".
@@ -255,46 +256,3 @@ redis> SETNX mykey "World"
 redis> GET mykey
 "Hello"
 ```
-# bit(string)
-## bitfield
-`BITFIELD key [GET type offset] [SET type offset value] [INCRBY type offset increment] [OVERFLOW WRAP|SAT|FAIL]`
-## bitop
-`BITOP operation destkey key [key ...]`
-Time complexity: O(N)
-Perform a bitwise operation between multiple keys (containing string values) and store the result in the destination key.
-## bitpos
-`BITPOS key bit [start] [end]`
-Time complexity: O(N)
-## getbit
-`GETBIT key offset`
-Time complexity: O(1)
-Returns the bit value at offset in the string value stored at key.
-When offset is beyond the string length, the string is assumed to be a contiguous space with 0 bits. When key does not exist it is assumed to be an empty string, so offset is always out of range and the value is also assumed to be a contiguous space with 0 bits.
-```
-redis> SETBIT mykey 7 1
-(integer) 0
-redis> GETBIT mykey 0
-(integer) 0
-redis> GETBIT mykey 7
-(integer) 1
-redis> GETBIT mykey 100
-(integer) 0
-```
-## bitcount 位宽
-`BITCOUNT key [start end]`
-Time complexity: O(1)
-Count the number of set bits (population counting) in a string.
-```
-redis> SET mykey "foobar"
-"OK"
-redis> BITCOUNT mykey
-(integer) 26
-redis> BITCOUNT mykey 0 0
-(integer) 4
-redis> BITCOUNT mykey 1 1
-(integer) 6
-redis> SET name 李雷
-redis>BITCOUNT name
-(integer) 30
-```
-## setbit

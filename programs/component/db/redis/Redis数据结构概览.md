@@ -1,4 +1,11 @@
 [TOC]
+
++ string（变量）
++ hash（map）
++ list（动态数组）
++ set（映射）
++ zset
+
 # redisObject
 ![u=1306438995,396304977&fm=26&gp=0](_v_images/20191205095602186_2040569566.jpg)
 ![270476457-5d4838a27babd_articlex](_v_images/20191120143355846_1287757325.png)
@@ -16,13 +23,11 @@ struct redisObject
 
 这里需要特殊说明一下vm字段，只有打开了Redis的虚拟内存功能，此字段才会真正的分配内存，该功能默认是关闭状态的。通过上图我们可以发现Redis使用redisObject来表示所有的key/value数据是比较浪费内存的，当然这些内存管理成本的付出主要也是为了给Redis不同数据类型提供一个统一的管理接口，实际作者也提供了多种方法帮助我们尽量节省内存使用。
 
-# none
-空
 # string
 单一key-value存储
 ![](_v_images/20191226160919508_1428409832.png)
 ## 简介
-string 是 redis 最基本的类型，你可以理解成与 Memcached 一模一样的类型，一个 key 对应一个 value。value其实不仅是String，也可以是数字。string 类型是二进制安全的。意思是 redis 的 string 可以包含任何数据。比如jpg图片或者序列化的对象。string 类型是 Redis 最基本的数据类型，string 类型的值最大能存储 512MB。
+string是redis最基本的类型，你可以理解成与Memcached一模一样的类型，一个key对应一个value。value其实不仅是String，也可以是数字。string类型是二进制安全的。意思是redis的string可以包含任何数据。比如jpg图片或者序列化的对象。string类型是Redis最基本的数据类型，string 类型的值最大能存储512MB。
 ## 应用场景
 1. String是最常用的一种数据类型，普通的key/ value 存储都可以归为此类，即可以完全实现目前 Memcached 的功能，并且效率更高。还可以享受Redis的定时持久化，操作日志及 Replication等功能。
 2. 常规key-value缓存应用。常规计数: 微博数, 粉丝数。 实现方式：String在redis内部存储默认就是一个字符串，被redisObject所引用，当遇到incr,decr等操作时会转成数值型进行计算，此时redisObject的encoding字段为int。
@@ -33,21 +38,22 @@ string 是 redis 最基本的类型，你可以理解成与 Memcached 一模一�
 适用于存储对象，建立一个对象名称，对象中可以设立多个键值对作为属性。查询的时候通过一个对象名称获取其所有属性
 ![](_v_images/20191226160939740_1059692059.png)
 哈希键值结构：key->[field,value]
-特点
-map的map
-small的redis
-field不能相同，value可以相同
 hash分为两种(encoding)：hashtable、ziplist，如果量达到一定就会使用ziplist压缩节省内存
-hash缺点：不能对key设置过期时间
+<font color="red">hash缺点：不能对key设置过期时间</font>
 
 # list
 有序，元素可重复，可用作队列有头尾概念，头部插入，尾部弹出，可根据起始位置获取指定数量数据
 ![](_v_images/20191226161001347_1266075473.png)
-RPUSH+RPOP=Stack
-LPUSH+RPOP=Queue
-LPUSH+LTRIM=Capped Collection
-LPUSH+BRPOP=Message Queue
-LPUSH+BRPOP=MQ
+## Stack
+RPUSH+RPOP
+## Queue
+LPUSH+RPOP
+## Capped Collection
+LPUSH+LTRIM
+## Message Queue
+LPUSH+BRPOP
+## MQ
+LPUSH+BRPOP
 
 # set
 无序，元素唯一不可重复，可用于去重操作
