@@ -1,0 +1,12 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/component/javafamily/springframework/SpringTemplate模板大全.md
+@LoadBalanced
+RestTemplate支持负载均衡
+
+
+# MQ
+RocketMQ:RocketMQTemplate
+ActiveMQ/Artmis:JmsTemplate
+RabbitMQ:AmqpTemplate
+Kafka:KafkaTemplate
+
+分别对应不同的listener

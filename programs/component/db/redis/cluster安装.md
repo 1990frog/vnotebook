@@ -163,4 +163,4 @@ gem list --check redis gem
 | 其他       | 可视化部署                            |
 
 
-
+# redis5.0之后使用c语言，废弃ruby安装了

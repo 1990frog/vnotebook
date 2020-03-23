@@ -16,9 +16,10 @@ Feign是Netflix开源的声明式http客户端
 | Logger             | 日志管理器                        | Slf4jLogger                                                                  |
 | RequestInterceptor | 用于为每个请求添加通用逻辑           | 无                                                                           |
 
-# How to Include Feign
+# 引入feign
 + @EnableFeignClients
 + @FeignClient
+
 ```java
 @SpringBootApplication
 @EnableFeignClients
@@ -29,9 +30,9 @@ public class Application {
     }
 
 }
-
 ```
-# 细粒度配置自定义
+
+# 多种配置方式
 + java代码方式
 + 配置属性方式
 
@@ -117,18 +118,28 @@ feign:
   client:
     config:
       feignName:
-        connectTimeout: 5000#连接超时时间
-        readTimeout: 5000#读取超时时间
-        loggerLevel: full#日志级别
-        errorDecoder: com.example.SimpleErrorDecoder#错误解码器
-        retryer: com.example.SimpleRetryer#重试策略
-        requestInterceptors:#拦截器
+        #连接超时时间
+        connectTimeout: 5000
+        #读取超时时间
+        readTimeout: 5000
+        #日志级别
+        loggerLevel: full
+        #错误解码器
+        errorDecoder: com.example.SimpleErrorDecoder
+        #重试策略
+        retryer: com.example.SimpleRetryer
+        #拦截器
+        requestInterceptors:
           - com.example.FooRequestInterceptor
           - com.example.BarRequestInterceptor
-        decode404: false# 是否对404错误解码
-        encoder: com.example.SimpleEncoder#编码器
-        decoder: com.example.SimpleDecoder#解码器
-        contract: com.example.SimpleContract#契约
+        # 是否对404错误解码
+        decode404: false
+        #编码器
+        encoder: com.example.SimpleEncoder
+        #解码器
+        decoder: com.example.SimpleDecoder
+        #契约
+        contract: com.example.SimpleContract
 ```
 全局
 ```yml
@@ -141,30 +152,28 @@ feign:
         loggerLevel: basic
 ```
 
----
-
-@SpringQueryMap
-
-main:allow-bean-definition-overriding:true
-
-www.imooc.com/article/289000
-
 # Feign脱离Ribbon使用
+设置指定的url，访问对应的服务
 ```java
 @FeignClient(name="baidu",url="http://")
 public interface xxx{}
 ```
 
 # RestTemplate VS Feign
-![](_v_images/20200308112453696_1865657158.png)
-
----
+|      角度      | RestTemplate | Feign |
+| ------------- | ------------ | ----- |
+| 可读性、可维护性 | 一般         | 极佳   |
+| 开发体验       | 欠佳         | 极佳   |
+| 性能           | 很好         | 中等   |
+| 灵活性         | 极佳         | 中等   |
 
 # Feign性能优化
+开启连接池连接池（提升15%左右）
+关闭日志：建议设置成basic，绝对不建议设置为full，打印的日志太多，性能消耗大（Feign的性能中等，可能官方对自己的性能也是知道的，索性全部关闭日志了）
 
-
-#连接池（提升15%左右）
-
+两种实现方式：
++ httpclient
++ okhttp
 ## Apache httpclient方式
 加依赖
 ```xml
@@ -186,7 +195,6 @@ feign:
 ```
 最优值压测取得
 ## okhttp方式
-
 加依赖
 ```xml
 <dependency>
@@ -206,12 +214,6 @@ feign:
         # feign单个路径的最大连接数
         max-connections-per-route:50
 ```
-
-# 配置合适日志级别
-建议设置成basic，绝对不建议设置为full，打印的日志太多，性能消耗大（Feign的性能中等，可能官方对自己的性能也是知道的，索性全部关闭日志了）
-
-# Feign常见问题总结
-www.imooc.com/article/289005
 
 # Feign构造多参数的请求
 GET请求多参数的URL
@@ -240,7 +242,6 @@ public interface UserFeignClient {
   public User get2(@RequestParam Map<String, Object> map);
 }
 ```
-
 POST请求包含多个参数
 ```java
 @FeignClient(name = "microservice-provider-user")

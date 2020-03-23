@@ -1,0 +1,9 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/component/javafamily/springcloud/rocketmq/分布式事务producter.md
+[TOC]
+
+# 流程
+1. producer发送半服务给mq
+2. mq接受成功发送回执给producer
+3. producer执行本地事务，成功发送commit给mq，失败发送fallback给mq
+4. mq收到producer发送的commit或fallback就执行响应的操作，向consumer发送消息，或者退回消息
+5. producer检查本地事务状态
