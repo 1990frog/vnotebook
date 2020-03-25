@@ -76,6 +76,9 @@
         },
         {
             "name": "stream"
+        },
+        {
+            "name": "gateway"
         }
     ],
     "version": "1"
