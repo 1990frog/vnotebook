@@ -2,7 +2,8 @@
 
 <font color="red">wait(),notify(),notifyAll()必须要在Synchronized关键中使用</font>
 
-wait()立刻让出锁
+# wait()
+当前调用synchronized修饰代码的线程进入阻塞状态（wait）,立刻让出锁
 ```java
 public class WaitDemo implements Runnable {
 
@@ -46,7 +47,8 @@ public class WaitDemo implements Runnable {
 }
 
 ```
-notify()会在执行完毕后续可执行的代码之后让出锁唤醒
+# notify()/notifyAll()
+会在执行完毕后续可执行的代码之后让出锁唤醒
 ```java
 public class WaitDemo implements Runnable {
 
@@ -93,7 +95,7 @@ public class WaitDemo implements Runnable {
 # 重点
 每个对象都可以被认为是一个"监视器monitor"，这个监视器由三部分组成（一个独占锁，一个入口队列，一个等待队列）。
 
-注意是一个对象只能有一个独占锁，但是任意线程线程都可以拥有这个独占锁。
+注意是一个对象只能有一个独占锁synchronized，但是任意线程线程都可以拥有这个独占锁。
 
 对于对象的非同步方法而言，任意时刻可以有任意个线程调用该方法。（即普通方法同一时刻可以有多个线程调用）
 
@@ -105,25 +107,6 @@ public class WaitDemo implements Runnable {
 
 调用`wait()`就是释放锁，释放锁的前提是必须要先获得锁，先获得锁才能释放锁
 调用`notify()`是将锁交给含有`wait()`方法的线程，让其继续执行下去，如果自身没有锁，怎么叫把锁交给其他线程呢；（本质是让处于入口队列的线程竞争锁）
-
-# Object.wait/wait(time)
-当前调用synchronized修饰代码的线程进入阻塞状态（wait）
-
-# Object.notify
-唤醒一个block状态的线程（操作系统调度）
-
-# Object.notifyAll
-唤醒全部block状态的线程
-
-
-
-
-
-
-
-
-
-
 
 # Block阻塞阶段
 直到以下4种情况之一发生时，才会被唤醒

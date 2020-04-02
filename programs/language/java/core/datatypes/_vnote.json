@@ -133,6 +133,12 @@
         }
     ],
     "sub_directories": [
+        {
+            "name": "date"
+        },
+        {
+            "name": "base"
+        }
     ],
     "version": "1"
 }

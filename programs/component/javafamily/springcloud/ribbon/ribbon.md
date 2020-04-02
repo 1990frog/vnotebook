@@ -11,28 +11,6 @@ Ribbon默认为我们提供了很多的负载均衡算法，例如轮询、随�
 + 服务端负载均衡（nginx）
 + 客户端负载均衡（ribbon）
 
-# ribbon接口
-|           接口           |          作用           |                                   默认值                                   |
-| ----------------------- | ---------------------- | ------------------------------------------------------------------------- |
-| IClientConfig            | 读取配置                 | DefaultClientConfigImpl                                                    |
-| IRule                   | 负载均衡规则，选择实例      | ZoneAvoidanceRule                                                          |
-| IPing                   | 筛选掉ping不通的实例       | DummyPing                                                                 |
-| Serverlist<Server>       | 交给Ribbon的实例列表      | Ribbon:ConfigurationBasedServerList</br>Spring Cloud Alibaba:NacosServerList |
-| ServerListFilter<Server> | 过滤掉不符合条件的实例      | ZonePreferenceServerListFilter                                             |
-| ILoadBalancer            | Ribbon的入口             | ZoneAwareLoadBalancer                                                      |
-| ServerListUpdater        | 更新交给Ribbon的List的策略 | PollingServerListUpdater                                                   |
-
-# ribbon内置负载均衡规则
-| 规则名称    |  特点   |
-| --- | --- |
-|  AvailabilityFiteringRule   |   过滤掉一直连接失败的被标记为circuit tripped的后端server，并过滤掉那些高并发的后端server或者使用一个AvailablityPredicate来包含过滤server的逻辑，其实就是检查status里记录的各个server的运行状态  |
-|  BestAvailableRule   | 选择一个最小的并发请求的server，逐个考察server，如果server被tripped了，则跳过    |
-|   RandomRule  |   随机选择一个server  |
-|  ResponseTimeWeightedRule   |  已废弃，作用同WeightedResponseTimeRule   |
-|  RetryRule   |  对选定的负载均衡策略机上重试机制，在一个配置时间段内当选择Server不成功，则一直尝试使用subRule的方式选择一个可用的server  |
-|   RoundRobinRule  |   轮询选择，轮询index，选择index对应位置的server  |
-|   WeightedResponseTimeRule  |   根据响应时间加权，响应时间越长，权重越小，被选中的可能性越低  |
-|  ZoneAvoidanceRule   |   复合判断server所zone的性能和server的可选性选择server，在没有zone的环境下，类似于轮询（RoundRobinRule）  |
 默认是轮询
 
 # 细粒度配置自定义

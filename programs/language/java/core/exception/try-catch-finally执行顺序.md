@@ -21,7 +21,7 @@ try block
 finally block
 1
 ```
-# 情况2: try{return}catch{return}finally{return}
+# 情况2：try{return}catch{return}finally{return}
 + 有异常：先try若有异常就catch，然后finally，之后执行catch中的return，如果finally中也有return，那么就直接出去不执行catch中的return
 + 无异常：执行finally中的代码块，然后执行finally中的return
 

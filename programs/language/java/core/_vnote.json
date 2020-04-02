@@ -31,22 +31,19 @@
             "name": "io"
         },
         {
-            "name": "lambda"
-        },
-        {
             "name": "annotation"
-        },
-        {
-            "name": "date"
         },
         {
             "name": "class"
         },
         {
-            "name": "reflection"
+            "name": "jvm"
         },
         {
-            "name": "jvm"
+            "name": "syntax"
+        },
+        {
+            "name": "java8"
         }
     ],
     "version": "1"

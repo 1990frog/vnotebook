@@ -1,0 +1,20 @@
+{
+    "created_time": "2020-03-27T11:45:55Z",
+    "files": [
+    ],
+    "sub_directories": [
+        {
+            "name": "elasticstack"
+        },
+        {
+            "name": "logstash"
+        },
+        {
+            "name": "kibana"
+        },
+        {
+            "name": "cerebro"
+        }
+    ],
+    "version": "1"
+}

@@ -1,0 +1,6 @@
+[TOC]
+
+Optional类是Java8为了解决null值判断问题
+借鉴google guava类库的Optional类而引入的一个同名Optional类
+使用Optional类可以避免显式的null值判断（null的防御性检查），避免null导致的NPE（NullPointerException）
+

@@ -26,6 +26,12 @@
         },
         {
             "name": "多级缓存"
+        },
+        {
+            "name": "guava"
+        },
+        {
+            "name": "search"
         }
     ],
     "version": "1"

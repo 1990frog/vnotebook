@@ -19,4 +19,11 @@ redis-server configPath
 
 
 # QPS测试
+```
 >redis-benchmark -h 127.0.0.1 -p 6379 -c 50 -n 100000 -d 2
+```
+
+# 集群模式客户端
+```
+redis-cli -c -p port
+```

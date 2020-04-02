@@ -1,0 +1,43 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/component/devops/docker/常用命令.md
+[TOC]
+
+# 用户组
+```
+sudo groupadd docker    #创建docker用户组
+sudo gpasswd -a {user} docker    #添加用户到docker组
+重启docker,shell生效
+```
+
+# 查看日志
+```
+>docker logs [container]
+```
+
+# run命令中执行shell
+```
+>docker run -d -p 80:80 -v $(pwd):/usr/share/nginx/html  --name web xxxxx
+>docker run -it springboot /bin/bash
+>
+# [-p]一定要放在image前面才生效哈
+# run 方法中执行命令，会覆盖cmd命令
+```
+
+# 交互式运行
+```
+>docker exec -it [container] /bin/bash
+>docker exec -it [container] /bin/sh
+>docker exec -it [container] bash
+>docker exec -it [container] ip a
+```
+
+# 性能监控
+```
+>docker stats
+```
+
+# tps测试
+
+# 批量删除xx
+```
+docker images | grep [keyword] | awk '{print $1}' | xargs docker rmi
+```

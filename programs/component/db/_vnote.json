@@ -14,12 +14,6 @@
         },
         {
             "name": "redis"
-        },
-        {
-            "name": "elasticstack"
-        },
-        {
-            "name": "logstash"
         }
     ],
     "version": "1"

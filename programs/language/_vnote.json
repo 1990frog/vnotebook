@@ -11,6 +11,9 @@
         },
         {
             "name": "regexp"
+        },
+        {
+            "name": "lua"
         }
     ],
     "version": "1"
