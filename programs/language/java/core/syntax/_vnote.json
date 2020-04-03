@@ -23,6 +23,12 @@
         }
     ],
     "sub_directories": [
+        {
+            "name": "lambda"
+        },
+        {
+            "name": "optional"
+        }
     ],
     "version": "1"
 }

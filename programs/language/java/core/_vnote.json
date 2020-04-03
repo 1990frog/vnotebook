@@ -41,9 +41,6 @@
         },
         {
             "name": "syntax"
-        },
-        {
-            "name": "java8"
         }
     ],
     "version": "1"

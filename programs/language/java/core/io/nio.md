@@ -1,6 +1,5 @@
 [TOC]
 
-![BIO_NIO示意图](_v_images/20200103144600961_966811236.png)
 
 # 非阻塞式NIO
 1.使用Channel代替Stream

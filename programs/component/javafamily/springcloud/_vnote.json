@@ -132,9 +132,6 @@
             "name": "对比"
         },
         {
-            "name": "rocketmq"
-        },
-        {
             "name": "stream"
         },
         {
@@ -148,6 +145,9 @@
         },
         {
             "name": "链路追踪"
+        },
+        {
+            "name": "mq"
         }
     ],
     "version": "1"

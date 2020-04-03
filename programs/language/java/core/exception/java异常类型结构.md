@@ -43,7 +43,7 @@ private static void readFile(String filePath) {
     }
 }
 ```
-## 非受查异常
+## 不检查异常
 非受查异常不会在编译时被检测。JAVA 中 Error 和 RuntimeException 类的子类属于非受查异常，除此之外继承自 Exception 的类型为受查异常。
 # 异常的抛出与捕获
 ## 直接抛出异常
