@@ -16,9 +16,6 @@
             "name": "performance"
         },
         {
-            "name": "javafamily"
-        },
-        {
             "name": "tool"
         },
         {
@@ -32,6 +29,36 @@
         },
         {
             "name": "search"
+        },
+        {
+            "name": "springframework"
+        },
+        {
+            "name": "springboot"
+        },
+        {
+            "name": "springcloud"
+        },
+        {
+            "name": "lombok"
+        },
+        {
+            "name": "log"
+        },
+        {
+            "name": "mybatis"
+        },
+        {
+            "name": "druid"
+        },
+        {
+            "name": "tomcat"
+        },
+        {
+            "name": "swagger"
+        },
+        {
+            "name": "oauth2"
         }
     ],
     "version": "1"

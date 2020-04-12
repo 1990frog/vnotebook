@@ -1,0 +1,27 @@
+{
+    "created_time": "2020-04-02T17:54:31Z",
+    "files": [
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2020-04-04T16:44:04Z",
+            "modified_time": "2020-04-04T16:55:58Z",
+            "name": "mq大对比.md",
+            "tags": [
+            ]
+        }
+    ],
+    "sub_directories": [
+        {
+            "name": "rabbitmq"
+        },
+        {
+            "name": "rocketmq"
+        },
+        {
+            "name": "kafka"
+        }
+    ],
+    "version": "1"
+}

@@ -2,7 +2,7 @@
 
 # 概览
 + static只能修饰`field`和`method`
-+ 内部类不能有`static`修饰的元素
++ static可以修饰内部类，但是内部类不能有`static`修饰的元素
 
 # 用途
 我们知道，当我们通过new关键字去创建对象的时候，那么数据的存储空间才会被分配，类中的成员方法才能被对象所使用。但是有两种特殊的情况：
@@ -45,3 +45,41 @@
 
 # 静态域 static {}
 用于初始化静态变量
+
+# 静态内部类 static class
+```java
+public class OuterClass {
+
+    private int age = 20;
+
+    /**
+     * 通用型
+     */
+    class Inner1{
+        public void show(){
+            System.out.println(age);
+        }
+    }
+
+    /**
+     * 不想外部访问
+     */
+    private class Inner2{
+        public void show(){
+            System.out.println(age);
+        }
+    }
+
+    static class Inner3{
+        public void show(){
+            System.out.println("static args");
+        }
+    }
+
+    public static void main(String[] args) {
+        OuterClass.Inner1 inner1 = new OuterClass().new Inner1();
+        OuterClass.Inner2 inner2 = new OuterClass().new Inner2();
+        OuterClass.Inner3 inner3 = new OuterClass.Inner3();
+    }
+}
+```

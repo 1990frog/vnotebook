@@ -1,4 +1,6 @@
 # redis启动
+## sentinel启动
+redis-server conf --sentinel
 ## 最简启动（动态参数启动）
 redis-server [--port port]
 ps -ef|grep redis

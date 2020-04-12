@@ -117,3 +117,15 @@ git branch -av
 git checkout -b xx xx
 
 
+git diff HEAD HEAD^
+
+
+git diff HEAD HEAD^^
+
+git bransh -d [id] 删除分支
+git bransh -D [id] 强制删除
+
+git branch -d branch_name:使用-d 在删除前Git会判断在该分支上开发的功能是否被merge的其它分支。如果没有，不能删除。如果merge到其它分支，但之后又在其上做了开发，使用-d还是不能删除。-D会强制删除。老师能加一讲课来讲讲merge和rebase的区别吗。
+
+---
+git commit --amend 对最近的commit修改message
