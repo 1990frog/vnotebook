@@ -173,8 +173,6 @@ final Entry<K,V> getEntry(Object key) {
 }
 ```
 
----
-
 # Java8 HashMap
 Java8 对 HashMap 进行了一些修改，最大的不同就是利用了红黑树，所以其由 数组+链表+红黑树 组成。
 
@@ -389,3 +387,6 @@ final Node<K,V> getNode(int hash, Object key) {
     return null;
 }
 ```
+
+# 扩容
+数组中的entry节点越多，碰撞的几率就越多，就需要扩容，一般entry的数量达到数组0.75（loadfactor）就会扩容

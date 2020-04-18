@@ -77,7 +77,7 @@ protected void rehash() {
 }
 ```
 
-      Hashtable同样是基于哈希表实现的，同样每个元素是一个key-value对，其内部也是通过单链表解决冲突问题，容量不足（超过了阀值）时，同样会自动增长。
+Hashtable同样是基于哈希表实现的，同样每个元素是一个key-value对，其内部也是通过单链表解决冲突问题，容量不足（超过了阀值）时，同样会自动增长。
 
 e.next = (Entry<K,V>)newMap[index];// 新元素设置为头结点
                 newMap[index] = e;

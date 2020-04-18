@@ -1,6 +1,6 @@
 [TOC]
 
-
+![](_v_images/20200416224417853_41126944.png)
 
 # ConcurrentHashMap和CopyOnWriteArrayList
 + 同步的ArrayList（时代巨轮滚滚向前）

@@ -1,31 +1,20 @@
 [TOC]
 
+![1289934-20190621163930814-1395015700](_v_images/20200414182139016_686851996.png)
+
 + string（变量）
 + hash（map）
-+ list（动态数组）
++ list（链表）
 + set（映射）
 + zset
-
-# redisObject
-![u=1306438995,396304977&fm=26&gp=0](_v_images/20191205095602186_2040569566.jpg)
-![270476457-5d4838a27babd_articlex](_v_images/20191120143355846_1287757325.png)
-```c
-struct redisObject
-{
-    数据类型（type）[string,hash,list,set,sorted set];
-    编码方式（encoding）[raw,int,ziplist,linkedlist,hashmap,intset];
-    数据指针（ptr）;
-    虚拟内存（vm）;
-    其他信息;
-};
-```
-首先Redis内部使用一个redisObject对象来表示所有的key和value，redisObject最主要的信息如上图所示：type代表一个value对象具体是何种数据类型，encoding是不同数据类型在redis内部的存储方式，比如：type=string代表value存储的是一个普通字符串，那么对应的encoding可以是raw或者是int，如果是int则代表实际redis内部是按数值型类存储和表示这个字符串的，当然前提是这个字符串本身可以用数值表示，比如:"123" "456"这样的字符串。
-
-这里需要特殊说明一下vm字段，只有打开了Redis的虚拟内存功能，此字段才会真正的分配内存，该功能默认是关闭状态的。通过上图我们可以发现Redis使用redisObject来表示所有的key/value数据是比较浪费内存的，当然这些内存管理成本的付出主要也是为了给Redis不同数据类型提供一个统一的管理接口，实际作者也提供了多种方法帮助我们尽量节省内存使用。
 
 # string
 单一key-value存储
 ![](_v_images/20191226160919508_1428409832.png)
+## 业务场景
+1. 缓存： 经典使用场景，把常用信息，字符串，图片或者视频等信息放到redis中，redis作为缓存层，mysql做持久化层，降低mysql的读写压力
+2. 计数器：redis是单线程模型，一个命令执行完才会执行下一个，同时数据可以一步落地到其他的数据源
+3. session：常见方案spring session + redis实现session共享
 ## 简介
 string是redis最基本的类型，你可以理解成与Memcached一模一样的类型，一个key对应一个value。value其实不仅是String，也可以是数字。string类型是二进制安全的。意思是redis的string可以包含任何数据。比如jpg图片或者序列化的对象。string类型是Redis最基本的数据类型，string 类型的值最大能存储512MB。
 ## 应用场景
@@ -34,38 +23,44 @@ string是redis最基本的类型，你可以理解成与Memcached一模一样的
 ## 难点
 位运算
 
-# hash
+# hash（映射）
+命令都是h开头的
 适用于存储对象，建立一个对象名称，对象中可以设立多个键值对作为属性。查询的时候通过一个对象名称获取其所有属性
 ![](_v_images/20191226160939740_1059692059.png)
 哈希键值结构：key->[field,value]
 hash分为两种(encoding)：hashtable、ziplist，如果量达到一定就会使用ziplist压缩节省内存
 <font color="red">hash缺点：不能对key设置过期时间</font>
+```
+使用：所有hash的命令都是h开头的hget、hset、hdel等
+redis> hset hashmap key1 name
+redis> hset hashmap key2 name
+```
+## 实战场景
+缓存，但是还是使用String存json比较好
 
-# list
-有序，元素可重复，可用作队列有头尾概念，头部插入，尾部弹出，可根据起始位置获取指定数量数据
+# list（链表）
+命令都是l开头的
+List 说白了就是链表（redis 使用双端链表实现的 List），是有序的，value可以重复，可以通过下标取出对应的value值，左右两边都能进行插入和删除数据。
 ![](_v_images/20191226161001347_1266075473.png)
-## Stack
-RPUSH+RPOP
-## Queue
-LPUSH+RPOP
-## Capped Collection
-LPUSH+LTRIM
-## Message Queue
-LPUSH+BRPOP
-## MQ
-LPUSH+BRPOP
+使用列表的技巧：
++ lpush+lpop=Stack(栈)
++ lpush+rpop=Queue（队列）
++ lpush+ltrim=Capped Collection（有限集合）
++ lpush+brpop=Message Queue（消息队列）
 
-# set
-无序，元素唯一不可重复，可用于去重操作
+# set（集合）
+命令都s开头的
+集合类型也是用来保存多个字符串的元素，但和列表不同的是集合中：
+1. 不允许有重复的元素
+2. 集合中的元素是无序的，不能通过索引下标获取元素
+3. 支持集合间的操作，可以取多个集合取交集、并集、差集
+
 ![](_v_images/20191226161101783_1056431316.png)
-SADD =Tagging
-SPOP/SRANDMEMBER=Random item
-SADD+SINTER=Social Graph
-特点：
-无序、无重复、集合间操作（交集、并集、差集）
 
-注意：
-集合实战：
+## 实战场景
+1. 标签（tag）,给用户添加标签，或者用户给消息添加标签，这样有同一标签或者类似标签的可以给推荐关注的事或者关注的人。
+2. 点赞，或点踩，收藏等，可以放到set中实现
+
 给用户添加标签
 ```
 sadd user:1:tags tag1 tag2 tag3
@@ -75,13 +70,12 @@ sadd user:1:tags tag1 tag2 tag3
 sadd tag1:users user1 user2
 ```
 
-# zset
-集合和队列集合体，用于实现排行榜性质功能
-![](_v_images/20191226161123740_296686436.png)
-集合vs有序集合
-集合：无重复元素、无序、element
-有序集合：无重复元素、有序、element+score
+# zset（有序集合）
+有序集合和集合有着必然的联系，保留了集合不能有重复成员的特性，区别是，有序集合中的元素是可以排序的，它给每个元素设置一个分数，作为排序的依据。
+（有序集合中的元素不可以重复，但是score 分数 可以重复，就和一个班里的同学学号不能重复，但考试成绩可以相同）。
 
-基本操作：zadd,zrem,zcard,zincrby,zscore
-范围操作：zrange,zrangebyscore,zcount,zremrangebyrank
-集合操作：zunionstore,zinterstore
+![](_v_images/20191226161123740_296686436.png)
+
+实战场景：
+1.排行榜：有序集合经典使用场景。例如小说视频等网站需要对用户上传的小说视频做排行榜，榜单可以按照用户关注数，更新时间，字数等打分，做排行。
+

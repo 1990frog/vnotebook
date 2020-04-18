@@ -14,6 +14,9 @@
         },
         {
             "name": "redis"
+        },
+        {
+            "name": "canal"
         }
     ],
     "version": "1"
