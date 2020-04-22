@@ -1,0 +1,35 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/language/java/core/concurrent/并发控制/控制并发流程.md
+[TOC]
+
+# 主要四种
++ CountDownLatch倒计时门闩
++ Semaphore信号量
++ Condition接口（又称条件对象）
++ CyclicBarrier循环栅栏
+
+# 什么是控制并发流程
++ 控制并发流程的工具类，作用就是帮助我们程序员更容易得让线程之间合作
++ 让线程之间相互配合，来满足业务逻辑
++ 比如让线程A等待线程B执行完毕后在执行等合作策略
+
+# 有哪些控制并发流程的工具类
+|       类       |                                  作用                                   |                         说明                         |
+| ------------- | ---------------------------------------------------------------------- | ---------------------------------------------------- |
+| Semaphore      | 信号量，可以通过控制“许可证”的数量，来保证线程之间的配合                          | 线程只有在拿到“许可证”后才能继续运行。相比于其他的同步器，更灵活 |
+| CyclicBarrier  | 线程会等待，直到足够多线程达到了事先规定的数目。一旦达到触发条件，就可以进行下一步的动作 | 适用于线程之间相互等待处理结果就绪的场景                     |
+| Phaser         | 和CyclicBarrier类似，但是计数可变                                           | Java7加入的                                           |
+| CountDownLatch | 和CyclicBarrier类似，数量递减到0时，触发动作                                  | 不可重复使用                                           |
+| Exchanger      | 让两个线程在合适时交换对象                                                   | 适用场景：当两个线程工作在同一个类的不同实例上时，用于交换数据   |
+| Condition      | 可以控制线程的“等待”和“唤醒”                                                | 是Object.wait()的升级版                                |
+
+# CyclicBarrier循环栅栏
++ CyclicBarrier循环栅栏和CountDownLatch很类似，都能阻塞一组线程
++ 当有大量线程相互配合，分别计算不同任务，并且需要最后统一汇总的时候，我们可以使用CyclicBarrier。CyclicBarrier可以构造一个集结点，当某一个线程执行完毕。它就会到集结点等待，直到所有的线程都到了集结点，那么该栅栏就被撤销，所有线程再统一出发，继续执行剩下的任务
++ 生活中的例子：3个人明天在学校碰面，都到齐后，一起讨论下学期的计划
+
+## CyclicBarrier和CountDownLatch的区别
++ 作用不同：CyclicBarrier要等固定数量的线程都到达了栅栏位置才能继续执行，而CountDownLatch只需等待数字到0，也就是说，CountDownLatch用于事件，但是CyclicBarrier是用于线程的
++ 可重用性不同：CountDownLatch在倒数到0并触发门闩打开后，就不能再次使用了，触发新建新的实例；而CyclicBarrier可以重复使用
+
+# 总结
+什么是控制并发流程：等待某个事件或某个条件达到要求

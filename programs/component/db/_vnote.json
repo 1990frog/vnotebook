@@ -17,6 +17,9 @@
         },
         {
             "name": "canal"
+        },
+        {
+            "name": "mycat"
         }
     ],
     "version": "1"

@@ -24,13 +24,10 @@
     ],
     "sub_directories": [
         {
-            "name": "mysql性能优化"
+            "name": "优化"
         },
         {
-            "name": "mysql要点总结"
-        },
-        {
-            "name": "mysql基础"
+            "name": "基础"
         },
         {
             "name": "集群"

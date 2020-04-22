@@ -44,22 +44,22 @@
     ],
     "sub_directories": [
         {
-            "name": "cluster"
-        },
-        {
-            "name": "sentinel"
-        },
-        {
-            "name": "持久化"
+            "name": "基础"
         },
         {
             "name": "数据结构"
         },
         {
-            "name": "业务问题"
+            "name": "持久化"
         },
         {
-            "name": "基础"
+            "name": "sentinel"
+        },
+        {
+            "name": "cluster"
+        },
+        {
+            "name": "常见问题"
         },
         {
             "name": "优化"

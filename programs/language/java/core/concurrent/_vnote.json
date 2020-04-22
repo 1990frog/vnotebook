@@ -4,25 +4,25 @@
     ],
     "sub_directories": [
         {
-            "name": "基本属性"
+            "name": "base"
         },
         {
-            "name": "问题模型"
+            "name": "problem"
         },
         {
             "name": "synchronized"
         },
         {
-            "name": "线程的创建与中断"
+            "name": "create&stop"
         },
         {
-            "name": "ThreadLocal与栈隔离"
+            "name": "threadlocal"
         },
         {
-            "name": "线程池"
+            "name": "pool"
         },
         {
-            "name": "杂七杂八锁"
+            "name": "locktype"
         },
         {
             "name": "CAS"
@@ -43,7 +43,7 @@
             "name": "ReentrantLock"
         },
         {
-            "name": "并发控制"
+            "name": "flowcontrol"
         }
     ],
     "version": "1"
