@@ -1,0 +1,9 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/component/search/canal/java canal接入.md
+[TOC]
+
+pom
+canal.client
+canal.common
+canal.protocol
+
+@resource注入

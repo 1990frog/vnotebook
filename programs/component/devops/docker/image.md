@@ -23,16 +23,16 @@ Busybox既包含了一些简单实用的工具，如cat和echo，也包含了一
 
 # dockerhub获取image
 ```docker
-docker pull hello-world
-docker run hello-world
+$ docker pull hello-world
+$ docker run hello-world
 ```
 
 # 通过container生成image
 ```docker
-docker commit container_id
+$ docker commit container_id
 ```
 
 # 通过dockerfile构建image
 ```docker
-docker build -t dockerid/dockername .
+$ docker build -t dockerid/dockername .
 ```

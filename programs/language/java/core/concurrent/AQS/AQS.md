@@ -77,3 +77,17 @@ CountDownLatch里面，获取就是countDown方法，作用是“倒数一个数
 AbstractQueuedSynchronizer简称AQS，是一个用于构建锁和同步容器的框架。事实上concurrent包内许多类都是基于AQS构建，例如ReentrantLock，Semaphore，CountDownLatch，ReentrantReadWriteLock，FutureTask等。AQS解决了在实现同步容器时设计的大量细节问题
 
 AQS使用一个FIFO的队列等待锁的线程，队列头结点称作“哨兵节点”或者“哑节点”，它不与任何线程关联。其他的节点与等待线程关联，每个节点维护一个等待状态waitStatus。
+
+---
+
+![](_v_images/20200424101725632_1526774809.png)
+
+![](_v_images/20200424102411744_1671773247.png)
+
+![](_v_images/20200424102515080_397295155.png)
+
+![](_v_images/20200424103231580_1242172369.png)
+
+![](_v_images/20200424103744113_790553162.png)
+
+![](_v_images/20200424103853401_1366571782.png)
