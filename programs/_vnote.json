@@ -105,10 +105,13 @@
             "name": "理论"
         },
         {
-            "name": "热点记忆"
+            "name": "db"
         },
         {
-            "name": "db"
+            "name": "小程序"
+        },
+        {
+            "name": "search"
         }
     ],
     "version": "1"

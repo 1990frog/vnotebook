@@ -1,29 +1,23 @@
 [TOC]
 
-语法：
-```
-db.<collection>.find(<query>,<projection>)
-<query>文档定义了读取操作时筛选文档的条件
-<projection>文档定义了对读取结果进行的投射
-```
+# 语法
+`db.<collection>.find(<query>,<projection>)`
++ <query>文档定义了读取操作时筛选文档的条件
++ <projection>文档定义了对读取结果进行的投射
 
-# 读取全部
-```json
-> db.test.find()
-```
-更清楚的显示文档
-```json
-> db.test.find().pretty()
-```
+读取全部：
+`db.test.find()`
+美化：
+`db.test.find().pretty()`
 
 # 匹配查询
+查询条件，json格式
 ```json
-// 查询条件，json格式
 >db.test.find({name:"xxx",...})
 ```
 
-# 操作符
-## 比较操作符
+# 比较操作符
+`db.<collection>.find({主语(field):{谓语(比较运算符):宾语}})`
 + $eq 匹配字段值相等的文档
 + $ne 匹配字段值不等的文档
 + $gt 匹配字段值大于查询值的文档
@@ -33,43 +27,72 @@ db.<collection>.find(<query>,<projection>)
 + $in 匹配字段值与任一查询值相等的文档
 + $nin 匹配字段值与任何查询值都不等的文档
 
+## $eq,\$ne 相等，不等
 ```json
-> db.test.find({age:{$gt:16}})
-{ "_id" : ObjectId("5ea30d9006298951fd1fcd44"), "name" : "hui", "age" : 18 }
+> db.test.find({age:{$eq:16}})
+{ "_id" : ObjectId("5ea6633869db2a1d09c40ba4"), "name" : "cai", "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ], "age" : 16 }
+```
+## $gt,\$gte,\$lt,\$lte 边界
+```json
+> db.test.find({age:{$gte:15,$lte:20}})
+{ "_id" : ObjectId("5ea6633869db2a1d09c40ba4"), "name" : "cai", "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ], "age" : 16 }
+```
+## $in,\$nin 包含，非包含
+```json
+> db.test.find({list:{$in:[1,2,3]}})
+{ "_id" : ObjectId("5ea6633869db2a1d09c40ba4"), "name" : "cai", "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ] }
+> db.test.find()
+{ "_id" : ObjectId("5ea6633869db2a1d09c40ba4"), "name" : "cai", "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ] }
+> db.test.find({list:{$in:[1,2,3]}})
+{ "_id" : ObjectId("5ea6633869db2a1d09c40ba4"), "name" : "cai", "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ] }
+```
+$in 匹配一个就返回true
+$nin 必须都满足才会返回true
 
-> db.test.find({name:{$in:["cai","hui"]}})
-{ "_id" : ObjectId("5ea30ce206298951fd1fcd41"), "name" : "cai", "age" : 16 }
-{ "_id" : ObjectId("5ea30d9006298951fd1fcd44"), "name" : "hui", "age" : 18 }
+# 逻辑运算符
++ $not 匹配筛选条件不成立的文档，`主语+谓词`
++ $and 匹配多个筛选条件全部成立的文档，`连接词+[...]`
++ $or 匹配至少一个筛选条件成立的文档，`连接词+[...]`
++ $nor 匹配多个筛选条件全部不成立的文档，`连接词+[...]`
+
+## $not 匹配筛选条件不成立的文档
+主+谓
+要搭配比较运算符一起使用
+```json
+> db.test.find({age:{$not:{$eq:20}}})
+{ "_id" : ObjectId("5ea6633869db2a1d09c40ba4"), "name" : "cai", "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ], "age" : 16 }
+```
+## $and 匹配多个筛选条件全部成立的文档
+```json
+> db.test.find({$and:[{age:16},{name:"cai"}]})
+{ "_id" : ObjectId("5ea6633869db2a1d09c40ba4"), "name" : "cai", "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ], "age" : 16 }
+```
+## $or 匹配至少一个筛选条件成立的文档
+```json
+> db.test.find({$or:[{age:16},{name:"cai_1"}]})
+{ "_id" : ObjectId("5ea6633869db2a1d09c40ba4"), "name" : "cai", "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ], "age" : 16 }
+```
+## $nor 匹配多个筛选条件全部不成立的文档
+```json
+> db.test.find({$nor:[{age:19},{name:"cai_1"}]})
+{ "_id" : ObjectId("5ea6633869db2a1d09c40ba4"), "name" : "cai", "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ], "age" : 16 }
 ```
 
-## 逻辑运算符
-+ $not 匹配筛选条件不成立的文档
-+ $and 匹配多个筛选条件全部成立的文档
-+ $or 匹配至少一个筛选条件成立的文档
-+ $nor 匹配多个筛选条件全部不成立的文档
-
-```json
-> db.test.find({age:{$not:{$gt:20}}})
-{ "_id" : ObjectId("5ea30ce206298951fd1fcd41"), "name" : "cai", "age" : 16 }
-
-> db.test.find({$and:[{age:{$gt:5}},{age:{$lt:20}}]})
-{ "_id" : ObjectId("5ea30ce206298951fd1fcd41"), "name" : "cai", "age" : 16 }
-
-> db.test.find({age:{$gt:5,$lt:20}})
-{ "_id" : ObjectId("5ea30ce206298951fd1fcd41"), "name" : "cai", "age" : 16 }
-```
-
-## 字段操作符
+# 字段操作符
 + $exists 匹配包含查询字段的文档
 + $type 匹配字段类型复合查询值的文档
 
+## $exists 匹配包含查询字段的文档
+`主语（field）+谓词（关键字）`结构
+0：不存在
+1：存在
 ```json
-> db.test.find({name:{$exists:0}})
-> db.test.find({name:{$exists:1}})
-{ "_id" : ObjectId("5ea30ce206298951fd1fcd41"), "name" : "cai", "age" : 16 }
-{ "_id" : ObjectId("5ea30d9006298951fd1fcd44"), "name" : "hui", "age" : 18 }
+> db.test.find({age:{$exists:0}})
+> db.test.find({age:{$exists:1}})
+{ "_id" : ObjectId("5ea6633869db2a1d09c40ba4"), "name" : "cai", "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ], "age" : 16 }
 ```
 
+## $type 匹配字段类型复合查询值的文档
 type常用类型
 
 |    类型     | 数字 |
@@ -84,38 +107,57 @@ type常用类型
 | Date        | 9    |
 | Null        | 10  |
 
-## 数组操作符
+# 数组操作符
 + $all 匹配数组字段中包含所有查询值的文档
 + $elemMatch 匹配数组字段中至少存在一个值满足筛选条件的文档
 
+## $all 匹配数组字段中包含所有查询值的文档
 ```json
-> db.test.find({values:{$all:[12]}})
-> db.test.find({values:{$all:[1]}})
-{ "_id" : ObjectId("5ea58a6cfa1fc86c6d72124e"), "name" : "lilei", "age" : 20, "values" : [ 1, 2, 3, 4, 5, 6 ] }
-
-// 如果只有一个查询条件就没必要使用 $elemMatch
-// { <field>: { $elemMatch: { <query1>, <query2>, ... } } }
-> db.test.find({values:{$elemMatch:{$gt:1,$lt:10}}})
-{ "_id" : ObjectId("5ea58a6cfa1fc86c6d72124e"), "name" : "lilei", "age" : 20, "values" : [ 1, 2, 3, 4, 5, 6 ] }
+> db.test.find({},{_id:0,list:1})
+{ "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ] }
+> db.test.find({list:{$all:[1,2,3]}})
+{ "_id" : ObjectId("5ea6633869db2a1d09c40ba4"), "name" : "cai", "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ], "age" : 16 }
+> db.test.find({list:{$all:[1,2,3,99]}})
+null
+```
+## $elemMatch 匹配数组字段中至少存在一个值满足筛选条件的文档
+如果只有一个查询条件就没必要使用 $elemMatch
+```json
+> db.test.find({},{_id:0,list:1})
+{ "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ] }
+> db.test.find({list:{$elemMatch:{$eq:1,$eq:9}}},{_id:0,list:1})
+{ "list" : [ 1, 2, 3, 5, 6, 7, 8, 9 ] }
 ```
 
 # 游标
-var myCursor = db.test.find();
-myCursor[1]
+```js
+var cursor = db.test.find();
+cursor[1]
+```
 游标遍历完所有的文档之后，或者在10分钟之后，游标会自动关闭
 可以用noCursorTimeout()函数来保持游标一直有效
-var myCursor = db.test.find().noCursorTimeout()
+```js
+var cursor = db.test.find().noCursorTimeout()
+```
 在这之后，在不遍历游标的情况下，需要主动关闭游标
-myCursor.close()
+```js
+cursor.close()
+```
 
-游标函数：
-cursor.hasNext()
-cursor.next()
-cursor.forEach()
-cursor.limit()
-cursor.skip()
-cursor.count()
-cursor.sort()
+# 游标函数
++ cursor.hasNext()
++ cursor.next()
++ cursor.forEach()
++ cursor.limit()
++ cursor.skip()
++ cursor.count()
++ cursor.sort()
+
+## next,hasNext,forEach 遍历
+
+## sort,skip,count,limit 数量操作
+
+## 函数存在优先级
 
 ```json
 > db.test.find({age:16}).count()
@@ -175,3 +217,5 @@ $elemMatch和\$可以返回数组字段中满足筛选条件的第一个元素
 ```json
 db.accounts.find({contact:{$gt:"Alabama"}},{_id:0,name:1,"contact.$":1})
 ```
+
+`select 投影 from db.collection`

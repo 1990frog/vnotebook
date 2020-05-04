@@ -16,25 +16,10 @@
             "name": "tool"
         },
         {
-            "name": "bigdata"
-        },
-        {
             "name": "多级缓存"
         },
         {
             "name": "guava"
-        },
-        {
-            "name": "search"
-        },
-        {
-            "name": "springframework"
-        },
-        {
-            "name": "springboot"
-        },
-        {
-            "name": "springcloud"
         },
         {
             "name": "lombok"
@@ -52,10 +37,7 @@
             "name": "tomcat"
         },
         {
-            "name": "swagger"
-        },
-        {
-            "name": "oauth2"
+            "name": "spring"
         }
     ],
     "version": "1"

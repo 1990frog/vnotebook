@@ -26,9 +26,6 @@
             "name": "datatypes"
         },
         {
-            "name": "dynamicProxy"
-        },
-        {
             "name": "exception"
         },
         {
