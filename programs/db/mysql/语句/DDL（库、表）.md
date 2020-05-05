@@ -8,7 +8,8 @@ DDL(Data Definition language)：
 + 重命名表：rename table
 + 建立/修改/删除视图：create/alter/drop view
 
-# 建库
+# 库操作
+## 建库
 语法：
 ```sql
 Description:
@@ -32,11 +33,11 @@ $ create database mydb;
 # 切换数据库
 $ use mydb;
 ```
-# 删库
-```
+## 删库
+```sql
 $ drop database
 ```
-# 建表
+# 表操作
 语法太长就不分析了，`mysql> \q create table`
 ## 普通建表：create table
 ```sql
@@ -53,18 +54,21 @@ create table foo like bar;
 ```sql
 create table tmp as select id,name from foo;
 ```
+## 指定引擎
+```sql
+create table mytable (name varchar(32)) engine=InnoDB;
+```
 ## UNIQUE和PRIMARY KEY的区别
 一个表可以有多个字段声明为UNIQUE，但只能有一个PRIMARY KEY声明；声明为PRIMAY KEY的列不允许有空值，但是声明为UNIQUE的字段允许空值的存在。
-
-# 删表
+## 删表
 ```sql
 drop table foo
 ```
-# 清空表
+## 清空表
 ```sql
 truncate table foo
 ```
-# 重命名表
+## 重命名表
 ```sql
 rename table
 ```
