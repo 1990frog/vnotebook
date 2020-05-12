@@ -41,7 +41,7 @@ idea快捷键：
 shift+alt+v：生成变量名
 ctrl+alt+f：抽取成员变量
 
-# :用法2：lumbda表达式形式
+# 用法2：lumbda表达式形式
 
 多个任务，用Future数组来获取结果
 
