@@ -1,0 +1,77 @@
+```
+
+
+{
+  "log":{},
+  "dns":{},
+  "stats":{},
+  "inbounds":[
+    {
+      "port":"1080",
+      "protocol":"socks",
+      "settings":{
+        "auth":"noauth",
+        "udp":true
+      },
+      "tag":"in-0"
+    },
+    {
+      "port":"1081",
+      "protocol":"http",
+      "settings":{},
+      "tag":"in-1"
+    }
+  ],
+  "outbounds":[
+    {
+      "protocol":"vmess",
+      "settings":{
+        "vnext":[
+          {
+            "address":"xxxx",
+            "port":xxxx,
+            "users":[
+              {
+                "id":"xxxx",
+                "alterId":xxxx
+              }
+            ]
+          }
+        ]
+      },
+      "tag":"out-0",
+      "streamSettings":{
+        "network":"tcp",
+        "security":"none",
+        "tcpSettings":{}
+      }
+    },
+    {
+      "tag":"direct",
+      "protocol":"freedom",
+      "settings":{}
+    },
+    {
+      "tag":"blocked",
+      "protocol":"blackhole",
+      "settings":{}
+    }
+  ],
+  "routing":{
+    "domainStrategy":"IPOnDemand",
+    "rules":[
+      {
+        "type":"field",
+        "ip":[
+          "geoip:private"
+        ],
+        "outboundTag":"direct"
+      }
+    ]
+  },
+  "policy":{},
+  "reverse":{},
+  "transport":{}
+}
+
+```
