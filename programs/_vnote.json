@@ -112,6 +112,9 @@
         },
         {
             "name": "search"
+        },
+        {
+            "name": "vue"
         }
     ],
     "version": "1"
