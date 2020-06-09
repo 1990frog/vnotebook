@@ -1,0 +1,27 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/大数据/配置.md
+cd hadoop/etc
+
+
+# 配置hadoop
+vim hadoop-env.sh
+设置java_home
+
+# 配置hdfs
+core-site.xml
+
+
+hdfs-site.xml
+<configuration>
+  <property>
+    <name>dfs.replication</name>
+    <value>1</value>
+  </property>
+  <property>
+    <name>dfs.datanode.data.dir</name>
+    <value>/home/cai/App/hadoop/tmp/dfs/data</value>
+  </property>
+</configuration>
+
+# 配置mapreduce
+
+# 配置yarn

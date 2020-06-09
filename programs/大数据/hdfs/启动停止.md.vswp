@@ -1,0 +1,55 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/大数据/hdfs/启动停止.md
+启动HDFS：第一次执行的时候一定要格式化文件系统，不要重复执行
+$HADOOP_HOME/bin
+hdfs namenode -format
+启动集群：
+$HADOOP_HOME/sbin
+./start-dfs.sh
+验证：jps
+60002 DataNode
+60171 SecondaryNameNode
+59870 NameNode
+http://lcoalhost:50070
+如果发现jps ok，但是浏览器不ok，十有八九是防火墙问题
+sudo firewall -cmd --state
+sudo systemctl stop firewalld.service
+
+停止
+./stop-dfs.sh
+
+注意：
+start/stop-dfs.sh与hadoop-daemons.sh的关系
+start-dfs.sh=
+hadoop-daemons.sh start namenode
+hadoop-daemons.sh start datanode
+hadoop-daemons.sh start secondarynamenode
+stop-dfs.sh=
+...
+
+HDFS命令行操作*****
+hadoop fs 查看全部命令
+hadoop fs -ls /
+hadoop fs -put
+hadoop fs -cat
+hadoop fs -text
+hadoop fs -copyFromLocal
+hadoop fs -moveFromLocal
+hadoop fs -get
+hadoop fs -mkdir
+hadoop fs -mv
+hadoop fs -getmerge
+hadoop fs -rm
+hadoop fs -rmdir
+hadoop fs -rm -r
+
+
+HDFS存储扩展：
+put：1file ==>1...n block ==>存放在不同的节点上的
+get：去nn上查找这个file对应的元数据信息
+
+jdk.tgz==> blk_xxxx1,blk_xxxx2
+cat blk1 >> jdk.tgz
+cat blk2 >> jdk.tgz
+jdk.tgz = jdk.tgz
+
+HDFS：文件的切割，文件的合并，创建副本
