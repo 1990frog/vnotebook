@@ -8,10 +8,30 @@ export JAVA_HOME = /usr/lib/jvm/java-8-openjdk
 ```
 ## 配置core-site.xml
 ```xml
-<property>
-<name>fs.defaultFS</name>
-<value>hdfs://hadoop000:8020</value>
-</property>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+        <property>
+                <name>fs.defaultFS</name>
+                <value>hdfs://localhost:8082</value>
+        </property> 
+</configuration>
 ```
 ## 配置hadoop环境变量
 ```xml
@@ -23,22 +43,37 @@ $ source ~/.bash_profile
 # hdfs
 ## 配置hdfs-site.xml
 ```xml
-<property>
-<name>dfs.replication</name>
-<value>1</value>
-</property>
-<property>
-<name>dfs.datanode.name.dir</name>
-<value>/home/cai/App/hadoop/tmp/name</value>
-</property>
-<property>
-<name>dfs.datanode.data.dir</name>
-<value>/home/cai/App/hadoop/tmp/dfs/data</value>
-</property>
-<property>
-<name>dfs.permissions</name>
-<value>false</value>
-</property>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+        <property>
+                <name>dfs.replication</name>
+                <value>1</value>
+        </property>
+        <property>
+                <name>dfs.datanode.name.dir</name>
+                <value>/home/cai/App/hadoop/tmp/3.2.1/name</value>
+        </property>
+        <property>
+                <name>dfs.permissions</name>
+        </property>
+</configuration>
 ```
 
 # mapreduce
@@ -53,6 +88,23 @@ $ source ~/.bash_profile
 # yarn
 ## 配置yarn-site.xml
 ```xml
+<?xml version="1.0"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+<configuration>
+
+<!-- Site specific YARN configuration properties -->
 <property>
     <name>yarn.nodemanager.aux-services</name>
     <value>mapreduce_shuffle</value>
@@ -65,6 +117,8 @@ $ source ~/.bash_profile
     <name>yarn.scheduler.minimum-allocation-mb</name>
     <value>512</value>
 </property>
+</configuration>
+
 ```
 
 
@@ -77,8 +131,9 @@ hdfs namenode -format
 ```
 赋权
 ```
-sudo chmod -R 777 /home/cai/App/tmp
+sudo chmod -R 777 /home/cai/App/hadoop/tmp
 ```
+
 
 
 5.启动集群
