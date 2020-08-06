@@ -14,3 +14,28 @@ hive语句的执行过程：将HQL转换为MapReduce任务运行
 | 执行     | MapReduce | Executor |
 | 执行延时 | 高        | 低       |
 | 数据规模 | 大        |     小     |
+
+# 数据类型
+![](_v_images/20200806184131679_9324.png)
+
+# hive分区
+![](_v_images/20200806184903413_10701.png)
+
+# hive语法
+指定分隔符分区字段
+![](_v_images/20200806185224420_7199.png)
+
+# 连接方式
+hive client
+hive -e "sql"
+hive -f "sql file"
+beeline
+
+![](_v_images/20200806185948962_26939.png)
+复杂结构：kv之间用：进行分割，集合用，分割
+
+
+![](_v_images/20200806193018283_10119.png)
+
+![](_v_images/20200806193728701_7815.png)
+

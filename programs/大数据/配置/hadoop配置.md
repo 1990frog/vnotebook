@@ -68,7 +68,7 @@ $ source ~/.bash_profile
         </property>
         <property>
                 <name>dfs.datanode.name.dir</name>
-                <value>/home/cai/App/hadoop/tmp/3.2.1/name</value>
+                <value>/home/cai/App/hadoop/tmp/name</value>
         </property>
         <property>
                 <name>dfs.permissions</name>
@@ -79,10 +79,12 @@ $ source ~/.bash_profile
 # mapreduce
 ## 配置mapred-site.xml
 ```xml
-<property>
-    <name>mapreduce.framework.name</name>
-    <value>yarn</value>
-</property>
+<configuration>
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+</configuration>
 ```
 
 # yarn
