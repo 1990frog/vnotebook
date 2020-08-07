@@ -118,6 +118,9 @@
         },
         {
             "name": "大数据"
+        },
+        {
+            "name": "devops"
         }
     ],
     "version": "1"

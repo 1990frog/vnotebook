@@ -13,9 +13,6 @@
             "name": "git"
         },
         {
-            "name": "markdown"
-        },
-        {
             "name": "maven"
         }
     ],

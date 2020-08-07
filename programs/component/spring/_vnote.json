@@ -14,9 +14,6 @@
         },
         {
             "name": "oauth2"
-        },
-        {
-            "name": "swagger"
         }
     ],
     "version": "1"

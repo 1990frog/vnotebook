@@ -4,9 +4,6 @@
     ],
     "sub_directories": [
         {
-            "name": "devops"
-        },
-        {
             "name": "test"
         },
         {
@@ -38,6 +35,9 @@
         },
         {
             "name": "spring"
+        },
+        {
+            "name": "swagger"
         }
     ],
     "version": "1"
