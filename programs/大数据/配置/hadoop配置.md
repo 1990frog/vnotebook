@@ -29,7 +29,7 @@ export JAVA_HOME = /usr/lib/jvm/java-8-openjdk
 <configuration>
         <property>
                 <name>fs.defaultFS</name>
-                <value>hdfs://localhost:8082</value>
+                <value>hdfs://ip:8082</value>
         </property> 
 </configuration>
 ```
@@ -140,6 +140,7 @@ sudo chmod -R 777 /home/cai/App/hadoop/tmp
 
 5.启动集群
 $HADOOP_HOME/sbin/start-dfs.sh
+start-all.sh
 停止
 stop-dfs.sh
 

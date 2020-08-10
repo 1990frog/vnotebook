@@ -29,63 +29,73 @@ hdfs dfs -mkdir /hive/tmp
 hdfs dfs -chmod -R 777 /hive
 
 ```
-<configuration> 
-  <property> 
-    <name>javax.jdo.option.ConnectionURL</name>  
-    <value>jdbc:mysql://localhost:3306/metastore?createDatabaseIfNotExist=true</value>  
-    <description>the URL of the MySQL database</description> 
-  </property>  
-  <property> 
-    <name>javax.jdo.option.ConnectionDriverName</name>  
-    <value>com.mysql.jdbc.Driver</value>  
-    <description>Driver class name for a JDBC metastore</description> 
-  </property>  
-  <property> 
-    <name>javax.jdo.option.ConnectionUserName</name>  
-    <value>root</value> 
-  </property>  
-  <property> 
-    <name>javax.jdo.option.ConnectionPassword</name>  
-    <value>root</value> 
-  </property>  
-  <property> 
-    <name>hive.metastore.warehouse.dir</name>  
-    <value>/hive/warehouse</value> 
-   </property>
-</configuration>
+<configuration>
+  <property>
+    <name>javax.jdo.option.ConnectionURL</name>
+    <value>jdbc:mysql://localhost:3306/metastore?createDatabaseIfNotExist=true&amp;useSSL=false</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionDriverName</name>
+    <value>com.mysql.cj.jdbc.Driver</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionUserName</name>
+    <value>root</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionPassword</name>
+    <value>root</value>
+  </property>
+  <property>
+    <name>hive.cli.print.header</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>hive.cli.print.current.db</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>hive.metastore.warehouse.dir</name>
+    <value>/hive/warehouse</value>
+  </property>
+  <property>
+    <name>hive.exec.scratchdir</name>
+    <value>/hive/tmp</value>
+  </property>
+  <property>
+    <name>hive.querylog.location</name>
+    <value>/hive/log</value>                                                                                                                                                                                                                                                                         
+  </property>                                                                                                                                                                                                                                                                                        
+  <property>                                                                                                                                                                                                                                                                                         
+    <name>hive.metastore.schema.verification</name>                                                                                                                                                                                                                                                  
+    <value>false</value>                                                                                                                                                                                                                                                                             
+  </property>                                                                                                                                                                                                                                                                                        
+</configuration> 
 ```
 
-cp hive-default.xml.template hive-site.xml
+启动hdfs全家桶
+`$HADOOP_HOME/sbin/start-all.sh`
 
-![](_v_images/20200806194235466_7552.png)
+创建hive元数据文件夹
+```
+hdfs dfs -mkdir /hive
+hdfs dfs -mkdir /hive/tmp
+hdfs dfs -mkdir /hive/log
+hdfs dfs -mkdir /hive/warehouse
+```
 
-
-![](_v_images/20200806194320413_3447.png)
+赋予权限
+```
+hdfs dfs -chmod 777 /hive/tmp
+hdfs dfs -chmod 777 /hive/log
+hdfs dfs -chmod 777 /hive/warehouse
+```
 
 hive初始化
-![](_v_images/20200806194353355_1115.png)
+`$HIVE_HOME/bin/schematool --dbTpe mysql --initSchema`
 
-![](_v_images/20200806194411498_18267.png)
-
-
-启动
-![](_v_images/20200806194428319_777.png)
-
-权限
-![](_v_images/20200806194759123_3810.png)
-
-![](_v_images/20200806194821722_31709.png)
-
-
-![](_v_images/20200806201538423_9670.png)
-
-![](_v_images/20200806202000405_28188.png)
-创建外部表关键字
-
-![](_v_images/20200806202218603_31513.png)
-
-
-![](_v_images/20200806202259783_18301.png)
-![](_v_images/20200806202251767_14740.png)
-抽样查询
-![](_v_images/20200806202345809_5288.png)
+启动hive
+```
+hive --service metastore &
+```
+----
