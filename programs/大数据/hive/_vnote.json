@@ -10,6 +10,16 @@
             "name": "hive函数.md",
             "tags": [
             ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2020-08-11T14:54:25Z",
+            "modified_time": "2020-08-11T15:13:19Z",
+            "name": "hive存储格式.md",
+            "tags": [
+            ]
         }
     ],
     "sub_directories": [
