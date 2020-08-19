@@ -1,3 +1,5 @@
+[TOC]
+
 # 1.如何看当前Linux系统有几颗物理CPU和每颗CPU的核数？
 ```txt
 [root@centos6 ~ 10:55 #35]# cat /proc/cpuinfo|grep -c 'physical id'

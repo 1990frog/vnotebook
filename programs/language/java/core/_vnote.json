@@ -4,7 +4,7 @@
     ],
     "sub_directories": [
         {
-            "name": "keyword"
+            "name": "basic"
         },
         {
             "name": "concurrent"
