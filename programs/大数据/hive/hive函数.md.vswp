@@ -1,0 +1,79 @@
+vnote_backup_file_826537664 D:/Code/vnotebook/programs/大数据/hive/hive函数.md
+[TOC]
+
+# 内置函数
+字符串类型：concat、substr、upper、lower
+时间类型：year、month、day
+复杂类型：size、get_json_object
+
+
+# 自定义函数
+使用案例：数据脱敏，数据加解密
+
+UDF函数其实就是一个简单的函数，执行过程就是在Hive转换成MapReduce程序后，执行java方法，类似于像MapReduce执行过程中加入一个插件，方便扩展。UDF只能实现一进一出的操作，如果需要实现多进一出，则需要实现UDAF。
+
+Hive可以允许用户编写自己定义的函数UDF，来在查询中使用。
+
+
+Hive中有3种UDF：
+UDF：用来处理输入一行，输出一行的操作，类似Map操作
+UDAF：自定义聚合函数，用来处理输入多行，输出一行的操作，类似Reduce操作
+UDTF：自定义表产生函数，用来处理输入一行，输出多行的操作
+
+
+如何构建UDF
+用户构建的UDF使用过程如下：
+
+继承UDF或者UDAF或者UDTF，实现特定的方法；
+将写好的类打包为jar，如LowerUDF.jar；
+进入到Hive shell环境中，输入命令add jar /home/hadoop/LowerUDF.jar注册该jar文件；或者把LowerUDF.jar上传到hdfs，hadoop fs -put LowerUDF.jar /home/hadoop/LowerUDF.jar，再输入命令add jar hdfs://hadoop01:8020/user/home/LowerUDF.jar；
+为该类起一个别名，create temporary function lower_udf as 'UDF.lowerUDF'；注意，这里UDF只是为这个Hive会话临时定义的；
+在select中使用lower_udf()；
+
+
+demo
+1.maven依赖
+```xml
+<dependency>
+    <groupId>org.apache.hive</groupId>
+    <artifactId>hive-exec</artifactId>
+    <version>1.2.1</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-common</artifactId>
+    <version>2.7.3</version>
+</dependency>
+```
+
+2简单类型继承UDF
+```java
+import org.apache.hadoop.hive.ql.exec.UDF;
+import org.apache.hadoop.io.Text;
+
+public class StrLen extends UDF{
+    public int evaluate(final Text col){
+        return col.getLength();
+    }
+}
+```
+
+UDF&GenericUDF
+
+
+# 部署
+```
+hdfs dfs -mkdir /udfs
+hdfs dfs -put /xxx/xxx.jar /udfs
+```
+
+永久函数
+```
+add jar hdfs://xxx.jar;
+```
+
+临时函数
+```
+create temporary function strlen as "com.xxx.function";
+select [function](field) from table;
+```
