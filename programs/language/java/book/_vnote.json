@@ -5,6 +5,9 @@
     "sub_directories": [
         {
             "name": "Brian Goetz"
+        },
+        {
+            "name": "阿里巴巴Java开发手册"
         }
     ],
     "version": "1"
