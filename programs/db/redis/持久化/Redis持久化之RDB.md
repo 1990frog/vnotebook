@@ -16,7 +16,7 @@ bgsave命令：异步rdb
 3. Redis AOF
 # 什么是RDB
 将redis内存中的数据存储到RDB文件（二进制）到硬盘，redis再次启动加载RDB文件（二进制），可以将其理解为快照
-![2701342763-5c851b9a308a0_articlex](_v_images/20191212093520384_104500081.png)
+![2701342763-5c851b9a308a0_articlex](https://gitee.com/caijingquan/imagebed/raw/master/1602320182_20191212093520384_104500081.png)
 # 触发机制——主要三种方式
 1. save命令触发（同步）
 2. bgsave命令触发（异步）
@@ -32,7 +32,7 @@ save是同步命令，如果执行时间过长，**会造成redis阻塞**
 文件策略：
 如果使用save生成RDB文件，如果存在老的RDB文件，新文件会替换老文件
 # bgsave命令
-![1938339134-5c851b9a33c9e_articlex](_v_images/20191212093409101_846180634.png)
+![1938339134-5c851b9a33c9e_articlex](https://gitee.com/caijingquan/imagebed/raw/master/1602320181_20191212093409101_846180634.png)
 fork在大多数情况下是非常快的，不会阻塞到redis
 bgsave文件策略复杂度与save是相同的
 # redis自动生成RDB

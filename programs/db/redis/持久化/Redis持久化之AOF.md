@@ -79,7 +79,7 @@ aof-load-truncated yes    #指redis在恢复时，会忽略最后一条可能存
 4.单机多实例持久化文件目录可以考虑分盘
 
 # aof追加阻塞
-![](_v_images/20191208135325755_1778392891.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1602320211_20191208135325755_1778392891.png)
 
 如果AOF文件fsync同步时间大于2s，Redis主进程就会阻塞；
 如果AOF文件fsync同步时间小于2s，Redis主进程就会返回；

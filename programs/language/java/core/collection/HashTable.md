@@ -12,7 +12,7 @@ Hashtable 的 key, value 都不允许为空.
 
 
 # 实现Dictionary抽象类
-![Dictionary](_v_images/20200405142705305_1832715607.png)
+![Dictionary](https://gitee.com/caijingquan/imagebed/raw/master/1602318108_20200405142705305_1832715607.png)
 
 ```java
 public abstract

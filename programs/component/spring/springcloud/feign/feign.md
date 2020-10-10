@@ -3,7 +3,7 @@
 # 概览
 Feign是Netflix开源的声明式http客户端
 [github](https://github.com/OpenFeign/feign)
-![overview](_v_images/20200308094416196_354967477.png)
+![overview](https://gitee.com/caijingquan/imagebed/raw/master/1602319345_20200308094416196_354967477.png)
 
 # Feign组成
 |        接口        |               作用               |                                    默认值                                    |

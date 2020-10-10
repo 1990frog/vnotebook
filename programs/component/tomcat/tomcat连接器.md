@@ -12,7 +12,7 @@
 
 Tomcat 为了实现支持多种 I/O 模型和应用层协议，一个容器可能对接多个连接器，就好比一个房间有多个门。但是单独的连接器或者容器都不能对外提供服务，需要把它们组装起来才能工作，组装后这个整体叫作 Service 组件。这里请你注意，Service 本身没有做什么重要的事情，只是在连接器和容器外面多包了一层，把它们组装在一起。Tomcat 内可能有多个 Service，这样的设计也是出于灵活性的考虑。通过在 Tomcat 中配置多个 Service，可以实现通过不同的端口号来访问同一台机器上部署的不同应用。
 
-![ee880033c5ae38125fa91fb3c4f8cad6](_v_images/20200404161937580_1810772684.jpg)
+![ee880033c5ae38125fa91fb3c4f8cad6](https://gitee.com/caijingquan/imagebed/raw/master/1602319027_20200404161937580_1810772684.jpg)
 
 从图上你可以看到，最顶层是 Server，这里的 Server 指的就是一个 Tomcat 实例。一个 Server 中有一个或者多个 Service，一个 Service 中有多个连接器和一个容器。连接器与容器之间通过标准的 ServletRequest 和 ServletResponse 通信。
 
@@ -57,11 +57,11 @@ Tomcat 为了实现支持多种 I/O 模型和应用层协议，一个容器可�
 
 除了这些变化点，系统也存在一些相对稳定的部分，因此 Tomcat 设计了一系列抽象基类来封装这些稳定的部分，抽象基类 AbstractProtocol 实现了 ProtocolHandler 接口。每一种应用层协议有自己的抽象基类，比如 AbstractAjpProtocol 和 AbstractHttp11Protocol，具体协议的实现类扩展了协议层抽象基类。下面我整理一下它们的继承关系。
 
-![13850ee56c3f09cbabe9892e84502155](_v_images/20200404164007094_1257911139.jpg)
+![13850ee56c3f09cbabe9892e84502155](https://gitee.com/caijingquan/imagebed/raw/master/1602319029_20200404164007094_1257911139.jpg)
 
 小结一下，连接器模块用三个核心组件：Endpoint、Processor 和 Adapter 来分别做三件事情，其中 Endpoint 和 Processor 放在一起抽象成了 ProtocolHandler 组件，它们的关系如下图所示。
 
-![6eeaeb93839adcb4e76c15ee93f545ce](_v_images/20200404164117758_593797161.jpg)
+![6eeaeb93839adcb4e76c15ee93f545ce](https://gitee.com/caijingquan/imagebed/raw/master/1602319029_20200404164117758_593797161.jpg)
 
 下面我来详细介绍这两个顶层组件 ProtocolHandler 和 Adapter。
 
@@ -79,7 +79,7 @@ Endpoint 是一个接口，对应的抽象实现类是 AbstractEndpoint，而 Ab
 
 Processor 是一个接口，定义了请求的处理等方法。它的抽象实现类 AbstractProcessor 对一些协议共有的属性进行封装，没有对方法进行实现。具体的实现有 AjpProcessor、Http11Processor 等，这些具体实现类实现了特定协议的解析方法和请求处理方式。
 
-![309cae2e132210489d327cf55b284dcf](_v_images/20200404164510314_29345540.jpg)
+![309cae2e132210489d327cf55b284dcf](https://gitee.com/caijingquan/imagebed/raw/master/1602319030_20200404164510314_29345540.jpg)
 
 从图中我们看到，Endpoint 接收到 Socket 连接后，生成一个 SocketProcessor 任务提交到线程池去处理，SocketProcessor 的 run 方法会调用 Processor 组件去解析应用层协议，Processor 通过解析生成 Request 对象后，会调用 Adapter 的 Service 方法。
 

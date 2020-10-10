@@ -1,7 +1,7 @@
 # 装饰器模式定义
 装饰器模式（Decorator Pattern）允许向一个现有的对象添加新的功能，同时又不改变其结构，装饰器模式的类图如下：
 
-![decorator_01](_v_images/20191227142837350_300535315.png)
+![decorator_01](https://gitee.com/caijingquan/imagebed/raw/master/1602317283_20191227142837350_300535315.png)
 
 # 装饰器的角色介绍：
 + 装饰器抽象构件 => Component，为一个接口或抽象类

@@ -31,7 +31,7 @@ $ docker run --net=[container]
 首先，默认情况下docker运行容器时，宿主机会创建一个bridge网桥，是一个名叫docker0的虚拟网桥 ，默认docker0的ip为172.17.0.1，网桥再给容器分配虚拟子网ip，并且以网桥ip作为网关。在不指定网络的情况下，容器之间的通信都是通过bridge网桥进行通信。然后网桥在与宿主机镜像进行ip转换，端口映射等通信。
 
 其实这种bridge网桥与容器，与宿主机之间的通信，有过网络方面经验的同学，看一下下面一张图，就应该可以轻松的了解这种通信的原理了，有点类似与三层路由交换。
-![未命名文件 (2)](_v_images/20200102112946027_2077198065.png)
+![未命名文件 (2)](https://gitee.com/caijingquan/imagebed/raw/master/1602321524_20200102112946027_2077198065.png)
 使用bridge最绑定端口
 ```
 $ docker run --net=host -d -p8080:8080 springboot
@@ -41,7 +41,7 @@ docker0上会生成一个ip
 ```
 ## host（宿主机）【同一个network namespace】
 如果容器指定网络模式为host，容器不会有自己的network namespace，而是和宿主机共用一个network网络及ip，容器不会有虚拟出自己的网卡、ip等，当然除了网络通信这一块和宿主机绑定了，其余的容器内容还是和宿主机安全隔离了。这种在做容器迁移时，很不方便，不推荐使用。原理图示如下
-![未命名文件 (3)](_v_images/20200102113447047_1628707199.png) 
+![未命名文件 (3)](https://gitee.com/caijingquan/imagebed/raw/master/1602321525_20200102113447047_1628707199.png) 
 ip与host相同，指定host可以不绑定ip了
 ```
 $ docker run --net=host -d -p8080:8080 springboot
@@ -59,7 +59,7 @@ $ docker exec container ip a
 ```
 ## none【namespace完全隐藏】
 容器指定网络模式-net为none时，docker容器拥有自己的network namespace，但是所有网络配置都得自行配置，如ip、网卡等，这种方式很麻烦，不推荐使用，原理图示如下
-![未命名文件 (4)](_v_images/20200102113628578_2078458129.png)
+![未命名文件 (4)](https://gitee.com/caijingquan/imagebed/raw/master/1602321526_20200102113628578_2078458129.png)
 # Container
 在理解了host模式后，这个模式也就好理解了。这个模式指定新创建的容器和已经存在的一个容器共享一个Network Namespace，而不是和宿主机共享。新创建的容器不会创建自己的网卡，配置自己的IP，而是和一个指定的容器共享IP、端口范围等。同样，两个容器除了网络方面，其他的如文件系统、进程列表等还是隔离的。两个容器的进程可以通过lo网卡设备通信。
 

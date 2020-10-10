@@ -17,7 +17,7 @@ Nacos从官方的介绍上看，就像是SpringCloud中Eureka+Config+Bus+Git+MQ�
 # 什么是nacos
 服务（Service）是 Nacos 世界的一等公民。Nacos 支持几乎所有主流类型的“服务”的发现、配置和管理
 
-![16751762-9b9ead13708a21b3](_v_images/20200305001859644_1062184217.png)
+![16751762-9b9ead13708a21b3](https://gitee.com/caijingquan/imagebed/raw/master/1602319319_20200305001859644_1062184217.png)
 + Namespace:实现隔离，默认public
 + Group:不同服务可以分到一个组，默认DEFAULT_GROUP
 + Service:微服务

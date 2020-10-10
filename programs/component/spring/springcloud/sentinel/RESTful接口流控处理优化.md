@@ -45,6 +45,6 @@ for (int i = 0; i < poolSize; i++) {
 
 Sentinel 将每一个Http 请求的URL当成了一个唯一的资源名,用来做流控限制，这显然是非常不合适的。当大并发过来时，已经影响到了流控组件的性能消耗。
 
-![14126519-06a10d11fc39557d](_v_images/20200330141157804_1724931872.png)
+![14126519-06a10d11fc39557d](https://gitee.com/caijingquan/imagebed/raw/master/1602319298_20200330141157804_1724931872.png)
 
 https://www.jianshu.com/p/96f5980d9798

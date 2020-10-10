@@ -1,6 +1,6 @@
 # Bitmap（位图）
 
-![](_v_images/20191126215616213_15912252.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1602320126_20191126215616213_15912252.png)
 
 setbit key offset value
 给位图指定索引设置值
@@ -15,9 +15,9 @@ bitcount key [start end]
 1.使用set和bitmap
 2.1亿用户，5千万独立
 
-![](_v_images/20191126220526666_497178824.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1602320128_20191126220526666_497178824.png)
 
-![](_v_images/20191126220750184_1272126802.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1602320129_20191126220750184_1272126802.png)
 
 使用经验
 type=string，最大512mb

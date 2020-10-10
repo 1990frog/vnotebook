@@ -34,7 +34,7 @@ docker-compose exec mysql bash
 ```
 
 # docker-compose scale
-![](_v_images/20200112151017585_60943431.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1602321549_20200112151017585_60943431.png)
 
 # 部署一个复杂的投票应用
 docker-compose build

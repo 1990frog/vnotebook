@@ -12,7 +12,7 @@ public ReentrantLock(boolean fair) {
 ```
 FairSync与NonFaiSync就对应AQS了
 ---
-![](_v_images/20200404030934209_101758345.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1602318032_20200404030934209_101758345.png)
 
 # AQS
 ```java

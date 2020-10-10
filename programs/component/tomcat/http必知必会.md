@@ -15,7 +15,7 @@ HTTP协议是浏览器与服务器之间的数据传送协议。
 这就是HTTP协议要解决的问题。也就是说，HTTP协议的本质就是一种浏览器与服务器之间约定好的通信格式。
 
 # HTTP工作原理
-![f5bd0c7840160d5a121c191e7e54b4ca](_v_images/20200402201123268_1503184010.jpg)
+![f5bd0c7840160d5a121c191e7e54b4ca](https://gitee.com/caijingquan/imagebed/raw/master/1602319001_20200402201123268_1503184010.jpg)
 
 从图上你可以看到，这个过程是：
 1. 用户通过浏览器进行了一个操作，比如输入网址并回车，或者是点击链接，接着浏览器获取了这个事件。
@@ -34,12 +34,12 @@ HTTP协议是浏览器与服务器之间的数据传送协议。
 
 # HTTP请求响应实例
 请求实例
-![f58bf57649ec9eb35eb24e0679bb2514](_v_images/20200402201544756_1001422378.png)
+![f58bf57649ec9eb35eb24e0679bb2514](https://gitee.com/caijingquan/imagebed/raw/master/1602319002_20200402201544756_1001422378.png)
 
 HTTP 请求数据由三部分组成，分别是请求行、请求报头、请求正文。当这个 HTTP 请求数据到达 Tomcat 后，Tomcat 会把 HTTP 请求数据字节流解析成一个 Request 对象，这个 Request 对象封装了 HTTP 所有的请求信息。接着 Tomcat 把这个 Request 对象交给 Web 应用去处理，处理完后得到一个 Response 对象，Tomcat 会把这个 Response 对象转成 HTTP 格式的响应数据并发送给浏览器。
 
 响应实例
-![84f4fe4c411dfb9fd83a1d53cf2915b7](_v_images/20200402201737201_347474675.png)
+![84f4fe4c411dfb9fd83a1d53cf2915b7](https://gitee.com/caijingquan/imagebed/raw/master/1602319003_20200402201737201_347474675.png)
 
 # 无状态
 HTTP 协议有个特点是无状态，请求与请求之间是没有关系的。

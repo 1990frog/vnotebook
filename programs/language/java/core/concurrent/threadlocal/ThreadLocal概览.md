@@ -6,7 +6,7 @@ ThreadLocal存放于堆中，但是可以实现线程隔离
 优势：
 不用考虑并发，一对一
 
-![](_v_images/20200106170347430_1504130535.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1602317738_20200106170347430_1504130535.png)
 # Threadlocal
 ThreadLocal类顾名思义可以理解为线程本地变量。也就是说如果定义了一个ThreadLocal，每个线程往这个ThreadLocal中读写是线程隔离，互相之间不会影响的。
 它提供了一种将可变数据通过每个线程有自己的独立副本从而实现线程封闭的机制。

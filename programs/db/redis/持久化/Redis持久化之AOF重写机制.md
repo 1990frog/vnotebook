@@ -1,6 +1,6 @@
 [TOC]
 
-![](_v_images/20191219151956437_69219163.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1602320262_20191219151956437_69219163.png)
 # 个人总结
 AOF重写机制存在的目的就是为了减小AOF文件体积
 # AOF 重写机制
@@ -34,7 +34,7 @@ aof_current_size>auto-aof-rewrite-min-size
 当前size减去上次重写size之差除以上次重写size大于AOF文件增长率
 ```
 
-![](_v_images/20191207144237476_1349180936.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1602320260_20191207144237476_1349180936.png)
 
 # 总结
 + AOF重写的目的是为了解决AOF文件体积膨胀的问题，使用更小的体积来保存数据库状态，整个重写过程基本上不影响Redis主进程处理命令请求

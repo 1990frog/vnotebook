@@ -5,7 +5,7 @@ redis2.8之前都是全量复制
 # 疑虑
 主从复制之间数据差异
 # redis主从复制流程图
-![redis主从复制流程图](_v_images/20200102172717814_1822282584.png)
+![redis主从复制流程图](https://gitee.com/caijingquan/imagebed/raw/master/1602320311_20200102172717814_1822282584.png)
 
 1. Slave接受从客户端发送过来的slaveof命令。
 2. 当前服务器判断自己是否保存Master runid<font color="red">**（是否是第一次复制）**</font>。
@@ -28,13 +28,13 @@ flushall
 2. 一个slave只能有一个master
 3. 数据流向是单向的，master到slave
 # 角色
-![15083002-5640e35740e1d735](_v_images/20200102163833632_152043510.png)
+![15083002-5640e35740e1d735](https://gitee.com/caijingquan/imagebed/raw/master/1602320308_20200102163833632_152043510.png)
 + Redis主从复制主要有两个角色，**主机（master）对外提供读写功能**，**从机（slave）对外只提供读功能**，主机定期把数据同步到从机上保证数据一致性。
 + Redis主机数据同步到从机上有两种方式，一种是全量同步(没得runid)，另一种是增量同步。
 + 主从复制不会阻塞master（fork方式），在数据同步时，master还可以继续处理客户端请求，因为redis会产生一个新的进程来解决同步问题。
 一个redis也可以是从也可以是主（树状主从），可以减轻主机压力。
 
-![15083002-5e48221da72ffb5a](_v_images/20200102163912433_952841568.png)
+![15083002-5e48221da72ffb5a](https://gitee.com/caijingquan/imagebed/raw/master/1602320310_20200102163912433_952841568.png)
 # 配置
 只需要修改从服务器上的redis.conf文件：
 ```config
@@ -79,12 +79,12 @@ repl_backlog_first_byte_offset:0
 repl_backlog_histlen:0
 ```
 
-![15083002-e32972514d0c3c9f](_v_images/20200102164605202_1945018496.png)
+![15083002-e32972514d0c3c9f](https://gitee.com/caijingquan/imagebed/raw/master/1602320310_20200102164605202_1945018496.png)
 # 复制积压缓冲区（同步断线处理）
 **复制积压缓冲区是由主服务器维护一个固定长度（fixed-size）先进先出（FIFO）队列，默认大小是1MB。**
 它主要的作用就是当主服务器进行命令传播时，不仅将命令发送给所有从服务器，还会将命令入队到复制积压缓冲区。
 如果主服务器向从服务器传播数据时发生断线，主服务器会将复制积压缓冲区偏移量的所有数据都发送给从服务器（发送的是断线之后的的数据）。
-![15083002-e49c9e86a5fb5a1c](_v_images/20200102164648220_1801146173.png)
+![15083002-e49c9e86a5fb5a1c](https://gitee.com/caijingquan/imagebed/raw/master/1602320310_20200102164648220_1801146173.png)
 # 主从节点偏移量不同原因
 + 网络
 + 阻塞
@@ -95,7 +95,7 @@ Redis的全量同步主要分为三个阶段：
 + 同步写缓冲阶段：Master向Slave同步存储在缓冲区的写操作命令。
 + 同步增量阶段：Master向SLave同步写操作命令。
 
-![15083002-3a78be2ee836cabe](_v_images/20200102164805034_911861161.png)
+![15083002-3a78be2ee836cabe](https://gitee.com/caijingquan/imagebed/raw/master/1602320311_20200102164805034_911861161.png)
 
 ## 全量复制开销
 1. bgsave时间

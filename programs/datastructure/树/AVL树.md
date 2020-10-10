@@ -1,6 +1,6 @@
 [TOC]
 
-![Tree_Rebalancing](_v_images/20200413224718319_832070324.png)
+![Tree_Rebalancing](https://gitee.com/caijingquan/imagebed/raw/master/1602317025_20200413224718319_832070324.png)
 
 # 概览
 AVL树是最早被发明的自平衡二叉查找树。

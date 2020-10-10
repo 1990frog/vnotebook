@@ -3,7 +3,7 @@
 # JAVA 异常类型结构
 ## Throwable
 Throwable 是所有异常类型的基类，Throwable 下一层分为两个分支，Error 和 Exception.
-![](_v_images/20191024145151801_520758280.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1602318140_20191024145151801_520758280.png)
 ## Error
 Error 描述了 JAVA 程序运行时系统的内部错误，通常比较严重，除了通知用户和尽力使应用程序安全地终止之外，无能为力，应用程序不应该尝试去捕获这种异常。通常为一些虚拟机异常，如 StackOverflowError 等。
 ## Exception

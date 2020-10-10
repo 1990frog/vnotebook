@@ -219,4 +219,4 @@ print np.sort(a, axis=1)
 总结
 在 NumPy 学习中，你重点要掌握的就是对数组的使用，因为这是 NumPy 和标准 Python 最大的区别。在 NumPy 中重新对数组进行了定义，同时提供了算术和统计运算，你也可以使用 NumPy 自带的排序功能，一句话就搞定各种排序算法。当然要理解 NumPy 提供的数据结构为什么比 Python 自身的“更高级、更高效”，要从对数据指针的引用角度进行理解。
 
-![](_v_images/20200828101312661_29009.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1602321707_20200828101312661_29009.png)

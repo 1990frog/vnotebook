@@ -12,7 +12,7 @@ Busybox既包含了一些简单实用的工具，如cat和echo，也包含了一
 2. 分层的，并且每一层都可以添加改变删除文件，成为一个新的image
 3. 不同的image可以共享相同的layer
 4. image本身是read-only的
-![未命名文件](_v_images/20191209104945691_1607632261.png)
+![未命名文件](https://gitee.com/caijingquan/imagebed/raw/master/1602321486_20191209104945691_1607632261.png)
 + 所有image共用Linux Kernel(bootfs)
 + base image 也可以共享
 + base image 只包含rootfs，所以image很小

@@ -1,16 +1,16 @@
 [TOC]
 
-![20181018234543196](_v_images/20200306142846968_1581187570.png)
+![20181018234543196](https://gitee.com/caijingquan/imagebed/raw/master/1602318950_20200306142846968_1581187570.png)
 
 
 
 # 一级缓存
 ## 介绍
 在应用运行过程中，我们有可能在一次数据库会话中，执行多次查询条件完全相同的SQL，MyBatis提供了一级缓存的方案优化这部分场景，如果是相同的SQL语句，会优先命中一级缓存，避免直接对数据库进行查询，提高性能。具体执行过程如下图所示。
-![6e38df6a](_v_images/20200306150306163_2001507809.jpg)
+![6e38df6a](https://gitee.com/caijingquan/imagebed/raw/master/1602318951_20200306150306163_2001507809.jpg)
 每个SqlSession中持有了Executor，每个Executor中有一个LocalCache。当用户发起查询时，MyBatis根据当前执行的语句生成MappedStatement，在Local Cache进行查询，如果缓存命中的话，直接返回结果给用户，如果缓存没有命中的话，查询数据库，结果写入Local Cache，最后返回结果给用户。具体实现类的类关系图如下图所示。
 
-![d76ec5fe](_v_images/20200306150936174_1983044805.jpg)
+![d76ec5fe](https://gitee.com/caijingquan/imagebed/raw/master/1602318951_20200306150936174_1983044805.jpg)
 # 配置
 我们来看看如何使用MyBatis一级缓存。开发者只需在MyBatis的配置文件中，添加如下语句，就可以使用一级缓存。共有两个选项，SESSION或者STATEMENT，默认是SESSION级别，即在一个MyBatis会话中执行的所有语句，都会共享这一个缓存。一种是STATEMENT级别，可以理解为缓存只对当前执行的这一个Statement有效。
 
@@ -42,7 +42,7 @@ public void getStudentById() throws Exception {
     System.out.println(studentMapper.getStudentById(1));
 }
 ```
-![9e996384](_v_images/20200306153725190_1055389169.jpg)
+![9e996384](https://gitee.com/caijingquan/imagebed/raw/master/1602318952_20200306153725190_1055389169.jpg)
 我们可以看到，只有第一次真正查询了数据库，后续的查询使用了一级缓存。
 
 ## 实验2
@@ -58,7 +58,7 @@ public void addStudent() throws Exception {
     sqlSession.close();
 }
 ```
-![fb6a78e0](_v_images/20200306153844018_354398559.jpg)
+![fb6a78e0](https://gitee.com/caijingquan/imagebed/raw/master/1602318952_20200306153844018_354398559.jpg)
 我们可以看到，在修改操作后执行的相同查询，查询了数据库，一级缓存失效。
 ## 实验3
 开启两个SqlSession，在sqlSession1中查询数据，使一级缓存生效，在sqlSession2中更新数据库，验证一级缓存只在数据库会话内部共享。
@@ -78,7 +78,7 @@ public void testLocalCacheScope() throws Exception {
     System.out.println("studentMapper2读取数据: " + studentMapper2.getStudentById(1));
 }
 ```
-![f480ac76](_v_images/20200306153949709_1068302639.jpg)
+![f480ac76](https://gitee.com/caijingquan/imagebed/raw/master/1602318953_20200306153949709_1068302639.jpg)
 sqlSession2更新了id为1的学生的姓名，从凯伦改为了小岑，但session1之后的查询中，id为1的学生的名字还是凯伦，出现了脏数据，也证明了之前的设想，一级缓存只在数据库会话内部共享。
 
 # 一级缓存工作流程&源码分析
@@ -87,7 +87,7 @@ sqlSession2更新了id为1的学生的姓名，从凯伦改为了小岑，但ses
 # 工作流程
 一级缓存执行的时序图，如下图所示。
 
-![bb851700](_v_images/20200306154105124_562206636.png)
+![bb851700](https://gitee.com/caijingquan/imagebed/raw/master/1602318954_20200306154105124_562206636.png)
 
 
 

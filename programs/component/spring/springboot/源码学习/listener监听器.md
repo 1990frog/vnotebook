@@ -3,7 +3,7 @@
 @EventListener注解方式实现
 
 
-![](_v_images/20200215092541645_2115349287.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1602319052_20200215092541645_2115349287.png)
 
 # 监听器模式要素
 + Event事件

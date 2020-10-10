@@ -2,7 +2,7 @@
 
 # 内存泄露
 某个对象不再有用，但是占用的内存却不能被回收
-![20200130140258339_358079252](_v_images/20200404004812584_2101087807.jpg)
+![20200130140258339_358079252](https://gitee.com/caijingquan/imagebed/raw/master/1602317757_20200404004812584_2101087807.jpg)
 
 
 ThreadLocal的原理：每个Thread内部维护着一个ThreadLocalMap，它是一个Map。这个映射表的Key是一个弱引用，其实就是ThreadLocal本身，Value是真正存的线程变量Object。

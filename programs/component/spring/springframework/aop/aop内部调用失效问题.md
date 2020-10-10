@@ -1,6 +1,6 @@
 [TOC]
 
-![9564807-de1289d215c69da0](_v_images/20200305135752919_1004907721.png)
+![9564807-de1289d215c69da0](https://gitee.com/caijingquan/imagebed/raw/master/1602319174_20200305135752919_1004907721.png)
 
 # 解决方案
 + 方法一：直接从BeanFactory中获取再次代理Bean

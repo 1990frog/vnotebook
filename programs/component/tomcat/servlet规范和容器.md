@@ -18,7 +18,7 @@ HTTP服务器怎么知道要调用哪个Java类的哪个方法呢。最直接的
 HTTP服务器不直接跟业务类打交道，而是把请求交给Servlet容器去处理，Servlet容器会将请求转发到具体的Servlet，如果这个Servlet还没创建，就加载并实例化这个Servlet，然后调用这个Servlet的接口方法。
 因此Servlet接口其实是Servlet容器跟具体业务类之间的接口。
 
-![dfe304d3336f29d833b97f2cfe8d7801](_v_images/20200402202719303_754562429.jpg)
+![dfe304d3336f29d833b97f2cfe8d7801](https://gitee.com/caijingquan/imagebed/raw/master/1602319014_20200402202719303_754562429.jpg)
 
 作为 Java 程序员，如果我们要实现新的业务功能，只需要实现一个 Servlet，并把它注册到 Tomcat（Servlet 容器）中，剩下的事情就由 Tomcat 帮我们处理了。
 
@@ -58,7 +58,7 @@ ServletConfig 这个类，ServletConfig 的作用就是封装 Servlet 的初始�
 + HTTP服务器会用一个ServletRequest对象把客户的请求信息封装起来
 + 调用Servlet容器的service方法（懒加载，如果没被创建那就反射创建，并init初始化）
 + 调用Servlet的service方法来处理请求，把ServletResponse对象返回给HTTP服务器，HTTP服务器会把响应发送给客户端
-![b70723c89b4ed0bccaf073c84e08e115](_v_images/20200402204056187_1024729779.jpg)
+![b70723c89b4ed0bccaf073c84e08e115](https://gitee.com/caijingquan/imagebed/raw/master/1602319015_20200402204056187_1024729779.jpg)
 
 # servlet注册到web容器
 我们是以Web应用程序的方式来部署Servlet的，而根据Servlet规范，Web应用程序有一定的目录结构，在这个目录下分别放置了Servlet的类文件、配置文件以及静态资源，Servlet 容器通过读取配置文件，就能找到并加载Servlet

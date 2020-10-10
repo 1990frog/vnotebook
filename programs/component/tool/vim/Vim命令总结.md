@@ -1,6 +1,6 @@
 [TOC]
 
-![vim](_v_images/20190816153331073_6254123.png)
+![vim](https://gitee.com/caijingquan/imagebed/raw/master/1602318785_20190816153331073_6254123.png)
 
 # 模式
 + 命令模式(command-mode)

@@ -5,7 +5,7 @@
 # 字典
 如果有n个条目，使用树结构，查询的时间复杂度是O(logn)，如果有100万个条目（2^20），logn大约是20
 # Trie
-![30214215-8a71ab1bca7c4920bd2143cef6596f08](_v_images/20200228001616879_1428495971.png)
+![30214215-8a71ab1bca7c4920bd2143cef6596f08](https://gitee.com/caijingquan/imagebed/raw/master/1602317007_20200228001616879_1428495971.png)
 
 查询每个条目的时间复杂度，和字典中一共有多少条目无关，时间复杂度为O(w)，w为查询单词的长度，大多数单词的长度小于10
 每个节点有若干个指向下个节点的指针
@@ -17,7 +17,7 @@ class Node{
 }
 ```
 
-![400px-Trie_example](_v_images/20200228000711179_1735349854.png)
+![400px-Trie_example](https://gitee.com/caijingquan/imagebed/raw/master/1602317003_20200228000711179_1735349854.png)
 
 
 
@@ -66,9 +66,9 @@ class Node{
 
 # 压缩字典树 Compressed Trie
 Before compression
-![trie07](_v_images/20200228001329705_1706578987.gif)
+![trie07](https://gitee.com/caijingquan/imagebed/raw/master/1602317004_20200228001329705_1706578987.gif)
 After compression
-![trie08](_v_images/20200228001338775_1642973520.gif)
+![trie08](https://gitee.com/caijingquan/imagebed/raw/master/1602317005_20200228001338775_1642973520.gif)
 缺陷：
 维护成本更高
 

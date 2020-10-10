@@ -5,4 +5,4 @@
 2. 将cluster slots的结果映射到本地，为每个节点创建JedisPool
 3. 准备执行命令
 
-![](_v_images/20200404141432097_925452012.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1602320348_20200404141432097_925452012.png)
