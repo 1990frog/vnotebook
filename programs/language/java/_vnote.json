@@ -67,6 +67,9 @@
             "name": "book"
         },
         {
+            "name": "syntax"
+        },
+        {
             "name": "core"
         },
         {

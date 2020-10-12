@@ -13,6 +13,12 @@
         }
     ],
     "sub_directories": [
+        {
+            "name": "numpy"
+        },
+        {
+            "name": "pandas"
+        }
     ],
     "version": "1"
 }

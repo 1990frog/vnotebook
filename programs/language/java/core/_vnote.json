@@ -4,9 +4,6 @@
     ],
     "sub_directories": [
         {
-            "name": "basic"
-        },
-        {
             "name": "concurrent"
         },
         {
