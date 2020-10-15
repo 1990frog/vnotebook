@@ -168,8 +168,6 @@ df1 = df1.apply(plus,axis=1,args=(2,3,))
 
 # 数据统计
 常用函数
-![343ba98c1322dc0c013e07c87b157a00](https://gitee.com/caijingquan/imagebed/raw/master/1602321763_20200901222317374_1664420034.jpg)
-
 表格中有一个 describe() 函数，统计函数千千万，describe() 函数最简便。它是个统计大礼包，可以快速让我们对数据有个全面的了解。下面我直接使用 df1.descirbe() 输出结果为：
 ```python
 df1 = DataFrame({'name':['ZhangFei', 'GuanYu', 'a', 'b', 'c'], 'data1':range(5)})
@@ -250,14 +248,203 @@ pysqldf = lambda sql: sqldf(sql, globals())
 # 总结
 mPy 一样，Pandas 有两个非常重要的数据结构：Series 和 DataFrame。使用 Pandas 可以直接从 csv 或 xlsx 等文件中导入数据，以及最终输出到 excel 表中。我重点介绍了数据清洗中的操作，当然 Pandas 中同样提供了多种数据统计的函数。最后我们介绍了如何将数据表进行合并，以及在 Pandas 中使用 SQL 对数据表更方便地进行操作。Pandas 包与 NumPy 工具库配合使用可以发挥巨大的威力，正是有了 Pandas 工具，Python 做数据挖掘才具有优势。
 
+---
+
+# 生成数据
+# 处理数据
+# pivot 透视
+以统计学生成绩信息为例。
+在做学生成绩信息统计的时候，我们从学生各科考试成绩文件（.csv或.xls等）中把数据抽取上来。样本模拟数据（data_df）如下：
+
+|     | userNum | score | subjectCode | subjectName | userName |
+| --- | ------- | ----- | ----------- | ----------- | -------- |
+| 0   | 001     | 90    | 01          | 语文        | 张三     |
+| 1   | 002     | 90    | 01          | 语文        | 李四     |
+| 2   | 003     | 90    | 01          | 语文        | 王五     |
+| 3   | 004     | 90    | 02          | 数学        |   张三       |
+| 4   | 005     | 90    | 02          | 数学        |   李四       |
+| 5   | 006     | 90    | 02          | 数学        |    王五      |
+
+要把上面二维表转换为每个人各科的成绩信息。就像咱们中学时期的成绩单一样。类似于下表的一张二维表。
+
+| 学籍号 | 姓名 | 班级 | 语文成绩 | 语文排名 | 数学成绩 | 数学排名 |
+| ----- | ---- | ---- | ------- | ------- | -------- | -------- |
+| ...   | ...  | ...  | ...     | ...     | ...     | ...     |
+
+我之前的传统统计方式，给data_df根据学籍号进行groupby，再循环遍历该分组得到每个人的各科成绩信息，再统计到一张新表中，然后循环append每一张新表，可生成以上的样表。如果我们需要统计全年级的学生呢？可能一个年级有500个学生，那就是循环500次。此时我们需要统计一个市区内多校联考的学生呢？岂不是要循环成百上千次？实际情况，这样的做法使得我们的脚本跑的非常的慢。
+
+DataFrame.pivot(index=None, columns=None, values=None)
+Parameters
++ index:str or object or a list of str,optional
++ columns:str or object or a list of str
++ values:str,object or a list of the previous,optional
+
+第一个index是重塑的新表的索引名称是什么，
+第二个columns是重塑的新表的列名称是什么，一般来说就是被统计列的分组，
+第三个values就是生成新列的值应该是多少，如果没有，则会对data_df剩下未统计的列进行重新排列放到columns的上层。
+
+Returns: DataFrame
+
+```python
+>>> pivot_df = data_df.pivot(index='userNum', columns='subjectCode', values='score')
+>>> print pivot_df
+subjectCode  01  02
+userNum
+001          90  87
+002          96  82
+003          93  80
+```
+这就生成了我们大致想要的样子了，之后可以再给pivot_df的列名进行调整，还有其整体样式的调整。
+```python
+# 这只是其中一个方式，如有更好的方式，不吝赐教~
+
+# 列名称置空
+pivot_df.columns.name = None
+# 遍历每个学科对新表列名进行修改
+data_df_G = data_df.groupby(["subjectCode"], as_index=False)
+temp_count = 1
+for index, subject_df in data_df_G:
+    # 把成绩排名添加到各科成绩之后
+    pivot_df.insert(temp_count, "rank_" + str(index), pivot_df[index].rank(ascending=False, method='min'))
+    # 重命名各科成绩
+    pivot_df.rename(columns={index: ("score_" + str(index))}, inplace=True)
+    temp_count += 2
+# 把userNum添加的列中
+pivot_df['userNum'] = pivot_df.index
+# 索引名称置空
+pivot_df.index.name = None
+
+temp_df = data_df.loc[:, ["userNum", "userName"]]
+temp_df.drop_duplicates(inplace=True)
+# 剩余列拼接
+pivot_df = temp_df.merge(pivot_df, on="userNum", how="left")
+
+print(pivot_df)
+  userNum userName  score_01  rank_01  score_02  rank_02
+0   001       张三      90        3        87        1
+1   002       李四      96        1        82        2
+2   003       王五      93        2        80        3
+```
 
 
 
+Examples
+```python
+>>> df = pd.DataFrame({'foo': ['one', 'one', 'one', 'two', 'two',
+                           'two'],
+                   'bar': ['A', 'B', 'C', 'A', 'B', 'C'],
+                   'baz': [1, 2, 3, 4, 5, 6],
+                   'zoo': ['x', 'y', 'z', 'q', 'w', 't']})
+>>> df
+    foo   bar  baz  zoo
+0   one   A    1    x
+1   one   B    2    y
+2   one   C    3    z
+3   two   A    4    q
+4   two   B    5    w
+5   two   C    6    t
+
+>>> df.pivot(index='foo', columns='bar', values='baz')
+      baz       zoo
+bar   A  B  C   A  B  C
+foo
+one   1  2  3   x  y  z
+two   4  5  6   q  w  t
+```
+
+# pivot_table 透视表
 
 
+---
+
+pandas中，这三种方法都是用来对表格进行重排的，其中stack()是unstack()的逆操作。某种意义上，unstack()方法和pivot()方法是很像的，主要的不同在于，unstack()方法是针对索引或者标签的，即将列索引转成最内层的行索引；而pivot()方法则是针对列的值，即指定某列的值作为行索引，指定某列的值作为列索引，然后再指定哪些列作为索引对应的值。因此，总结起来一句话就是：unstack()针对索引进行操作，pivot()针对值进行操作。但实际上，两者在功能往往可以互相实现。
+
+unstack(self, level=-1, fill_value=None)、pivot(self, index=None, columns=None, values=None，对比这两个方法的参数，这里要注意的是，对于pivot()，如果参数values指定了不止一列作为值的话，那么生成的DataFrame的列索引就会出现层次索引，最外层的索引为原来的列标签；unstack()没有指定值的参数，会把剩下的列都作为值，即把剩下的列标签都作为最外层的索引，每个索引对应一个子表。
+
+pivot()方法其实比较容易理解，就是指定相应的列分别作为行、列索引以及值。下面我们通过几张原理图详细说明stack()和unstack()，最后再通过一个具体的例子来对比stack()、unstack()和pivot()这三种方法。
+
+先看stack()，如图。stack()是将原来的列索引转成了最内层的行索引，这里是多层次索引，其中AB索引对应第三层，即最内层索引。
 
 
+---
 
+![](_v_images/20201015142026466_11271.png)
 
+# stack 堆叠
 
+# unstack
 
+# columns 属性
+重新设置列信息
+
+---
+
+# 基础
+# DataFrame
+DataFrame是一种表格型数据结构，它含有一组有序的列，每列可以是不同的值。DataFrame既有行索引，也有列索引，它可以看作是由Series组成的字典，不过这些Series公用一个索引。DataFrame的创建有多种方式，不过最重要的还是根据dict进行创建，以及读取csv或者txt文件来创建
+
+## 根据字段创建
+```python
+data = {
+    'state':['Ohio','Ohio','Ohio','Nevada','Nevada'],
+    'year':[2000,2001,2002,2001,2002],
+    'pop':[1.5,1.7,3.6,2.4,2.9]
+}
+frame = pd.DataFrame(data)
+frame
+
+#输出
+    pop state   year
+0   1.5 Ohio    2000
+1   1.7 Ohio    2001
+2   3.6 Ohio    2002
+3   2.4 Nevada  2001
+4   2.9 Nevada  2002
+```
+
+DataFrame的行索引是index，列索引是columns，我们可以在创建DataFrame时指定索引的值
+
+```python
+frame2 = pd.DataFrame(data,index=['one','two','three','four','five'],columns=['year','state','pop','debt'])
+frame2
+
+#输出
+    year    state   pop debt
+one 2000    Ohio    1.5 NaN
+two 2001    Ohio    1.7 NaN
+three   2002    Ohio    3.6 NaN
+four    2001    Nevada  2.4 NaN
+five    2002    Nevada  2.9 NaN
+```
+使用嵌套字典也可以创建DataFrame，此时外层字典的键作为列，内层键则作为索引:
+```python
+pop = {'Nevada':{2001:2.4,2002:2.9},'Ohio':{2000:1.5,2001:1.7,2002:3.6}}
+frame3 = pd.DataFrame(pop)
+frame3
+#输出
+    Nevada  Ohio
+2000    NaN 1.5
+2001    2.4 1.7
+2002    2.9 3.6
+```
+
+我们可以用index，columns，values来访问DataFrame的行索引，列索引以及数据值，数据值返回的是一个二维的ndarra
+
+```python
+frame2.values
+#输出
+array([[2000, 'Ohio', 1.5, 0],
+       [2001, 'Ohio', 1.7, 1],
+       [2002, 'Ohio', 3.6, 2],
+       [2001, 'Nevada', 2.4, 3],
+       [2002, 'Nevada', 2.9, 4]], dtype=object)
+```
+
+# 读取文件
+读取文件生成DataFrame最常用的是read_csv,read_table方法
+
+# DataFrame轴
+在DataFrame的处理中经常会遇到轴的概念，这里先给大家一个直观的印象，我们所说的axis=0即表示沿着每一列或行标签\索引值向下执行方法，axis=1即表示沿着每一行或者列标签模向执行对应的方法。
+![](_v_images/20201015145623123_491.png =720x)
+
+# DataFrame一些性质
