@@ -1,16 +1,6 @@
 {
     "created_time": "2020-01-23T13:22:06Z",
     "files": [
-        {
-            "attachment_folder": "",
-            "attachments": [
-            ],
-            "created_time": "2020-01-23T13:22:06Z",
-            "modified_time": "2020-01-23T13:22:06Z",
-            "name": "目前用到的方法.md",
-            "tags": [
-            ]
-        }
     ],
     "sub_directories": [
         {
@@ -18,6 +8,12 @@
         },
         {
             "name": "pandas"
+        },
+        {
+            "name": "pip"
+        },
+        {
+            "name": "语法"
         }
     ],
     "version": "1"
