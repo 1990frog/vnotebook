@@ -1,3 +1,4 @@
+vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/linux/Arch/Pacman.md
 # 添加archlinuxCN源
 ```
 #编辑文件 sudo vi /etc/pacman.conf   末尾追加
