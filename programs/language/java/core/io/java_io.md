@@ -1,7 +1,7 @@
-![9c1f724d6e444ed9bb8079928cbbf826](_v_images/20200329163648607_1307494099.png)
+![9c1f724d6e444ed9bb8079928cbbf826](https://gitee.com/caijingquan/imagebed/raw/master/1610693752_20200329163648607_1307494099.png)
 
 
-![2d607f6d670a440fa25a812f9373e6b5](_v_images/20200329163711035_2092389863.png)
+![2d607f6d670a440fa25a812f9373e6b5](https://gitee.com/caijingquan/imagebed/raw/master/1610693754_20200329163711035_2092389863.png)
 
 以Reader这块来讲解装饰器模式在IO中的应用
 
@@ -17,15 +17,15 @@ FileReader尽管也在第三行，但是FileReader构不成一个具体的装饰
 读写IO的时候每次打开文件会非常耗时，我们可以使用BufferedReader装饰FileReader这些被装饰器类，使用缓冲提高性能
 
 
-![](_v_images/20191121165156097_391536508.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1610693750_20191121165156097_391536508.png)
 
-![](_v_images/20191121165216749_2002889243.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1610693750_20191121165216749_2002889243.png)
 
-![](_v_images/20191121165233356_463152762.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1610693750_20191121165233356_463152762.png)
 
-![](_v_images/20191121165252172_462926785.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1610693751_20191121165252172_462926785.png)
 
-![IO系统](_v_images/20191121165537828_343432901.png)
+![IO系统](https://gitee.com/caijingquan/imagebed/raw/master/1610693751_20191121165537828_343432901.png)
 
 
 

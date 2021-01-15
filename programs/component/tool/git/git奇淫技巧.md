@@ -607,7 +607,7 @@ ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p
 
 ## 一图详解
 
-![git](_v_images/20191022102853197_749296005.png)
+![git](https://gitee.com/caijingquan/imagebed/raw/master/1610692851_20191022102853197_749296005.png)
 
 ## 优雅的提交Commit信息
 
@@ -647,6 +647,6 @@ echo '{ "path": "cz-conventional-changelog" }' > ~/.czrc
 ```
 全局安装后使用 `git cz` 代替 `git commit`就可以了,如下图
 
-![gitcz](_v_images/20191022102925696_1015121465.png)
+![gitcz](https://gitee.com/caijingquan/imagebed/raw/master/1610692851_20191022102925696_1015121465.png)
 
 **[⬆ 返回顶部](#目录)**

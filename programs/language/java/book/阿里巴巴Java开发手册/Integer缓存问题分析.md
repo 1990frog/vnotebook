@@ -129,7 +129,6 @@ If the valuepbeing boxed is an integer literal of type intbetween -128and 127inc
 然后需要对代码进行反汇编，执行：javap -c IntTest
 
 如果想了解 javap 的用法，直接输入 javap -help 查看用法提示（很多命令行工具都支持 -help 或 --help 给出用法提示）。
-![5db654e80001823606050363](_v_images/20200203094240826_1862904901.jpeg)
 
 反编译后，我们得到以下代码：
 ```java

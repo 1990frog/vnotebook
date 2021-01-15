@@ -1,6 +1,6 @@
 [TOC]
 
-![](_v_images/20200416224417853_41126944.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1610693628_20200416224417853_41126944.png)
 
 # ConcurrentHashMap和CopyOnWriteArrayList
 + 同步的ArrayList（时代巨轮滚滚向前）
@@ -25,7 +25,7 @@
 + Queue
 + BlockingQUeue
 
-![](_v_images/20200213114134655_778768935.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1610693627_20200213114134655_778768935.png)
 
 
 # 什么是阻塞队列
@@ -51,7 +51,7 @@
 + 指定容量
 + 公平：还可以指定是否要保证公平，如果想保证公平的话，那么等待了最长时间的线程会被优先处理，不过这会同时带来一定的性能消耗
 
-![](_v_images/20200213114150607_1639988253.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1610693627_20200213114150607_1639988253.png)
 
 
 # LinkedBlockingQueue

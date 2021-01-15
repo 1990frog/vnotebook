@@ -1,5 +1,0 @@
-vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/language/java/core/io/nio/nio多路复用.md
-[TOC]
-
-NIO 是利用了单线程轮询事件的机制，通过高效地定位就绪的 Channel，来决定做什么，仅仅 select 阶段是阻塞的，可以有效避免大量客户端连接时，频繁线程切换带来的问题，应用的扩展能力有了非常大的提高。
-

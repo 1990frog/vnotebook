@@ -138,5 +138,5 @@ GET _analyze?pretty
 
 
 
-![](_v_images/20200331233215019_794841509.png)
+![](https://gitee.com/caijingquan/imagebed/raw/master/1610694014_20200331233215019_794841509.png)
 

@@ -3,7 +3,7 @@
 Redis提供了5种数据结构,但除此之外,Redis还提供了注入慢查询分析,Redis Shell、Pipeline、事务、与Lua脚本、Bitmaps、HyperLogLog、PubSub、GEO等附加功能,这些功能可以在某些场景发挥很重要的作用.
 
 # redis执行流程
-![944418018-594e1d9369319_articlex](_v_images/20191127102247812_1786991374.png)
+![944418018-594e1d9369319_articlex](https://gitee.com/caijingquan/imagebed/raw/master/1610693253_20191127102247812_1786991374.png)
 
 + 发送命令
 + 命令排队

@@ -49,7 +49,7 @@ $ touch ~/uts
 $ sudo mount --bind /proc/$$/ns/uts ~/uts
 ```
 使用 stat 命令检查下结果：
-![952033-20180725130707560-330510216](_v_images/20191229154607747_1697957418.png)
+![952033-20180725130707560-330510216](https://gitee.com/caijingquan/imagebed/raw/master/1610693923_20191229154607747_1697957418.png)
 很神奇吧，~/uts 的 inode 和链接文件中的 inode number 是一样的，它们是同一个文件。
 
 # clone() 函数
@@ -93,7 +93,7 @@ int unshare(int flags);
 和前面两个函数一样，C 语言库中的 unshare() 函数也是对 unshare() 系统调用的封装。调用 unshare() 的主要作用就是：不启动新的进程就可以起到资源隔离的效果，相当于跳出原先的 namespace 进行操作。
 
 系统还默认提供了一个叫 unshare 的命令，其实就是在调用  unshare() 系统调用。下面的 demo 使用 unshare 命令把当前进程的 user namespace 设置成了 root：
-![952033-20180725130954675-147955412](_v_images/20191229154915943_534598848.png)
+![952033-20180725130954675-147955412](https://gitee.com/caijingquan/imagebed/raw/master/1610693923_20191229154915943_534598848.png)
 
 # 总结
 namespace 是 linux 内核提供的特性，为虚拟化而生。随着 docker 的诞生引爆了容器技术，也把长期在后台默默奉献的 namespace 技术推到了大家的面前。笔者试图通过对 namespace 技术的学习和理解来加深对容器技术的认识，所以接下来会通过文章记录学习 namespace 的点点滴滴，希望能和同学们一起进步。
