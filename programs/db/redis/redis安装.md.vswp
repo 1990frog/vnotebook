@@ -1,8 +1,0 @@
-vnote_backup_file_826537664 /home/cai/Documents/vnotebook/programs/db/redis/redis安装.md
-# redis安装
-
-1. 下载
-2. cd redis/
-3. make
-4. cd src
-5. make install
