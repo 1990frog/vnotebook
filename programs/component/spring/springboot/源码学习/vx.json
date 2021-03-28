@@ -1,0 +1,145 @@
+{
+    "created_time": "2020-04-05T07:23:52Z",
+    "files": [
+        {
+            "attachment_folder": "",
+            "created_time": "2020-01-25T08:16:29Z",
+            "id": "0",
+            "modified_time": "2020-01-25T08:16:29Z",
+            "name": "initializer初始化器.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-01T13:38:52Z",
+            "id": "0",
+            "modified_time": "2020-02-01T13:38:52Z",
+            "name": "listener监听器.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-10T13:50:42Z",
+            "id": "0",
+            "modified_time": "2020-02-10T13:50:42Z",
+            "name": "启动流程.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-22T07:10:48Z",
+            "id": "0",
+            "modified_time": "2020-02-22T07:10:48Z",
+            "name": "spring.factories文件.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-22T06:55:47Z",
+            "id": "0",
+            "modified_time": "2020-02-22T06:55:47Z",
+            "name": "springboot启动.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-22T06:35:45Z",
+            "id": "0",
+            "modified_time": "2020-02-22T06:35:45Z",
+            "name": "启动加载器.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-20T13:30:18Z",
+            "id": "0",
+            "modified_time": "2020-02-20T13:30:18Z",
+            "name": "bean.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-23T06:17:40Z",
+            "id": "0",
+            "modified_time": "2020-02-23T06:17:40Z",
+            "name": "属性配置解析.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-24T05:15:51Z",
+            "id": "0",
+            "modified_time": "2020-02-24T05:15:51Z",
+            "name": "异常报告器.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-24T05:28:48Z",
+            "id": "0",
+            "modified_time": "2020-02-24T05:28:48Z",
+            "name": "配置类.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-26T05:52:27Z",
+            "id": "0",
+            "modified_time": "2020-02-26T05:52:27Z",
+            "name": "模型建立.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-28T15:49:16Z",
+            "id": "0",
+            "modified_time": "2020-02-28T15:49:16Z",
+            "name": "wepapp之refresh.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-28T16:07:31Z",
+            "id": "0",
+            "modified_time": "2020-02-28T16:07:31Z",
+            "name": "propertySource.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-28T16:44:43Z",
+            "id": "0",
+            "modified_time": "2020-02-28T16:44:43Z",
+            "name": "starter.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-02-24T12:37:02Z",
+            "id": "0",
+            "modified_time": "2020-02-24T12:37:02Z",
+            "name": "目录.md",
+            "tags": [
+            ]
+        }
+    ],
+    "folders": [
+    ],
+    "id": "0",
+    "modified_time": "2021-03-27T22:31:03Z",
+    "version": "1"
+}

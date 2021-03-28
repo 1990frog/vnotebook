@@ -1,0 +1,28 @@
+{
+    "created_time": "2020-04-07T15:32:12Z",
+    "files": [
+        {
+            "attachment_folder": "",
+            "created_time": "2020-04-04T13:14:34Z",
+            "id": "0",
+            "modified_time": "2020-04-04T13:14:34Z",
+            "name": "Filebeat.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-04-07T15:33:13Z",
+            "id": "0",
+            "modified_time": "2020-04-07T15:33:13Z",
+            "name": "filebeat.yml.md",
+            "tags": [
+            ]
+        }
+    ],
+    "folders": [
+    ],
+    "id": "0",
+    "modified_time": "2021-03-27T22:31:03Z",
+    "version": "1"
+}

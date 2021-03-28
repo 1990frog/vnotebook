@@ -1,0 +1,61 @@
+{
+    "created_time": "2020-01-23T13:22:06Z",
+    "files": [
+        {
+            "attachment_folder": "",
+            "created_time": "2020-04-03T04:31:09Z",
+            "id": "0",
+            "modified_time": "2020-04-03T04:31:09Z",
+            "name": "运维语句.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-04-23T07:05:50Z",
+            "id": "0",
+            "modified_time": "2020-04-23T07:05:50Z",
+            "name": "mycnf.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-03-12T08:40:49Z",
+            "id": "0",
+            "modified_time": "2020-03-12T08:40:49Z",
+            "name": "对比oracle.md",
+            "tags": [
+            ]
+        }
+    ],
+    "folders": [
+        {
+            "name": "部署"
+        },
+        {
+            "name": "基础"
+        },
+        {
+            "name": "语句"
+        },
+        {
+            "name": "索引"
+        },
+        {
+            "name": "函数"
+        },
+        {
+            "name": "锁"
+        },
+        {
+            "name": "事务"
+        },
+        {
+            "name": "优化"
+        }
+    ],
+    "id": "0",
+    "modified_time": "2021-03-27T22:31:03Z",
+    "version": "1"
+}

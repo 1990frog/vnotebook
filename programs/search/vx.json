@@ -1,0 +1,31 @@
+{
+    "created_time": "2020-03-27T11:45:55Z",
+    "files": [
+    ],
+    "folders": [
+        {
+            "name": "elasticsearch"
+        },
+        {
+            "name": "logstash"
+        },
+        {
+            "name": "kibana"
+        },
+        {
+            "name": "cerebro"
+        },
+        {
+            "name": "beats"
+        },
+        {
+            "name": "安装部署"
+        },
+        {
+            "name": "canal"
+        }
+    ],
+    "id": "0",
+    "modified_time": "2021-03-27T22:31:03Z",
+    "version": "1"
+}

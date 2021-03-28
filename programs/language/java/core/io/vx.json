@@ -1,0 +1,40 @@
+{
+    "created_time": "2020-01-23T13:22:06Z",
+    "files": [
+        {
+            "attachment_folder": "",
+            "created_time": "2020-01-23T13:22:06Z",
+            "id": "0",
+            "modified_time": "2020-01-23T13:22:06Z",
+            "name": "java_io.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-04-02T05:36:17Z",
+            "id": "0",
+            "modified_time": "2020-04-02T05:36:17Z",
+            "name": "节点流与处理流.md",
+            "tags": [
+            ]
+        }
+    ],
+    "folders": [
+        {
+            "name": "nio"
+        },
+        {
+            "name": "bio"
+        },
+        {
+            "name": "netty"
+        },
+        {
+            "name": "概念"
+        }
+    ],
+    "id": "0",
+    "modified_time": "2021-03-27T22:31:03Z",
+    "version": "1"
+}

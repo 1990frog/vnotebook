@@ -1,0 +1,100 @@
+{
+    "created_time": "2020-04-04T07:15:57Z",
+    "files": [
+        {
+            "attachment_folder": "",
+            "created_time": "2020-01-23T13:22:06Z",
+            "id": "0",
+            "modified_time": "2020-01-23T13:22:06Z",
+            "name": "Redis数据结构概览.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-01-23T13:22:06Z",
+            "id": "0",
+            "modified_time": "2020-01-23T13:22:06Z",
+            "name": "key.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-01-23T13:22:06Z",
+            "id": "0",
+            "modified_time": "2020-01-23T13:22:06Z",
+            "name": "Redis数据结构之string.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-01-23T13:22:06Z",
+            "id": "0",
+            "modified_time": "2020-01-23T13:22:06Z",
+            "name": "Redis数据结构之string拓展bitmap.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-01-23T13:22:06Z",
+            "id": "0",
+            "modified_time": "2020-01-23T13:22:06Z",
+            "name": "Redis数据结构之hash.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-01-23T13:22:06Z",
+            "id": "0",
+            "modified_time": "2020-01-23T13:22:06Z",
+            "name": "Redis数据结构之list.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-01-23T13:22:06Z",
+            "id": "0",
+            "modified_time": "2020-01-23T13:22:06Z",
+            "name": "Redis数据结构之set.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-01-23T13:22:06Z",
+            "id": "0",
+            "modified_time": "2020-01-23T13:22:06Z",
+            "name": "Redis数据结构之zset.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-01-23T13:22:06Z",
+            "id": "0",
+            "modified_time": "2020-01-23T13:22:06Z",
+            "name": "geo.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "created_time": "2020-01-23T13:22:06Z",
+            "id": "0",
+            "modified_time": "2020-01-23T13:22:06Z",
+            "name": "hyperloglog.md",
+            "tags": [
+            ]
+        }
+    ],
+    "folders": [
+    ],
+    "id": "0",
+    "modified_time": "2021-03-27T22:31:03Z",
+    "version": "1"
+}
